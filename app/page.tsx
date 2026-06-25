@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type PolicyRisk = {
   level: "low" | "medium" | "high";
@@ -104,6 +104,13 @@ function CopyButton({
   tone?: "teal" | "rewrite";
 }) {
   const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
   const accent = tone === "rewrite" ? RISK_COLOR.low : C.teal;
   return (
     <button
@@ -112,10 +119,11 @@ function CopyButton({
         try {
           await navigator.clipboard.writeText(text);
         } catch {
-          /* clipboard unavailable */
+          return; // clipboard unavailable — don't show a false success
         }
         setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
+        if (timer.current) clearTimeout(timer.current);
+        timer.current = setTimeout(() => setCopied(false), 1500);
       }}
       style={{
         cursor: "pointer",
@@ -553,7 +561,10 @@ export default function Home() {
               value={adText}
               onChange={(e) => {
                 setAdText(e.target.value);
-                if (!e.target.value.trim()) setTeardown(null); // don't leave a stale verdict on a cleared input
+                if (!e.target.value.trim()) {
+                  setTeardown(null); // don't leave a stale verdict on a cleared input
+                  setError(null);
+                }
               }}
               rows={4}
               placeholder="Paste the ad you are about to run (headline and body)…"
@@ -584,7 +595,10 @@ export default function Home() {
                 value={input}
                 onChange={(e) => {
                   setInput(e.target.value);
-                  if (!e.target.value.trim()) setResult(null); // clear stale results on a cleared input
+                  if (!e.target.value.trim()) {
+                    setResult(null); // clear stale results on a cleared input
+                    setError(null);
+                  }
                 }}
                 onKeyDown={(e) => e.key === "Enter" && runGenerate()}
                 placeholder="best CRM for real estate   or   https://competitor.com/offer"
