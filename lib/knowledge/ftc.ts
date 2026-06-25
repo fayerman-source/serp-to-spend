@@ -75,11 +75,16 @@ export const FTC: KnowledgeModule = {
     {
       label: "Endorsement Guides 2023 revision - a 'results not typical' disclaimer is insufficient",
       citation: "88 Fed. Reg. 48102 (eff. July 26, 2023)",
-      url: "https://www.law.cornell.edu/cfr/text/16/255.2",
+      url: "https://www.federalregister.gov/citation/88-FR-48102",
     },
     {
       label: "Business Opportunity Rule - definition (required payment + customer/outlet/location representation)",
       citation: "16 C.F.R. § 437.1(c)",
+      url: "https://www.law.cornell.edu/cfr/text/16/437.1",
+    },
+    {
+      label: "Business Opportunity Rule - scope limit (advertising and general training is not 'providing customers/outlets')",
+      citation: "16 C.F.R. § 437.1(m)",
       url: "https://www.law.cornell.edu/cfr/text/16/437.1",
     },
     {
