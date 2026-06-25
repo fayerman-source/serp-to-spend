@@ -27,6 +27,18 @@ type Audience = { name: string; description: string; targeting_signals: string[]
 type AdPack = { angles: Angle[]; audiences: Audience[] };
 type ApiResult = { source: string; query: string; pack: AdPack };
 
+type Teardown = {
+  platform: "Meta" | "Google" | "TikTok";
+  level: "low" | "medium" | "high";
+  policy_area: string;
+  findings: Array<{ phrase: string; problem: string }>;
+  ftc: { risk: "low" | "medium" | "high"; standard: string; why: string };
+  safe_rewrite: { headline: string; primary_text: string };
+};
+
+type Mode = "check" | "generate";
+type Platform = "Meta" | "Google" | "TikTok";
+
 // Palette: white, teal accent, charcoal text, light-gray sections.
 const C = {
   ink: "#1f2933",
@@ -41,6 +53,11 @@ const RISK_COLOR: Record<string, string> = {
   low: "#1f9d57",
   medium: "#b8770a",
   high: "#d92d2d",
+};
+const VERDICT: Record<string, string> = {
+  low: "Looks clear",
+  medium: "Ships only if substantiated",
+  high: "Likely rejected as written",
 };
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
@@ -60,6 +77,132 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
+function cardStyle(): React.CSSProperties {
+  return {
+    border: `1px solid ${C.line}`,
+    borderRadius: 12,
+    padding: 24,
+    marginTop: 18,
+    background: C.bg,
+    boxShadow: "0 1px 3px rgba(16,24,32,.04)",
+  };
+}
+
+function RewriteBox({ headline, primary_text }: { headline: string; primary_text: string }) {
+  return (
+    <div
+      style={{
+        marginTop: 12,
+        border: `1px solid ${RISK_COLOR.low}`,
+        background: "#f0faf3",
+        borderRadius: 8,
+        padding: "12px 14px",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 800,
+          textTransform: "uppercase",
+          letterSpacing: "0.05em",
+          color: RISK_COLOR.low,
+          marginBottom: 4,
+        }}
+      >
+        Rewrite that passes
+      </div>
+      <div style={{ fontWeight: 700, color: C.ink, fontSize: 14 }}>{headline}</div>
+      <div style={{ fontSize: 14, color: C.ink }}>{primary_text}</div>
+    </div>
+  );
+}
+
+function TeardownView({ t }: { t: Teardown }) {
+  const color = RISK_COLOR[t.level] ?? C.muted;
+  return (
+    <section style={cardStyle()}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Eyebrow>{t.platform} review</Eyebrow>
+        <span
+          style={{
+            fontSize: 13,
+            fontWeight: 800,
+            color,
+            border: `1px solid ${color}`,
+            borderRadius: 999,
+            padding: "3px 12px",
+          }}
+        >
+          {VERDICT[t.level] ?? t.level}
+        </span>
+      </div>
+
+      {t.policy_area && t.policy_area.toLowerCase() !== "none" && (
+        <div style={{ fontSize: 14, color: C.ink, marginTop: 4 }}>
+          <strong style={{ color }}>Policy at risk:</strong> {t.policy_area}
+        </div>
+      )}
+
+      {t.findings.length > 0 && (
+        <div style={{ marginTop: 14 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: C.muted, marginBottom: 6 }}>
+            What trips it
+          </div>
+          <div style={{ display: "grid", gap: 8 }}>
+            {t.findings.map((f, i) => (
+              <div
+                key={i}
+                style={{
+                  border: `1px solid ${C.line}`,
+                  borderRadius: 8,
+                  padding: "10px 12px",
+                  background: C.soft,
+                }}
+              >
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.ink }}>&ldquo;{f.phrase}&rdquo;</div>
+                <div style={{ fontSize: 13, color: C.muted, marginTop: 2 }}>{f.problem}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {t.ftc && t.ftc.standard && t.ftc.standard.toLowerCase() !== "none" && (
+        <div
+          style={{
+            marginTop: 14,
+            border: `1px solid ${RISK_COLOR[t.ftc.risk] ?? C.line}`,
+            background: "#fff8ed",
+            borderRadius: 8,
+            padding: "12px 14px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 800,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              color: RISK_COLOR[t.ftc.risk] ?? C.muted,
+              marginBottom: 4,
+            }}
+          >
+            FTC substantiation risk: {t.ftc.risk}
+          </div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.ink }}>{t.ftc.standard}</div>
+          <div style={{ fontSize: 13, color: C.muted, marginTop: 2 }}>{t.ftc.why}</div>
+        </div>
+      )}
+
+      <RewriteBox headline={t.safe_rewrite.headline} primary_text={t.safe_rewrite.primary_text} />
+
+      <div style={{ fontSize: 11, color: C.muted, marginTop: 12, fontStyle: "italic" }}>
+        Decision-support for the advertiser, not legal advice.
+      </div>
+    </section>
+  );
+}
+
 function Wireframe({ lp }: { lp: LandingPage }) {
   return (
     <div
@@ -75,7 +218,6 @@ function Wireframe({ lp }: { lp: LandingPage }) {
         Landing-page wireframe (message-matched to this angle)
       </div>
 
-      {/* Hero block */}
       <div
         style={{
           border: `1px solid ${C.line}`,
@@ -130,7 +272,6 @@ function Wireframe({ lp }: { lp: LandingPage }) {
         </div>
       </div>
 
-      {/* Section stack */}
       <div style={{ display: "grid", gap: 8, marginTop: 8 }}>
         {lp.sections.map((s, i) => (
           <div
@@ -167,25 +308,48 @@ function Wireframe({ lp }: { lp: LandingPage }) {
   );
 }
 
-function cardStyle(): React.CSSProperties {
-  return {
-    border: `1px solid ${C.line}`,
-    borderRadius: 12,
-    padding: 24,
-    marginTop: 18,
-    background: C.bg,
-    boxShadow: "0 1px 3px rgba(16,24,32,.04)",
-  };
-}
-
 export default function Home() {
-  const [input, setInput] = useState("");
-  const [grounded, setGrounded] = useState(true);
+  const [mode, setMode] = useState<Mode>("check");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // check-an-ad mode
+  const [platform, setPlatform] = useState<Platform>("Meta");
+  const [adText, setAdText] = useState("");
+  const [teardown, setTeardown] = useState<Teardown | null>(null);
+
+  // generate mode
+  const [input, setInput] = useState("");
+  const [grounded, setGrounded] = useState(true);
   const [result, setResult] = useState<ApiResult | null>(null);
 
-  async function run() {
+  function switchMode(m: Mode) {
+    setMode(m);
+    setError(null);
+  }
+
+  async function runCheck() {
+    if (!adText.trim() || loading) return;
+    setLoading(true);
+    setError(null);
+    setTeardown(null);
+    try {
+      const res = await fetch("/api/check", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ platform, ad: adText }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Request failed.");
+      setTeardown(data.teardown as Teardown);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function runGenerate() {
     if (!input.trim() || loading) return;
     setLoading(true);
     setError(null);
@@ -206,9 +370,19 @@ export default function Home() {
     }
   }
 
+  const tab = (m: Mode, label: string): React.CSSProperties => ({
+    padding: "8px 16px",
+    borderRadius: 8,
+    border: `1px solid ${mode === m ? C.teal : C.line}`,
+    background: mode === m ? C.teal : C.bg,
+    color: mode === m ? "#fff" : C.ink,
+    fontWeight: 700,
+    fontSize: 14,
+    cursor: "pointer",
+  });
+
   return (
     <>
-      {/* Header bar */}
       <header style={{ borderBottom: `1px solid ${C.line}`, background: C.bg }}>
         <div
           style={{
@@ -231,74 +405,152 @@ export default function Home() {
 
       <main style={{ maxWidth: 960, margin: "0 auto", padding: "48px 20px 96px" }}>
         <Eyebrow>Ad compliance + creative</Eyebrow>
-        <h1 style={{ fontSize: "clamp(28px,4vw,40px)", margin: "0 0 8px", color: C.ink, fontWeight: 800, letterSpacing: "-0.01em" }}>
+        <h1
+          style={{
+            fontSize: "clamp(28px,4vw,40px)",
+            margin: "0 0 8px",
+            color: C.ink,
+            fontWeight: 800,
+            letterSpacing: "-0.01em",
+          }}
+        >
           Catch the ads that get rejected, before you submit
         </h1>
         <p style={{ color: C.muted, marginTop: 0, fontSize: 17, maxWidth: 700 }}>
-          Paste a keyword or competitor URL. It writes platform-native ads for Meta, Google, and
-          TikTok, then flags every claim that could get them rejected and tells you what to prove.
-          Plus distinct angles, landing pages, and audiences.
+          {mode === "check"
+            ? "Paste an ad you are about to run. Get the exact Meta, Google, or TikTok policy it would trip, the FTC substantiation risk, and a version that passes."
+            : "Paste a keyword or competitor URL. It writes platform-native ads for Meta, Google, and TikTok, each with the same per-platform policy check, plus angles, landing pages, and audiences."}
         </p>
 
-        <div style={{ display: "flex", gap: 10, marginTop: 24, flexWrap: "wrap" }}>
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && run()}
-            placeholder="best CRM for real estate   or   https://competitor.com/offer"
-            style={{
-              flex: "1 1 320px",
-              padding: "13px 15px",
-              borderRadius: 8,
-              border: `1px solid ${C.line}`,
-              background: C.bg,
-              color: C.ink,
-              fontSize: 15,
-            }}
-          />
-          <button
-            onClick={run}
-            disabled={loading || !input.trim()}
-            style={{
-              padding: "13px 26px",
-              borderRadius: 8,
-              border: "none",
-              background: loading || !input.trim() ? "#9fc9c3" : C.teal,
-              color: "white",
-              fontWeight: 700,
-              fontSize: 15,
-              cursor: loading || !input.trim() ? "default" : "pointer",
-            }}
-          >
-            {loading ? "Generating…" : "Generate"}
+        <div style={{ display: "flex", gap: 8, marginTop: 20 }}>
+          <button onClick={() => switchMode("check")} style={tab("check", "Check an ad")}>
+            Check an ad
+          </button>
+          <button onClick={() => switchMode("generate")} style={tab("generate", "Generate ads")}>
+            Generate ads
           </button>
         </div>
 
-        <label
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            marginTop: 12,
-            fontSize: 14,
-            color: C.muted,
-            cursor: "pointer",
-          }}
-        >
-          <input
-            type="checkbox"
-            checked={grounded}
-            onChange={(e) => setGrounded(e.target.checked)}
-            style={{ accentColor: C.teal, width: 16, height: 16 }}
-          />
-          Ground in live Google Search (uncheck to compare ungrounded output)
-        </label>
+        {mode === "check" ? (
+          <div style={{ marginTop: 20 }}>
+            <div style={{ display: "flex", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
+              <select
+                value={platform}
+                onChange={(e) => setPlatform(e.target.value as Platform)}
+                style={{
+                  padding: "11px 12px",
+                  borderRadius: 8,
+                  border: `1px solid ${C.line}`,
+                  background: C.bg,
+                  color: C.ink,
+                  fontSize: 15,
+                  fontWeight: 600,
+                }}
+              >
+                <option>Meta</option>
+                <option>Google</option>
+                <option>TikTok</option>
+              </select>
+              <button
+                onClick={runCheck}
+                disabled={loading || !adText.trim()}
+                style={{
+                  padding: "11px 26px",
+                  borderRadius: 8,
+                  border: "none",
+                  background: loading || !adText.trim() ? "#9fc9c3" : C.teal,
+                  color: "white",
+                  fontWeight: 700,
+                  fontSize: 15,
+                  cursor: loading || !adText.trim() ? "default" : "pointer",
+                }}
+              >
+                {loading ? "Checking…" : "Check ad"}
+              </button>
+            </div>
+            <textarea
+              value={adText}
+              onChange={(e) => setAdText(e.target.value)}
+              rows={4}
+              placeholder="Paste the ad you are about to run (headline and body)…"
+              style={{
+                width: "100%",
+                padding: "13px 15px",
+                borderRadius: 8,
+                border: `1px solid ${C.line}`,
+                background: C.bg,
+                color: C.ink,
+                fontSize: 15,
+                fontFamily: "inherit",
+                resize: "vertical",
+                boxSizing: "border-box",
+              }}
+            />
+          </div>
+        ) : (
+          <div style={{ marginTop: 20 }}>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && runGenerate()}
+                placeholder="best CRM for real estate   or   https://competitor.com/offer"
+                style={{
+                  flex: "1 1 320px",
+                  padding: "13px 15px",
+                  borderRadius: 8,
+                  border: `1px solid ${C.line}`,
+                  background: C.bg,
+                  color: C.ink,
+                  fontSize: 15,
+                }}
+              />
+              <button
+                onClick={runGenerate}
+                disabled={loading || !input.trim()}
+                style={{
+                  padding: "13px 26px",
+                  borderRadius: 8,
+                  border: "none",
+                  background: loading || !input.trim() ? "#9fc9c3" : C.teal,
+                  color: "white",
+                  fontWeight: 700,
+                  fontSize: 15,
+                  cursor: loading || !input.trim() ? "default" : "pointer",
+                }}
+              >
+                {loading ? "Generating…" : "Generate"}
+              </button>
+            </div>
+            <label
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                marginTop: 12,
+                fontSize: 14,
+                color: C.muted,
+                cursor: "pointer",
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={grounded}
+                onChange={(e) => setGrounded(e.target.checked)}
+                style={{ accentColor: C.teal, width: 16, height: 16 }}
+              />
+              Ground in live Google Search (uncheck to compare ungrounded output)
+            </label>
+          </div>
+        )}
 
         {error && (
           <p style={{ color: RISK_COLOR.high, marginTop: 16, fontWeight: 600 }}>Error: {error}</p>
         )}
 
-        {result && (
+        {mode === "check" && teardown && <TeardownView t={teardown} />}
+
+        {mode === "generate" && result && (
           <div style={{ marginTop: 28 }}>
             <p style={{ color: C.muted, fontSize: 13 }}>
               Grounding:{" "}
@@ -392,34 +644,10 @@ export default function Home() {
                       )}
 
                       {ad.policy_risk.level !== "low" && (
-                        <div
-                          style={{
-                            marginTop: 10,
-                            border: `1px solid ${RISK_COLOR.low}`,
-                            background: "#f0faf3",
-                            borderRadius: 6,
-                            padding: "10px 12px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              fontSize: 11,
-                              fontWeight: 800,
-                              textTransform: "uppercase",
-                              letterSpacing: "0.05em",
-                              color: RISK_COLOR.low,
-                              marginBottom: 4,
-                            }}
-                          >
-                            Rewrite that passes
-                          </div>
-                          <div style={{ fontWeight: 700, color: C.ink, fontSize: 14 }}>
-                            {ad.policy_risk.safe_rewrite.headline}
-                          </div>
-                          <div style={{ fontSize: 14, color: C.ink }}>
-                            {ad.policy_risk.safe_rewrite.primary_text}
-                          </div>
-                        </div>
+                        <RewriteBox
+                          headline={ad.policy_risk.safe_rewrite.headline}
+                          primary_text={ad.policy_risk.safe_rewrite.primary_text}
+                        />
                       )}
                     </div>
                   ))}
