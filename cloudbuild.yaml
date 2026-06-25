@@ -1,0 +1,19 @@
+# CI for pull requests: install dependencies, typecheck, and build.
+# No secrets required — tsc and `next build` make no API calls, so the build
+# service account needs no Vertex/AI permissions.
+steps:
+  - id: install
+    name: node:22
+    entrypoint: npm
+    args: ["ci"]
+  - id: typecheck
+    name: node:22
+    entrypoint: npx
+    args: ["tsc", "--noEmit"]
+  - id: build
+    name: node:22
+    entrypoint: npm
+    args: ["run", "build"]
+options:
+  logging: CLOUD_LOGGING_ONLY
+timeout: 1200s
