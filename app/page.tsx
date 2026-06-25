@@ -98,11 +98,11 @@ function CopyButton({
   text,
   label = "Copy",
   tone = "teal",
-}: {
+}: Readonly<{
   text: string;
   label?: string;
   tone?: "teal" | "rewrite";
-}) {
+}>) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(
@@ -776,9 +776,9 @@ export default function Home() {
                 Audience ideas
               </h2>
               <div style={{ display: "grid", gap: 14 }}>
-                {result.pack.audiences.map((aud, i) => (
+                {result.pack.audiences.map((aud) => (
                   <div
-                    key={i}
+                    key={aud.name}
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
