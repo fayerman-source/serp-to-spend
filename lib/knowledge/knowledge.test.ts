@@ -4,6 +4,8 @@ import { META } from "./meta";
 import { GOOGLE } from "./google";
 import { TIKTOK } from "./tiktok";
 import { buildTeardownSystem } from "../prompts/teardown";
+import { GENERATE_SYSTEM } from "../prompts/generate";
+import { PLATFORM_KNOWLEDGE, PLATFORM_MODULES } from "./index";
 
 const MODULES = [FTC, META, GOOGLE, TIKTOK];
 
@@ -58,5 +60,21 @@ describe("buildTeardownSystem composes FTC + only the relevant platform", () => 
     expect(() => buildTeardownSystem("Snapchat" as unknown as "Meta")).toThrow(
       /Unknown platform/,
     );
+  });
+});
+
+describe("shared platform registry", () => {
+  it("maps all three platforms and lists all three modules", () => {
+    expect(Object.keys(PLATFORM_KNOWLEDGE).sort()).toEqual(["Google", "Meta", "TikTok"]);
+    expect(PLATFORM_MODULES).toHaveLength(3);
+  });
+});
+
+describe("generate prompt is grounded in the same sourced modules", () => {
+  it("composes every platform module + FTC, naming the real policies", () => {
+    expect(GENERATE_SYSTEM).toContain("Unreliable Claims"); // real Google policy
+    expect(GENERATE_SYSTEM).toContain("Health and Wellness"); // real Meta policy
+    expect(GENERATE_SYSTEM).toContain("Misleading and False Content"); // real TikTok policy
+    expect(GENERATE_SYSTEM).toContain("PUFFERY IS NOT A VIOLATION"); // shared FTC calibration
   });
 });

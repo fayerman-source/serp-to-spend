@@ -50,7 +50,7 @@ npm test                           # vitest unit tests
   - **Gemini on Vertex AI** (`@google/genai`, `gemini-2.5-flash`/`pro`), with live Google Search grounding
   - **Claude** (`@anthropic-ai/sdk`, `claude-opus-4-8`), first-party or on Vertex
   - Either way the output is a single **validated JSON schema**, not parsed prose
-- The FTC standards live in a curated, versioned module (`lib/knowledge/ftc.ts`), separate from the prompts so the legal content can be reviewed and updated on its own
+- The compliance knowledge lives in sourced, versioned modules under `lib/knowledge/` (one per reviewer: FTC, Meta, Google, TikTok), each rule tied to a real authority. Both flows compose the same modules, so they cite the same policies
 - All keys and credentials live only on the server (the API routes); the browser never sees them
 
 ## Architecture
@@ -65,7 +65,7 @@ lib/serp.ts                 grounding (Gemini Google Search | URL fetch | SerpAp
 lib/llm.ts                  provider selection + one structured-output call
 lib/prompts/                system prompts, version-tagged
 lib/schemas.ts              output types + JSON schemas
-lib/knowledge/ftc.ts        curated, versioned FTC standards
+lib/knowledge/              sourced policy modules (ftc, meta, google, tiktok) + registry
 ```
 
 ## Next steps (roadmap)
