@@ -24,6 +24,11 @@ const PLATFORM_KNOWLEDGE: Record<Platform, KnowledgeModule> = {
 
 export function buildTeardownSystem(platform: Platform): string {
   const platformModule = PLATFORM_KNOWLEDGE[platform];
+  if (!platformModule) {
+    throw new Error(
+      `Unknown platform: ${platform}. Expected one of ${Object.keys(PLATFORM_KNOWLEDGE).join(", ")}.`,
+    );
+  }
   return `You are an ad-policy reviewer and FTC advertising-compliance analyst. A media buyer gives you ONE ad they are about to run on ${platform}. Predict whether ${platform} will reject it, assess its FTC substantiation risk, and give a version that passes. Judge only against the policies and standards below; do not invent policy names.
 
 ## ${platform} policies
@@ -42,6 +47,6 @@ Return:
 Write the rewrite exactly as it would appear in the live ad: no em-dashes, no markdown. This is decision-support for the advertiser, not legal advice.`;
 }
 
-export function buildTeardownUserPrompt(platform: string, adText: string): string {
+export function buildTeardownUserPrompt(platform: Platform, adText: string): string {
   return `Platform: ${platform}\nThe ad to review (headline and/or body):\n"""\n${adText}\n"""\n\nReturn the compliance teardown now.`;
 }

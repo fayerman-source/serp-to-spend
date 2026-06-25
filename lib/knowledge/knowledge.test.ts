@@ -53,4 +53,10 @@ describe("buildTeardownSystem composes FTC + only the relevant platform", () => 
     expect(sys).toContain("Health and Wellness");
     expect(sys).not.toContain("Unacceptable Business Practices"); // Google-only
   });
+  it("throws a clear error for an unknown platform instead of a TypeError", () => {
+    // buildTeardownSystem is exported; guard against an unvalidated caller.
+    expect(() => buildTeardownSystem("Snapchat" as unknown as "Meta")).toThrow(
+      /Unknown platform/,
+    );
+  });
 });
