@@ -6,21 +6,11 @@
 // module is included, alongside the FTC module. Adding a platform = add a
 // knowledge module + a PLATFORM_KNOWLEDGE entry. Bump TEARDOWN_PROMPT_VERSION on
 // any change.
-import type { KnowledgeModule } from "../knowledge/types";
-import { FTC } from "../knowledge/ftc";
-import { META } from "../knowledge/meta";
-import { GOOGLE } from "../knowledge/google";
-import { TIKTOK } from "../knowledge/tiktok";
+import { FTC, PLATFORM_KNOWLEDGE, type Platform } from "../knowledge";
+
+export type { Platform } from "../knowledge";
 
 export const TEARDOWN_PROMPT_VERSION = "2026-06-25.1";
-
-export type Platform = "Meta" | "Google" | "TikTok";
-
-const PLATFORM_KNOWLEDGE: Record<Platform, KnowledgeModule> = {
-  Meta: META,
-  Google: GOOGLE,
-  TikTok: TIKTOK,
-};
 
 export function buildTeardownSystem(platform: Platform): string {
   const platformModule = PLATFORM_KNOWLEDGE[platform];

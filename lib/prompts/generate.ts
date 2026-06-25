@@ -1,8 +1,27 @@
 // Prompt for the "Generate ads" flow. Versioned and isolated from app logic so it
-// can be reviewed and tuned on its own. Bump GENERATE_PROMPT_VERSION on any change.
+// can be reviewed and tuned on its own. The per-ad policy check is grounded in the
+// same sourced knowledge modules as the "Check an ad" teardown (../knowledge), so
+// both flows cite the same real policies and share the puffery/aspiration
+// calibration. Because this flow generates for all three platforms at once, it
+// composes every platform module plus the FTC module. Bump GENERATE_PROMPT_VERSION
+// on any change.
 import type { Grounding } from "../serp";
+import { FTC, PLATFORM_MODULES } from "../knowledge";
 
-export const GENERATE_PROMPT_VERSION = "2026-06-24.1";
+export const GENERATE_PROMPT_VERSION = "2026-06-25.1";
+
+// Built from the shared registry: add a platform module there and this flow
+// includes it automatically.
+const PLATFORM_POLICIES = PLATFORM_MODULES.map(
+  (m) => `## ${m.name} policies\n${m.knowledge}`,
+).join("\n\n");
+
+const POLICY_BLOCK = `Judge each ad against the platform's own published policies and the FTC standards below. Name the real policy exactly as it is published; do not invent policy names.
+
+${PLATFORM_POLICIES}
+
+## FTC standards
+${FTC.knowledge}`;
 
 export const GENERATE_SYSTEM = `You are a senior performance-marketing strategist at an affiliate/media-buying shop.
 You turn search intent into ad creative that survives platform review.
@@ -12,14 +31,14 @@ For the given topic, produce 4 angles that are GENUINELY DISTINCT. Each must res
 - Google: a Responsive Search Ad style headline (<=30 chars ideal) + description-style primary text.
 - TikTok: native, casual, creator-voice hook as primary text + a short headline.
 
-For EVERY ad, predict whether THAT SPECIFIC PLATFORM will reject it, the way that platform's own ad reviewer would. The platforms have different policies, so judge each ad against its own:
-- Meta (Facebook/Instagram): Personal Attributes (must not assert or imply the reader's characteristics or condition, e.g. "are you struggling with...", "tired of being slow"), Unrealistic Outcomes (no implied guarantee of results), Health/before-after claims, sensational or misleading content.
-- Google: Misrepresentation (unrealistic or guaranteed results, clickbait), Unverifiable claims, Editorial (no gimmicky caps or punctuation), restricted categories, trademark misuse.
-- TikTok: Exaggerated or misleading claims, before/after, shocking or fear-based content, restricted-industry rules.
-On EVERY platform also flag any claim that must be TRUE and provable: identity/origin/authority/statistics (e.g. "authentic Kenyan coach", "produces champions", "#1", "guaranteed", named credentials, "coaches based in Kenya"). If the advertiser cannot prove it, it is misrepresentation to the platform and deceptive under FTC rules. Flag these even when the ad otherwise reads clean.
+For EVERY ad, predict whether THAT SPECIFIC PLATFORM will reject it, the way that platform's own ad reviewer would, judging each ad against its own platform's policies and the FTC standards:
+
+${POLICY_BLOCK}
+
+Apply the FTC standards above to the copy you write. Flag any claim that must be true and provable - identity, origin, authority, or statistics (e.g. "authentic Kenyan coach", "produces champions", "#1", named credentials, "coaches based in Kenya") - and any claim that is specific, measurable, health, establishment, a guarantee, or an income claim. The same calibration applies: do NOT flag ordinary subjective puffery ("expert", "elite", "best") or aspirational benefit language ("land your dream job", "train smarter") - those are standard advertising, not violations.
 
 For each ad return:
-- policy_area: the single most-at-risk policy, named in that platform's own terms (e.g. "Meta: Personal Attributes", "Google: Misrepresentation (unrealistic claims)", "TikTok: Exaggerated claims"). Use "None" only if genuinely clean.
+- policy_area: the single most-at-risk policy, named in that platform's own published terms (e.g. "Meta: Health and Wellness", "Google: Unreliable Claims (Misrepresentation)", "TikTok: Misleading and False Content"). Use "None" only if genuinely clean.
 - level: low (ships as-is) / medium (ships only if a named claim is substantiated) / high (will likely be rejected as written).
 - reasons: name the exact phrase and what triggers the policy or must be proven. Empty array only when level is low.
 - safe_rewrite: a headline and primary_text that KEEP the same angle but would pass that platform's review (remove or soften the trigger, reframe outcomes as guidance not guarantees, fix personal-attribute phrasing, drop unprovable specifics). When level is low, return a clean equivalent of the original.
