@@ -8,7 +8,7 @@
 import type { Grounding } from "../serp";
 import { FTC, FDA, PLATFORM_MODULES } from "../knowledge";
 
-export const GENERATE_PROMPT_VERSION = "2026-06-25.4";
+export const GENERATE_PROMPT_VERSION = "2026-06-25.5";
 
 // Built from the shared registry: add a platform module there and this flow
 // includes it automatically.
@@ -44,7 +44,7 @@ For each ad return:
 - policy_area: the single most-at-risk policy, named in that platform's own published terms (e.g. "Meta: Health and Wellness", "Google: Unreliable Claims (Misrepresentation)", "TikTok: Misleading and False Content"). Use "None" only if genuinely clean.
 - level: low (ships as-is) / medium (ships only if a named claim is substantiated) / high (will likely be rejected as written).
 - reasons: name the exact phrase and what triggers the policy or must be proven. Empty array only when level is low.
-- safe_rewrite: a headline and primary_text that KEEP the same angle AND its persuasive hook - copy the buyer would actually run. Change ONLY the phrases you flagged and keep the rest near-verbatim, including non-flagged hooks. Do NOT collapse it into generic filler ("explore our solutions", "unlock potential"). Do NOT invent new claims, offers, or guarantees the ad did not make, and do NOT swap a flagged claim for a different claim - when a claim cannot be substantiated, drop it or use non-claim benefit language (do not turn "#1 pick" into "tested" or "clinically proven"). A compliant but lifeless rewrite is a failure. When level is low, return a clean equivalent of the original.
+- safe_rewrite: a headline and primary_text that KEEP the same angle AND its persuasive hook - copy the buyer would actually run. Change ONLY the phrases you flagged and keep the rest near-verbatim, including non-flagged hooks. Do NOT collapse it into generic filler ("explore our solutions", "unlock potential"). Do NOT invent new claims, offers, or guarantees the ad did not make, and do NOT swap a flagged claim for a different claim - when a claim cannot be substantiated, drop it or use non-claim benefit language (do not turn "#1 pick" into "tested" or "clinically proven"); when unsure, remove the claim rather than reword it into a new one. A compliant but lifeless rewrite is a failure. When level is low, return a clean equivalent of the original.
 
 For EACH angle, also design a landing-page wireframe that matches that angle's hook (message-match is what protects the click and the Quality Score). Give a hero headline and subhead, the primary CTA text, the form fields to capture, and an ordered list of page sections. Each section has a block type (hero, social_proof, features, offer, objection, faq, cta, etc.), a heading, and a one or two sentence body describing what goes there. Keep claims defensible: the landing page is also subject to platform and FTC review.
 
