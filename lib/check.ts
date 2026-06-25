@@ -1,6 +1,6 @@
 // "Check an ad" orchestration: paste an ad -> per-platform policy + FTC teardown.
 import { type Teardown, TEARDOWN_SCHEMA } from "./schemas";
-import { TEARDOWN_SYSTEM, buildTeardownUserPrompt } from "./prompts/teardown";
+import { buildTeardownSystem, buildTeardownUserPrompt } from "./prompts/teardown";
 import { runStructured, stripMarkdown } from "./llm";
 
 export type { Teardown } from "./schemas";
@@ -17,7 +17,7 @@ export async function checkAd(
 ): Promise<Teardown> {
   // platform is set from the request, not the model; the schema omits it.
   const parsed = await runStructured<Omit<Teardown, "platform">>({
-    system: TEARDOWN_SYSTEM,
+    system: buildTeardownSystem(platform),
     user: buildTeardownUserPrompt(platform, adText),
     schema: TEARDOWN_SCHEMA,
     maxOutputTokens: 8_000,
