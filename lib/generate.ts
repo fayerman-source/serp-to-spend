@@ -6,7 +6,7 @@ import { runStructured, stripMarkdown } from "./llm";
 
 export type { AdPack } from "./schemas";
 
-function sanitizeAdPack(pack: AdPack): AdPack {
+export function sanitizeAdPack(pack: AdPack): AdPack {
   for (const angle of pack.angles) {
     for (const ad of angle.ads) {
       ad.headline = stripMarkdown(ad.headline);

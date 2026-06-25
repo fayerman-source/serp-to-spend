@@ -5,7 +5,7 @@ import { runStructured, stripMarkdown } from "./llm";
 
 export type { Teardown } from "./schemas";
 
-function sanitizeTeardown(t: Teardown): Teardown {
+export function sanitizeTeardown(t: Teardown): Teardown {
   t.safe_rewrite.headline = stripMarkdown(t.safe_rewrite.headline);
   t.safe_rewrite.primary_text = stripMarkdown(t.safe_rewrite.primary_text);
   return t;
