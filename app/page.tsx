@@ -398,7 +398,7 @@ export default function Home() {
             SERP<span style={{ color: C.teal }}>→</span>Spend
           </div>
           <div style={{ fontSize: 13, color: C.muted, fontWeight: 600 }}>
-            Catch ad disapprovals before you submit
+            Creative + compliance, one tool
           </div>
         </div>
       </header>
@@ -414,7 +414,7 @@ export default function Home() {
             letterSpacing: "-0.01em",
           }}
         >
-          Catch the ads that get rejected, before you submit
+          Write ads that survive Meta, Google, and FTC review
         </h1>
         <p style={{ color: C.muted, marginTop: 0, fontSize: 17, maxWidth: 700 }}>
           {mode === "check"
