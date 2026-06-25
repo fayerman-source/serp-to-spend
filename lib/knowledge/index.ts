@@ -23,5 +23,6 @@ export const PLATFORM_KNOWLEDGE: Record<Platform, KnowledgeModule> = {
   TikTok: TIKTOK,
 };
 
-// The platform modules as a list, for flows that judge against all platforms.
-export const PLATFORM_MODULES: KnowledgeModule[] = [META, GOOGLE, TIKTOK];
+// The platform modules as a list (derived from the registry, not a second
+// hand-maintained copy), for flows that judge against all platforms.
+export const PLATFORM_MODULES: KnowledgeModule[] = Object.values(PLATFORM_KNOWLEDGE);

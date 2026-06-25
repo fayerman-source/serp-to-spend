@@ -6,20 +6,19 @@
 // composes every platform module plus the FTC module. Bump GENERATE_PROMPT_VERSION
 // on any change.
 import type { Grounding } from "../serp";
-import { FTC, META, GOOGLE, TIKTOK } from "../knowledge";
+import { FTC, PLATFORM_MODULES } from "../knowledge";
 
 export const GENERATE_PROMPT_VERSION = "2026-06-25.1";
 
+// Built from the shared registry: add a platform module there and this flow
+// includes it automatically.
+const PLATFORM_POLICIES = PLATFORM_MODULES.map(
+  (m) => `## ${m.name} policies\n${m.knowledge}`,
+).join("\n\n");
+
 const POLICY_BLOCK = `Judge each ad against the platform's own published policies and the FTC standards below. Name the real policy exactly as it is published; do not invent policy names.
 
-## Meta policies
-${META.knowledge}
-
-## Google policies
-${GOOGLE.knowledge}
-
-## TikTok policies
-${TIKTOK.knowledge}
+${PLATFORM_POLICIES}
 
 ## FTC standards
 ${FTC.knowledge}`;
