@@ -23,6 +23,12 @@ export async function POST(req: Request) {
   if (!ad) {
     return NextResponse.json({ error: "Paste an ad to check." }, { status: 400 });
   }
+  if (ad.length < 15) {
+    return NextResponse.json(
+      { error: "Ad is too short to assess. Paste a full ad (headline and body)." },
+      { status: 400 },
+    );
+  }
 
   const hasProvider =
     process.env.GOOGLE_CLOUD_PROJECT ||
