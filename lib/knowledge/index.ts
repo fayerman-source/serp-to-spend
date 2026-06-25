@@ -5,6 +5,7 @@
 
 export type { KnowledgeModule, Source } from "./types";
 export { FTC } from "./ftc";
+export { FDA } from "./fda";
 export { META } from "./meta";
 export { GOOGLE } from "./google";
 export { TIKTOK } from "./tiktok";

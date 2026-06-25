@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { FTC } from "./ftc";
+import { FDA } from "./fda";
 import { META } from "./meta";
 import { GOOGLE } from "./google";
 import { TIKTOK } from "./tiktok";
@@ -7,7 +8,7 @@ import { buildTeardownSystem } from "../prompts/teardown";
 import { GENERATE_SYSTEM } from "../prompts/generate";
 import { PLATFORM_KNOWLEDGE, PLATFORM_MODULES } from "./index";
 
-const MODULES = [FTC, META, GOOGLE, TIKTOK];
+const MODULES = [FTC, FDA, META, GOOGLE, TIKTOK];
 
 describe("knowledge modules are well-formed", () => {
   for (const m of MODULES) {
@@ -76,5 +77,22 @@ describe("generate prompt is grounded in the same sourced modules", () => {
     expect(GENERATE_SYSTEM).toContain("Health and Wellness"); // real Meta policy
     expect(GENERATE_SYSTEM).toContain("Misleading and False Content"); // real TikTok policy
     expect(GENERATE_SYSTEM).toContain("PUFFERY IS NOT A VIOLATION"); // shared FTC calibration
+  });
+});
+
+describe("regulatory coverage: FTC earnings + FDA", () => {
+  it("FTC module encodes the Business Opportunity Rule with its scope limit", () => {
+    expect(FTC.knowledge).toContain("Part 437");
+    expect(FTC.knowledge).toContain("255.2(b)");
+    // the precise-scope guard so the model does not overclaim Part 437
+    expect(FTC.knowledge.toLowerCase()).toContain("do not overclaim part 437");
+  });
+  it("FDA module names the drug-claim authority", () => {
+    expect(FDA.knowledge).toContain("321(g)");
+    expect(FDA.knowledge.toLowerCase()).toContain("disease");
+  });
+  it("both flows compose the FDA module", () => {
+    expect(buildTeardownSystem("Meta")).toContain("FDA DRUG-CLAIM EXPOSURE");
+    expect(GENERATE_SYSTEM).toContain("FDA DRUG-CLAIM EXPOSURE");
   });
 });
