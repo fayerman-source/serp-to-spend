@@ -17,13 +17,13 @@ Plenty of AI tools write ad copy. Almost none check whether the claims in that c
 
 It is grounded in a curated FTC standards module that knows the **puffery line**: subjective claims like "expert," "elite," or "best" are not violations, so it does not cry wolf on clean, already-running ads. It reserves the warnings for claims that genuinely need proof: measurable, health, establishment (like "clinically proven"), guarantees, and income claims.
 
-**Generate ads.** Paste a keyword or a competitor's offer page and it produces, grounded in live Google Search:
+**Generate ads.** Paste a keyword or a competitor's offer page and it produces, grounded in a live Google Search (for a keyword) or the offer page itself (for a URL):
 - 4 genuinely distinct angles (different psychological drivers, not reworded headlines),
 - platform-native ad copy for Meta, Google, and TikTok under each angle,
 - a message-matched landing-page wireframe per angle,
 - 3 audience ideas with real targeting signals,
 
-and it runs every generated ad through the same per-platform plus FTC check, each with a passing rewrite.
+and it scores every generated ad for per-platform disapproval risk, each with a passing rewrite. (The deeper FTC substantiation layer lives in Check an ad.)
 
 ## Why it's built this way
 
@@ -32,7 +32,7 @@ Plenty of tools generate ad creative, often with images and video this one does 
 ## How it works
 
 - **Check an ad:** the pasted ad and platform go straight to the compliance engine, which returns the per-platform policy verdict, FTC risk, the offending phrases, and a passing rewrite as one validated JSON object.
-- **Generate ads:** a keyword runs a live Google Search (via Gemini's search tool) to see what actually ranks; a URL fetches the offer page. The grounded context produces the angles, copy, landing pages, and audiences, each ad scored by the same compliance engine. The UI always labels which grounding source ran, so a run is never silently ungrounded.
+- **Generate ads:** a keyword is grounded in a live Google Search (via Gemini's search tool) when that provider is configured; a URL fetches the offer page; grounding can also be toggled off, in which case the run is honestly labeled as ungrounded. The grounded context produces the angles, copy, landing pages, and audiences, and each ad gets the per-platform disapproval check with a passing rewrite. The UI always labels which grounding source ran.
 
 ## Run it
 
