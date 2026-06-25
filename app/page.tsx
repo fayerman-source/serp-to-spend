@@ -59,6 +59,10 @@ const VERDICT: Record<string, string> = {
   medium: "Ships only if substantiated",
   high: "Likely rejected as written",
 };
+// An ad shorter than this can't be meaningfully assessed (a single word gives
+// the model no claim, product, or context to judge). Block it rather than
+// return a confident verdict on nothing.
+const MIN_AD_CHARS = 15;
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -88,6 +92,68 @@ function cardStyle(): React.CSSProperties {
   };
 }
 
+// One-click copy. The buyer's next action is paste-into-ad-platform, so copy
+// affordances sit on every discrete payload (a rewrite, an ad, an audience).
+function CopyButton({
+  text,
+  label = "Copy",
+  tone = "teal",
+}: {
+  text: string;
+  label?: string;
+  tone?: "teal" | "rewrite";
+}) {
+  const [copied, setCopied] = useState(false);
+  const accent = tone === "rewrite" ? RISK_COLOR.low : C.teal;
+  return (
+    <button
+      type="button"
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          /* clipboard unavailable */
+        }
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      }}
+      style={{
+        cursor: "pointer",
+        fontSize: 12,
+        fontWeight: 700,
+        borderRadius: 7,
+        padding: "4px 9px",
+        border: `1px solid ${copied ? RISK_COLOR.low : C.line}`,
+        background: copied ? "#f0faf3" : C.bg,
+        color: copied ? RISK_COLOR.low : accent,
+        whiteSpace: "nowrap",
+        transition: "all .12s",
+      }}
+    >
+      {copied ? "Copied ✓" : `⧉ ${label}`}
+    </button>
+  );
+}
+
+// Formats a teardown as a ready-to-paste prompt for the buyer's own LLM/agent.
+function teardownPrompt(t: Teardown): string {
+  const findings = t.findings.map((f) => `- "${f.phrase}": ${f.problem}`).join("\n");
+  return `Rewrite this ad so it passes ${t.platform} review and FTC substantiation, keeping the original intent and offer.
+
+Platform: ${t.platform}
+Verdict: ${t.level}
+Policy at risk: ${t.policy_area}
+What trips it:
+${findings || "- (nothing flagged)"}
+FTC: ${t.ftc.standard}${t.ftc.why ? ` - ${t.ftc.why}` : ""}
+
+A passing rewrite to build on:
+${t.safe_rewrite.headline}
+${t.safe_rewrite.primary_text}
+
+Give me 3 more compliant variations that keep the same angle.`;
+}
+
 function RewriteBox({ headline, primary_text }: { headline: string; primary_text: string }) {
   return (
     <div
@@ -101,15 +167,24 @@ function RewriteBox({ headline, primary_text }: { headline: string; primary_text
     >
       <div
         style={{
-          fontSize: 11,
-          fontWeight: 800,
-          textTransform: "uppercase",
-          letterSpacing: "0.05em",
-          color: RISK_COLOR.low,
-          marginBottom: 4,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 6,
         }}
       >
-        Rewrite that passes
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 800,
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+            color: RISK_COLOR.low,
+          }}
+        >
+          Rewrite that passes
+        </span>
+        <CopyButton text={`${headline}\n\n${primary_text}`} label="Copy rewrite" tone="rewrite" />
       </div>
       <div style={{ fontWeight: 700, color: C.ink, fontSize: 14 }}>{headline}</div>
       <div style={{ fontSize: 14, color: C.ink }}>{primary_text}</div>
@@ -195,6 +270,10 @@ function TeardownView({ t }: { t: Teardown }) {
       )}
 
       <RewriteBox headline={t.safe_rewrite.headline} primary_text={t.safe_rewrite.primary_text} />
+
+      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
+        <CopyButton text={teardownPrompt(t)} label="Copy as prompt" />
+      </div>
 
       <div style={{ fontSize: 11, color: C.muted, marginTop: 12, fontStyle: "italic" }}>
         Decision-support for the advertiser, not legal advice.
@@ -329,7 +408,7 @@ export default function Home() {
   }
 
   async function runCheck() {
-    if (!adText.trim() || loading) return;
+    if (adText.trim().length < MIN_AD_CHARS || loading) return;
     setLoading(true);
     setError(null);
     setTeardown(null);
@@ -453,16 +532,18 @@ export default function Home() {
               </select>
               <button
                 onClick={runCheck}
-                disabled={loading || !adText.trim()}
+                disabled={loading || adText.trim().length < MIN_AD_CHARS}
                 style={{
                   padding: "11px 26px",
                   borderRadius: 8,
                   border: "none",
-                  background: loading || !adText.trim() ? "#9fc9c3" : C.teal,
+                  background:
+                    loading || adText.trim().length < MIN_AD_CHARS ? "#9fc9c3" : C.teal,
                   color: "white",
                   fontWeight: 700,
                   fontSize: 15,
-                  cursor: loading || !adText.trim() ? "default" : "pointer",
+                  cursor:
+                    loading || adText.trim().length < MIN_AD_CHARS ? "default" : "pointer",
                 }}
               >
                 {loading ? "Checking…" : "Check ad"}
@@ -470,7 +551,10 @@ export default function Home() {
             </div>
             <textarea
               value={adText}
-              onChange={(e) => setAdText(e.target.value)}
+              onChange={(e) => {
+                setAdText(e.target.value);
+                if (!e.target.value.trim()) setTeardown(null); // don't leave a stale verdict on a cleared input
+              }}
               rows={4}
               placeholder="Paste the ad you are about to run (headline and body)…"
               style={{
@@ -486,13 +570,22 @@ export default function Home() {
                 boxSizing: "border-box",
               }}
             />
+            {adText.trim().length > 0 && adText.trim().length < MIN_AD_CHARS && (
+              <div style={{ fontSize: 13, color: C.muted, marginTop: 6 }}>
+                Paste a full ad (a headline, ideally a body line) so we can judge platform risk. One or two words is too
+                little to assess.
+              </div>
+            )}
           </div>
         ) : (
           <div style={{ marginTop: 20 }}>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <input
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  if (!e.target.value.trim()) setResult(null); // clear stale results on a cleared input
+                }}
                 onKeyDown={(e) => e.key === "Enter" && runGenerate()}
                 placeholder="best CRM for real estate   or   https://competitor.com/offer"
                 style={{
@@ -603,20 +696,26 @@ export default function Home() {
                         >
                           {ad.platform}
                         </strong>
-                        <span
-                          style={{
-                            fontSize: 12,
-                            fontWeight: 700,
-                            color: RISK_COLOR[ad.policy_risk.level] ?? C.muted,
-                            border: `1px solid ${RISK_COLOR[ad.policy_risk.level] ?? C.line}`,
-                            borderRadius: 999,
-                            padding: "2px 10px",
-                            background: "#fff",
-                          }}
-                          title={ad.policy_risk.reasons.join(" · ")}
-                        >
-                          {ad.policy_risk.level} risk
-                        </span>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <CopyButton
+                            text={`${ad.headline}\n\n${ad.primary_text}`}
+                            label="Copy ad"
+                          />
+                          <span
+                            style={{
+                              fontSize: 12,
+                              fontWeight: 700,
+                              color: RISK_COLOR[ad.policy_risk.level] ?? C.muted,
+                              border: `1px solid ${RISK_COLOR[ad.policy_risk.level] ?? C.line}`,
+                              borderRadius: 999,
+                              padding: "2px 10px",
+                              background: "#fff",
+                            }}
+                            title={ad.policy_risk.reasons.join(" · ")}
+                          >
+                            {ad.policy_risk.level} risk
+                          </span>
+                        </div>
                       </div>
                       <div style={{ fontWeight: 700, marginBottom: 4, color: C.ink }}>
                         {ad.headline}
@@ -664,12 +763,26 @@ export default function Home() {
               </h2>
               <div style={{ display: "grid", gap: 14 }}>
                 {result.pack.audiences.map((aud, i) => (
-                  <div key={i}>
-                    <strong style={{ color: C.ink }}>{aud.name}</strong>
-                    <div style={{ fontSize: 14, color: C.ink }}>{aud.description}</div>
-                    <div style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>
-                      {aud.targeting_signals.join(" · ")}
+                  <div
+                    key={i}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      gap: 12,
+                    }}
+                  >
+                    <div>
+                      <strong style={{ color: C.ink }}>{aud.name}</strong>
+                      <div style={{ fontSize: 14, color: C.ink }}>{aud.description}</div>
+                      <div style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>
+                        {aud.targeting_signals.join(" · ")}
+                      </div>
                     </div>
+                    <CopyButton
+                      text={`${aud.name}\n${aud.description}\n${aud.targeting_signals.join(" · ")}`}
+                      label="Copy targeting"
+                    />
                   </div>
                 ))}
               </div>

@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           margin: 0,
           fontFamily:
             '"Varela Round", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-          background: "#ffffff",
+          background: "#eef5e8",
           color: "#1f2933",
         }}
       >
