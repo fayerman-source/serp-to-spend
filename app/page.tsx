@@ -270,18 +270,39 @@ function TeardownView({ t }: { t: Teardown }) {
               marginBottom: 4,
             }}
           >
-            FTC substantiation risk: {t.ftc.risk}
+            Regulatory risk: {t.ftc.risk}
           </div>
           <div style={{ fontSize: 14, fontWeight: 700, color: C.ink }}>{t.ftc.standard}</div>
           <div style={{ fontSize: 13, color: C.muted, marginTop: 2 }}>{t.ftc.why}</div>
         </div>
       )}
 
-      <RewriteBox headline={t.safe_rewrite.headline} primary_text={t.safe_rewrite.primary_text} />
-
-      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
-        <CopyButton text={teardownPrompt(t)} label="Copy as prompt" />
-      </div>
+      {t.level === "low" ? (
+        <div
+          style={{
+            marginTop: 12,
+            border: `1px solid ${RISK_COLOR.low}`,
+            background: "#f0faf3",
+            borderRadius: 8,
+            padding: "12px 14px",
+            fontSize: 14,
+            fontWeight: 600,
+            color: C.ink,
+          }}
+        >
+          No changes needed. This ad looks clear.
+        </div>
+      ) : (
+        <>
+          <RewriteBox
+            headline={t.safe_rewrite.headline}
+            primary_text={t.safe_rewrite.primary_text}
+          />
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
+            <CopyButton text={teardownPrompt(t)} label="Copy as prompt" />
+          </div>
+        </>
+      )}
 
       <div style={{ fontSize: 11, color: C.muted, marginTop: 12, fontStyle: "italic" }}>
         Decision-support for the advertiser, not legal advice.
@@ -505,7 +526,7 @@ export default function Home() {
         </h1>
         <p style={{ color: C.muted, marginTop: 0, fontSize: 17, maxWidth: 700 }}>
           {mode === "check"
-            ? "Paste an ad you are about to run. Get the exact Meta, Google, or TikTok policy it would trip, the FTC substantiation risk, and a version that passes."
+            ? "Paste an ad you are about to run. Get the exact Meta, Google, or TikTok policy it would trip, the regulatory risk (FTC, and FDA for disease claims), and a version that passes."
             : "Paste a keyword or competitor URL. It writes platform-native ads for Meta, Google, and TikTok, each with the same per-platform policy check, plus angles, landing pages, and audiences."}
         </p>
 

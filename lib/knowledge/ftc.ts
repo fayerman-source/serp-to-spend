@@ -31,7 +31,9 @@ A CLAIM NEEDS SUBSTANTIATION when a reasonable consumer would read it as an obje
 
 HEALTH, SAFETY, WEIGHT-LOSS, AND DISEASE CLAIMS require "competent and reliable scientific evidence" - well-designed human studies, not testimonials or lab data alone (FTC Health Products Compliance Guidance, December 2022). A money-back guarantee is not a substitute for substantiation.
 
-ENDORSEMENTS AND TESTIMONIALS (16 C.F.R. Part 255) must reflect the endorser's honest opinion (255.1) and the typical experience of users; if results are not typical, the ad must disclose the typical result and substantiate it (255.2(b)). Material connections (paid, free product, employee, affiliate commission) must be disclosed clearly and conspicuously (255.5).
+ENDORSEMENTS AND TESTIMONIALS (16 C.F.R. Part 255) must reflect the endorser's honest opinion (255.1) and the typical experience of users; if results are not typical, the ad must disclose the generally-expected result and substantiate it (255.2(b)). A bare "results not typical" disclaimer is NOT enough under the revised Endorsement Guides (88 Fed. Reg. 48102, eff. July 26, 2023). This applies to income and aggregate-statistic testimonials too ("our students make $10,000 a month", "100% of clients saw returns"): they imply a typical result and need substantiation that it is typical, or disclosure of what users generally achieve. Material connections (paid, free product, employee, affiliate commission) must be disclosed clearly and conspicuously (255.5).
+
+INCOME AND EARNINGS CLAIMS need substantiation that the stated earnings are the TYPICAL result (FTC Act Section 5; 16 C.F.R. 255.2(b)). Separately, the Business Opportunity Rule (16 C.F.R. Part 437) requires a written Earnings Claim Statement - the number and percentage of prior purchasers who achieved the stated earnings (16 C.F.R. 437.4) - but ONLY when the offer is a true business opportunity: a required payment PLUS a representation that the seller will provide locations, outlets, accounts, or customers (16 C.F.R. 437.1(c)). Pure coaching, courses, or "general advice about business development and training" do NOT count (16 C.F.R. 437.1(m)). So a generic "make $X a month" course is an FTC Act Section 5 plus 255.2(b) substantiation matter, NOT a Part 437 violation, unless it also promises customers or outlets. Do not overclaim Part 437.
 
 PLATFORM-POLICY CALIBRATION. Ordinary aspirational or benefit language ("let the experts get you there", "reach your goals", "results", "train smarter", "improve your performance") is standard advertising, NOT an implied guarantee and NOT an unrealistic-outcomes or misrepresentation violation. Reserve those for EXPLICIT guarantees ("guaranteed", "or your money back") or SPECIFIC quantified outcomes ("lose 20 pounds in 30 days", "double your income"). A live, benefit-driven ad with no explicit guarantee and no specific quantified claim is low.`;
 
@@ -69,6 +71,21 @@ export const FTC: KnowledgeModule = {
       label: "Endorsement Guides - material connection disclosure",
       citation: "16 C.F.R. § 255.5",
       url: "https://www.law.cornell.edu/cfr/text/16/255.5",
+    },
+    {
+      label: "Endorsement Guides 2023 revision - a 'results not typical' disclaimer is insufficient",
+      citation: "88 Fed. Reg. 48102 (eff. July 26, 2023)",
+      url: "https://www.law.cornell.edu/cfr/text/16/255.2",
+    },
+    {
+      label: "Business Opportunity Rule - definition (required payment + customer/outlet/location representation)",
+      citation: "16 C.F.R. § 437.1(c)",
+      url: "https://www.law.cornell.edu/cfr/text/16/437.1",
+    },
+    {
+      label: "Business Opportunity Rule - Earnings Claim Statement requirement",
+      citation: "16 C.F.R. § 437.4",
+      url: "https://www.law.cornell.edu/cfr/text/16/437.4",
     },
     {
       label: "FTC Health Products Compliance Guidance (December 2022) - competent and reliable scientific evidence",
