@@ -28,7 +28,7 @@ and it scores every generated ad for per-platform disapproval risk, each with a 
 
 I did not want to build another ad generator. There are dozens of good ones and that space is saturated, so before writing any code I ran a systematic opportunity scan across several market lenses plus a survey of what already exists. The one real, unserved opening was the affiliate and performance-marketing problem of ad disapprovals: teams lose real money every week to rejected ads, and on claim-heavy offers it is constant, yet almost nothing checks whether an ad's claims will survive platform review and FTC scrutiny before the spend.
 
-That gap also comes with a moat I can actually hold. The compliance engine is grounded in real, cited legal authority, not a prompt wrapper on a cold model. The platform policies and the FTC/FDA rules live in sourced, versioned knowledge modules where every rule traces to a statute, a CFR section, or a published policy (for example 15 U.S.C. 45, 16 C.F.R. Part 255, the FTC Health Products Compliance Guidance, and FDCA 21 U.S.C. 321(g) for disease claims). The output names the exact authority it cites, and the tool knows the puffery line so it does not cry wolf on a clean, already-running ad. A generic generator can copy this UI in a weekend; it cannot easily copy that.
+That gap also comes with a moat I can actually hold. The compliance engine is grounded in real, cited legal authority, not a prompt wrapper on a cold model. The platform policies and the FTC/FDA rules live in sourced, versioned knowledge modules where every rule traces to a statute, a CFR section, or a published policy (for example, 15 U.S.C. § 45, 16 C.F.R. Part 255, the FTC Health Products Compliance Guidance, and FDCA 21 U.S.C. § 321(g) for disease claims). The output names the exact authority it cites, and the tool knows the puffery line so it does not cry wolf on a clean, already-running ad. A generic generator can copy this UI in a weekend; it cannot easily copy that.
 
 ## How it works
 
@@ -73,5 +73,5 @@ lib/knowledge/              sourced policy modules (ftc, fda, meta, google, tikt
 
 - **Close the loop into a data moat.** Ground the compliance check in real submit-to-verdict outcomes through the Meta and Google ad APIs, so the risk model learns from actual disapprovals instead of policy text. No generic generator can build that dataset.
 - **Per-advertiser calibration.** Learn which flagged patterns a specific account actually got rejected for, and tune the risk model to it.
-- **Counsel-reviewed knowledge layer.** The legal modules are already sourced and versioned; the next step is a formal attorney review pass and the case-law citations, turning the moat into something defensible enough to stand behind in writing.
+- **Counsel-reviewed knowledge layer.** Conduct a formal attorney review pass and add the case-law citations to the already sourced and versioned legal modules, turning the moat into something defensible enough to stand behind in writing.
 - **Drop straight into the campaign.** Export winning variants to CSV / Meta bulk-import.
