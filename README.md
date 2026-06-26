@@ -1,3 +1,5 @@
+![SERP-to-Spend: write ads that survive Meta, Google, and FTC review](docs/banner.png)
+
 # SERP-to-Spend
 
 **Creative + compliance, one tool.** Write ads that survive Meta, Google, and FTC review. Or paste an ad you already have and find out, before you spend, exactly what would get it rejected and how to fix it.
@@ -26,9 +28,9 @@ and it scores every generated ad for per-platform disapproval risk, each with a 
 
 ## Why this one?
 
-I did not want to build another ad generator. There are dozens of good ones and that space is saturated, so before writing any code I ran a systematic opportunity scan across several market lenses plus a survey of what already exists. The one real, unserved opening was the affiliate and performance-marketing problem of ad disapprovals: teams lose real money every week to rejected ads, and on claim-heavy offers it is constant, yet almost nothing checks whether an ad's claims will survive platform review and FTC scrutiny before the spend.
+Another ad generator was not the goal. That space is saturated: AdCreative.ai, Jasper, Copy.ai, and Anyword already turn a brief into polished ad copy. So the work started with a systematic opportunity scan, run with [1mil.app](https://1mil.app/github), my own opportunity-scanner, across several market lenses and a survey of what already exists. The one real, unserved opening was the affiliate and performance-marketing problem of ad disapprovals: teams lose real money every week to rejected ads, and on claim-heavy offers it is constant, yet almost nothing checks whether an ad's claims will survive platform review and FTC scrutiny before the spend.
 
-That gap also comes with a moat I can actually hold. The compliance engine is grounded in real, cited legal authority, not a prompt wrapper on a cold model. The platform policies and the FTC/FDA rules live in sourced, versioned knowledge modules where every rule traces to a statute, a CFR section, or a published policy (for example, 15 U.S.C. § 45, 16 C.F.R. Part 255, the FTC Health Products Compliance Guidance, and FDCA 21 U.S.C. § 321(g) for disease claims). The output names the exact authority it cites, and the tool knows the puffery line so it does not cry wolf on a clean, already-running ad. A generic generator can copy this UI in a weekend; it cannot easily copy that.
+That gap also comes with a moat that holds. The compliance engine is grounded in real, cited legal authority, not a prompt wrapper on a cold model. The platform policies and the FTC/FDA rules live in sourced, versioned knowledge modules where every rule traces to a statute, a CFR section, or a published policy (for example, 15 U.S.C. § 45, 16 C.F.R. Part 255, the FTC Health Products Compliance Guidance, and FDCA 21 U.S.C. § 321(g) for disease claims). The output names the exact authority it cites, and the tool knows the puffery line so it does not cry wolf on a clean, already-running ad. A generic generator can copy this UI in a weekend; it cannot easily copy that.
 
 ## How it works
 
@@ -75,3 +77,7 @@ lib/knowledge/              sourced policy modules (ftc, fda, meta, google, tikt
 - **Per-advertiser calibration.** Learn which flagged patterns a specific account actually got rejected for, and tune the risk model to it.
 - **Counsel-reviewed knowledge layer.** Conduct a formal attorney review pass and add the case-law citations to the already sourced and versioned legal modules, turning the moat into something defensible enough to stand behind in writing.
 - **Drop straight into the campaign.** Export winning variants to CSV / Meta bulk-import.
+
+---
+
+Built for the [It's Today Media](https://www.itstoday.media/) build challenge: the push that turned a scan result into a shipped product.
