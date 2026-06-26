@@ -102,11 +102,11 @@ export default function Changelog() {
               <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 12 }}>
                 {g.items.map((it) => (
                   <li
-                    key={typeof it === "string" ? it : g.date}
+                    key={it.k}
                     style={{ fontSize: 15.5, lineHeight: 1.55, color: C.body, paddingLeft: 18, position: "relative" }}
                   >
                     <span style={{ position: "absolute", left: 0, color: C.faint }}>&rsaquo;</span>
-                    {it}
+                    {it.n}
                   </li>
                 ))}
               </ul>
