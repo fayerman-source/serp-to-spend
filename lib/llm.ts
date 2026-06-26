@@ -3,6 +3,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { AnthropicVertex } from "@anthropic-ai/vertex-sdk";
 import { GoogleGenAI } from "@google/genai";
+import { vertexOptions } from "./vertex";
 
 // Provider selection (env-driven), in precedence order:
 //   1. LLM_PROVIDER if set ("gemini" | "claude")
@@ -17,11 +18,7 @@ export function provider(): "gemini" | "claude" {
 let gemini: GoogleGenAI | null = null;
 function getGemini(): GoogleGenAI {
   if (!gemini) {
-    gemini = new GoogleGenAI({
-      vertexai: true,
-      project: process.env.GOOGLE_CLOUD_PROJECT,
-      location: process.env.GOOGLE_CLOUD_LOCATION ?? "us-central1",
-    });
+    gemini = new GoogleGenAI(vertexOptions());
   }
   return gemini;
 }
