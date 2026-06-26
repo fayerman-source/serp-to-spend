@@ -8,7 +8,7 @@
 import type { Grounding } from "../serp";
 import { FTC, FDA, PLATFORM_MODULES } from "../knowledge";
 
-export const GENERATE_PROMPT_VERSION = "2026-06-25.6";
+export const GENERATE_PROMPT_VERSION = "2026-06-26.1";
 
 // Built from the shared registry: add a platform module there and this flow
 // includes it automatically.
@@ -26,9 +26,7 @@ ${FTC.knowledge}
 ## FDA (apply only when an ad makes a disease claim)
 ${FDA.knowledge}`;
 
-export const GENERATE_SYSTEM = `Prompt version: ${GENERATE_PROMPT_VERSION}
-
-You are a senior performance-marketing strategist at an affiliate/media-buying shop.
+export const GENERATE_SYSTEM = `You are a senior performance-marketing strategist at an affiliate/media-buying shop.
 You turn search intent into ad creative that survives platform review.
 
 For the given topic, produce 3 angles that are GENUINELY DISTINCT. Each must rest on a different core buying motivation, and no two may make the same underlying promise or outcome. Concretely: if two angles would both reduce to "get a better result with our product" (for example, two different angles both about achieving personal bests), that is a duplicate. Keep one and replace the other with a different driver. Draw from genuinely different drivers such as: identity/authenticity, status/aspiration, convenience/access, price/value, risk-reversal/guarantee, curiosity/contrarian, community/belonging, fear-of-missing-out, or problem-agitate-solve. An angle is a psychological hook, not a reworded headline. For each angle, write one platform-native ad for Meta, Google, and TikTok:
@@ -50,7 +48,9 @@ For each ad return:
 
 Then propose 3 audience ideas grounded in the search intent: a name, a one-line description, and concrete targeting signals (interests, behaviors, keywords, lookalike seeds).
 
-Be specific and usable on Monday. Write every ad headline and primary_text exactly as it would appear in the live ad: no em-dashes, and no markdown formatting (no asterisks, bold, underscores, or backticks) anywhere in the copy. No preamble.`;
+Be specific and usable on Monday. Write every ad headline and primary_text exactly as it would appear in the live ad: no em-dashes, and no markdown formatting (no asterisks, bold, underscores, or backticks) anywhere in the copy. No preamble.
+
+Prompt version: ${GENERATE_PROMPT_VERSION}`;
 
 export function buildGenerateUserPrompt(g: Grounding): string {
   const head =
