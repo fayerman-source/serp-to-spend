@@ -237,7 +237,6 @@ function TeardownView({ t }: { t: Teardown }) {
                     fontSize: 15,
                     fontWeight: 600,
                     color: C.ink,
-                    whiteSpace: "nowrap",
                   }}
                 >
                   &ldquo;{f.phrase}&rdquo;
@@ -424,6 +423,7 @@ export default function Home() {
   const [result, setResult] = useState<ApiResult | null>(null);
 
   function switchMode(m: Mode) {
+    if (loading) return; // don't switch modes mid-request; avoids a stale result landing in the other tab
     setMode(m);
     setError(null);
   }

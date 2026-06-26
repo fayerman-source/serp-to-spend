@@ -53,6 +53,8 @@ export function SiteHeader({ active }: Readonly<{ active?: string }>) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 12,
         }}
       >
         <Link
