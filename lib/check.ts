@@ -20,7 +20,10 @@ export async function checkAd(
     system: buildTeardownSystem(platform),
     user: buildTeardownUserPrompt(platform, adText),
     schema: TEARDOWN_SCHEMA,
-    maxOutputTokens: 8_000,
+    // Generous headroom. On dense, multi-violation ads the model's thinking
+    // tokens and the teardown JSON share this budget; too tight a cap can cut
+    // the FTC rationale ("why") mid-sentence even though the JSON stays valid.
+    maxOutputTokens: 16_000,
   });
   return sanitizeTeardown({ ...parsed, platform });
 }
