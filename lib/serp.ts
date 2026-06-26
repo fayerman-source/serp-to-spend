@@ -83,7 +83,7 @@ async function fetchGeminiSearch(query: string): Promise<string> {
   });
   const text = res.text?.trim();
   if (!text) throw new Error("Google Search grounding returned no text.");
-  return text.slice(0, 3_500);
+  return text.slice(0, 5_000);
 }
 
 export async function ground(
