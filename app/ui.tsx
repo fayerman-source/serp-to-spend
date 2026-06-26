@@ -1,6 +1,7 @@
 // Shared editorial design tokens + page chrome (header / footer), used by the
 // tool page and the About / Changelog pages so every route stays consistent.
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 export const C = {
   paper: "#f6f3ec",
@@ -14,8 +15,8 @@ export const C = {
   green: "#16463a",
   greenSoft: "#e9f1ea",
 };
-export const serif = "'Fraunces', Georgia, 'Times New Roman', serif";
-export const sans = "'Inter', ui-sans-serif, system-ui, sans-serif";
+export const serif = "var(--font-fraunces), Georgia, 'Times New Roman', serif";
+export const sans = "var(--font-inter), ui-sans-serif, system-ui, sans-serif";
 export const MAXW = 940;
 
 export function Eyebrow({ children }: { children: ReactNode }) {
@@ -54,7 +55,7 @@ export function SiteHeader({ active }: { active?: string }) {
           justifyContent: "space-between",
         }}
       >
-        <a
+        <Link
           href="/"
           style={{
             textDecoration: "none",
@@ -66,10 +67,10 @@ export function SiteHeader({ active }: { active?: string }) {
           }}
         >
           SERP<span style={{ color: C.green }}>·</span>to<span style={{ color: C.green }}>·</span>Spend
-        </a>
+        </Link>
         <nav style={{ display: "flex", gap: 24, alignItems: "center", fontFamily: sans, fontSize: 14 }}>
           {NAV.map((n) => (
-            <a
+            <Link
               key={n.href}
               href={n.href}
               style={{
@@ -79,7 +80,7 @@ export function SiteHeader({ active }: { active?: string }) {
               }}
             >
               {n.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>
@@ -102,9 +103,9 @@ export function SiteFooter() {
           gap: 14,
         }}
       >
-        <a href="/" style={{ textDecoration: "none", fontFamily: serif, fontSize: 16, fontWeight: 600, color: C.ink }}>
+        <Link href="/" style={{ textDecoration: "none", fontFamily: serif, fontSize: 16, fontWeight: 600, color: C.ink }}>
           SERP·to·Spend
-        </a>
+        </Link>
         <div style={{ fontFamily: sans, fontSize: 13.5, color: C.muted }}>
           Free to use.{" "}
           <span style={{ color: C.green, fontWeight: 600 }}>

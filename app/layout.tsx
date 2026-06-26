@@ -1,29 +1,34 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Fraunces, Inter } from "next/font/google";
+
+// Self-hosted via next/font (no render-blocking <link>, no layout shift).
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "SERP-to-Spend",
   description:
-    "Paste a keyword or competitor URL. Get SERP-grounded ad angles, platform-native copy, audience ideas, and a disapproval-risk check.",
+    "Paste an ad you are about to run. Get the platform policy it would trip, the regulatory risk, and a version that passes. Every verdict cites the real authority behind it.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Fraunces (editorial display serif) + Inter (UI/body) */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,650&family=Inter:wght@400;450;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
       <body
         style={{
           margin: 0,
-          fontFamily:
-            '"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+          fontFamily: "var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif",
           background: "#f6f3ec",
           color: "#3a342c",
         }}

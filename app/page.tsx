@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { SiteHeader, SiteFooter } from "./ui";
+import { C, serif, sans, MAXW, Eyebrow, SiteHeader, SiteFooter } from "./ui";
 
 type PolicyRisk = {
   level: "low" | "medium" | "high";
@@ -32,19 +32,6 @@ type Teardown = {
 type Mode = "check" | "generate";
 type Platform = "Meta" | "Google" | "TikTok";
 
-// Editorial / authority palette: warm paper, ink, a single deep-green accent.
-const C = {
-  paper: "#f6f3ec",
-  card: "#fbf9f4",
-  soft: "#f1ece3",
-  ink: "#1b1714",
-  body: "#3a342c",
-  muted: "#736a5c",
-  faint: "#a79d8c",
-  rule: "#e4ddcf",
-  green: "#16463a",
-  greenSoft: "#e9f1ea",
-};
 const RISK_COLOR: Record<string, string> = {
   low: "#2f6a52",
   medium: "#8a6314",
@@ -60,10 +47,6 @@ const VERDICT: Record<string, string> = {
 // return a confident verdict on nothing.
 const MIN_AD_CHARS = 15;
 
-const serif = "'Fraunces', Georgia, 'Times New Roman', serif";
-const sans = "'Inter', ui-sans-serif, system-ui, sans-serif";
-const MAXW = 940;
-
 // The cited-authority moat, rendered as a reference list.
 const CITES = [
   { c: "15 U.S.C. § 45(a)", l: "FTC Act: unfair or deceptive acts" },
@@ -72,22 +55,29 @@ const CITES = [
   { c: "16 C.F.R. Part 437", l: "Business Opportunity Rule: earnings claims" },
 ];
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      style={{
-        fontFamily: sans,
-        color: C.green,
-        fontWeight: 600,
-        textTransform: "uppercase",
-        letterSpacing: "0.14em",
-        fontSize: 12,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
+// Static styles (no state dependency) live at module scope so they are not
+// re-created on every render.
+const inputStyle: React.CSSProperties = {
+  padding: "12px 14px",
+  borderRadius: 8,
+  border: `1px solid ${C.rule}`,
+  background: C.card,
+  color: C.ink,
+  fontSize: 15,
+  fontFamily: sans,
+};
+
+const primaryBtn = (disabled: boolean): React.CSSProperties => ({
+  fontFamily: sans,
+  padding: "12px 26px",
+  borderRadius: 8,
+  border: "none",
+  background: disabled ? "#a7bdb4" : C.green,
+  color: C.paper,
+  fontWeight: 600,
+  fontSize: 15,
+  cursor: disabled ? "default" : "pointer",
+});
 
 function cardStyle(): React.CSSProperties {
   return {
@@ -402,18 +392,21 @@ function HowItWorks() {
 
 function Spinner() {
   return (
-    <span
-      style={{
-        display: "inline-block",
-        width: 13,
-        height: 13,
-        flex: "none",
-        border: `2px solid ${C.rule}`,
-        borderTopColor: C.green,
-        borderRadius: "50%",
-        animation: "sps 0.7s linear infinite",
-      }}
-    />
+    <>
+      <style>{`@keyframes sps{to{transform:rotate(360deg)}}`}</style>
+      <span
+        style={{
+          display: "inline-block",
+          width: 13,
+          height: 13,
+          flex: "none",
+          border: `2px solid ${C.rule}`,
+          borderTopColor: C.green,
+          borderRadius: "50%",
+          animation: "sps 0.7s linear infinite",
+        }}
+      />
+    </>
   );
 }
 
@@ -491,31 +484,8 @@ export default function Home() {
     cursor: "pointer",
   });
 
-  const inputStyle: React.CSSProperties = {
-    padding: "12px 14px",
-    borderRadius: 8,
-    border: `1px solid ${C.rule}`,
-    background: C.card,
-    color: C.ink,
-    fontSize: 15,
-    fontFamily: sans,
-  };
-
-  const primaryBtn = (disabled: boolean): React.CSSProperties => ({
-    fontFamily: sans,
-    padding: "12px 26px",
-    borderRadius: 8,
-    border: "none",
-    background: disabled ? "#a7bdb4" : C.green,
-    color: C.paper,
-    fontWeight: 600,
-    fontSize: 15,
-    cursor: disabled ? "default" : "pointer",
-  });
-
   return (
     <>
-      <style>{`@keyframes sps{to{transform:rotate(360deg)}}`}</style>
       <SiteHeader active="/" />
 
       <main style={{ maxWidth: MAXW, margin: "0 auto", padding: "44px 28px 0" }}>
