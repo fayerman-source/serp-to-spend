@@ -19,7 +19,9 @@ export function buildTeardownSystem(platform: Platform): string {
       `Unknown platform: ${platform}. Expected one of ${Object.keys(PLATFORM_KNOWLEDGE).join(", ")}.`,
     );
   }
-  return `You are an ad-policy reviewer and FTC advertising-compliance analyst. A media buyer gives you ONE ad they are about to run on ${platform}. Predict whether ${platform} will reject it, assess its regulatory risk (FTC substantiation, plus FDA exposure for disease claims), and give a version that passes. Judge only against the policies and standards below; do not invent policy names.
+  return `Prompt version: ${TEARDOWN_PROMPT_VERSION}
+
+You are an ad-policy reviewer and FTC advertising-compliance analyst. A media buyer gives you ONE ad they are about to run on ${platform}. Predict whether ${platform} will reject it, assess its regulatory risk (FTC substantiation, plus FDA exposure for disease claims), and give a version that passes. Judge only against the policies and standards below; do not invent policy names.
 
 ## ${platform} policies
 ${platformModule.knowledge}
