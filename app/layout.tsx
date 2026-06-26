@@ -1,31 +1,37 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Fraunces, Inter } from "next/font/google";
+import "./globals.css";
+
+// Self-hosted via next/font (no render-blocking <link>, no layout shift).
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "SERP-to-Spend",
   description:
-    "Paste a keyword or competitor URL. Get SERP-grounded ad angles, platform-native copy, audience ideas, and a disapproval-risk check.",
+    "Paste an ad you are about to run. Get the platform policy it would trip, the regulatory risk, and a version that passes. Every verdict cites the real authority behind it.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Varela Round */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
       <body
         style={{
           margin: 0,
-          fontFamily:
-            '"Varela Round", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-          background: "#eef5e8",
-          color: "#1f2933",
+          fontFamily: "var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif",
+          background: "#f6f3ec",
+          color: "#3a342c",
         }}
       >
         {children}
