@@ -21,8 +21,7 @@ const LOG: Array<{ date: string; items: ReactNode[] }> = [
             style={{ color: C.green, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 2 }}
           >
             1mil.app
-          </a>
-          , an opportunity-scanner I built, which surfaced the unserved gap between ad creation and ad
+          </a>, my own opportunity-scanner, which surfaced the unserved gap between ad creation and ad
           compliance.
         </>
       ),
@@ -62,8 +61,7 @@ export default function Changelog() {
           style={{
             fontFamily: serif,
             fontWeight: 600,
-            fontSize: "clamp(18px, 3.8vw, 38px)",
-            whiteSpace: "nowrap",
+            fontSize: "clamp(22px, 3.8vw, 38px)",
             lineHeight: 1.1,
             letterSpacing: "-0.02em",
             color: C.ink,
@@ -74,11 +72,11 @@ export default function Changelog() {
         </h1>
         <p
           style={{
-            fontSize: "clamp(12px, 1.7vw, 16px)",
-            whiteSpace: "nowrap",
+            fontSize: 17,
             lineHeight: 1.55,
             color: C.body,
             margin: "16px 0 0",
+            maxWidth: 640,
           }}
         >
           Every change shipped through a branch, continuous integration, tests, and review before it
@@ -99,9 +97,9 @@ export default function Changelog() {
             >
               <div style={{ fontFamily: serif, fontSize: 18, fontWeight: 600, color: C.green }}>{g.date}</div>
               <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 12 }}>
-                {g.items.map((it, i) => (
+                {g.items.map((it) => (
                   <li
-                    key={i}
+                    key={typeof it === "string" ? it : g.date}
                     style={{ fontSize: 15.5, lineHeight: 1.55, color: C.body, paddingLeft: 18, position: "relative" }}
                   >
                     <span style={{ position: "absolute", left: 0, color: C.faint }}>&rsaquo;</span>

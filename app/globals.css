@@ -1,0 +1,6 @@
+/* Spinner rotation, defined once globally (not per-component). */
+@keyframes sps {
+  to {
+    transform: rotate(360deg);
+  }
+}

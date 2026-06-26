@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Why this tool exists, the legal moat behind it, and the builder.",
 };
 
-function H2({ children }: { children: ReactNode }) {
+function H2({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <h2
       style={{
@@ -25,13 +25,13 @@ function H2({ children }: { children: ReactNode }) {
   );
 }
 
-function P({ children }: { children: ReactNode }) {
+function P({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <p style={{ fontSize: 16.5, lineHeight: 1.62, color: C.body, margin: "0 0 16px", maxWidth: 680 }}>{children}</p>
   );
 }
 
-function Section({ children }: { children: ReactNode }) {
+function Section({ children }: Readonly<{ children: ReactNode }>) {
   return <section style={{ padding: "44px 0", borderTop: `1px solid ${C.rule}` }}>{children}</section>;
 }
 
@@ -84,9 +84,8 @@ export default function About() {
               style={{ color: C.green, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 2 }}
             >
               1mil.app
-            </a>
-            , my own opportunity-scanner, across several market lenses and a survey of what already
-            exists. The one real, unserved opening was ad disapprovals: a problem that costs media
+            </a>, my own opportunity-scanner, across several market lenses and a survey of what
+            already exists. The one real, unserved opening was ad disapprovals: a problem that costs media
             buyers money every week, with almost nothing checking compliance before the spend.
           </P>
           <P>

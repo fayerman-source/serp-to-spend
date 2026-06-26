@@ -19,7 +19,7 @@ export const serif = "var(--font-fraunces), Georgia, 'Times New Roman', serif";
 export const sans = "var(--font-inter), ui-sans-serif, system-ui, sans-serif";
 export const MAXW = 940;
 
-export function Eyebrow({ children }: { children: ReactNode }) {
+export function Eyebrow({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <div
       style={{
@@ -42,7 +42,7 @@ const NAV = [
   { href: "/changelog", label: "Changelog" },
 ];
 
-export function SiteHeader({ active }: { active?: string }) {
+export function SiteHeader({ active }: Readonly<{ active?: string }>) {
   return (
     <header style={{ borderBottom: `1px solid ${C.rule}`, background: C.paper }}>
       <div

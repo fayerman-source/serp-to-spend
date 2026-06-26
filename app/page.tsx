@@ -391,22 +391,20 @@ function HowItWorks() {
 }
 
 function Spinner() {
+  // Keyframe `sps` is defined once in app/globals.css.
   return (
-    <>
-      <style>{`@keyframes sps{to{transform:rotate(360deg)}}`}</style>
-      <span
-        style={{
-          display: "inline-block",
-          width: 13,
-          height: 13,
-          flex: "none",
-          border: `2px solid ${C.rule}`,
-          borderTopColor: C.green,
-          borderRadius: "50%",
-          animation: "sps 0.7s linear infinite",
-        }}
-      />
-    </>
+    <span
+      style={{
+        display: "inline-block",
+        width: 13,
+        height: 13,
+        flex: "none",
+        border: `2px solid ${C.rule}`,
+        borderTopColor: C.green,
+        borderRadius: "50%",
+        animation: "sps 0.7s linear infinite",
+      }}
+    />
   );
 }
 
@@ -443,6 +441,7 @@ export default function Home() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Request failed.");
+      if (!data?.teardown) throw new Error("The server returned an unexpected response.");
       setTeardown(data.teardown as Teardown);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
@@ -464,6 +463,7 @@ export default function Home() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Request failed.");
+      if (!Array.isArray(data?.pack?.angles)) throw new Error("The server returned an unexpected response.");
       setResult(data as ApiResult);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
@@ -493,8 +493,7 @@ export default function Home() {
         <h1
           style={{
             fontFamily: serif,
-            fontSize: "clamp(18px, 3.8vw, 38px)",
-            whiteSpace: "nowrap",
+            fontSize: "clamp(22px, 3.8vw, 38px)",
             lineHeight: 1.06,
             margin: "12px 0 0",
             color: C.ink,

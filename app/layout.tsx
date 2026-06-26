@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Inter } from "next/font/google";
+import "./globals.css";
 
 // Self-hosted via next/font (no render-blocking <link>, no layout shift).
 const fraunces = Fraunces({
