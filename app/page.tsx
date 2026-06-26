@@ -235,7 +235,7 @@ export default function Home() {
                 onChange={(e) => setGrounded(e.target.checked)}
                 style={{ accentColor: C.green, width: 16, height: 16 }}
               />
-              Ground in live Google Search (uncheck to compare ungrounded output)
+              Grounded in live Google Search
             </label>
           </div>
         )}

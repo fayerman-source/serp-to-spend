@@ -48,6 +48,8 @@ const LOG: Array<{ date: string; items: Array<{ k: string; n: ReactNode }> }> = 
   {
     date: "June 26, 2026",
     items: [
+      { k: "refactor", n: "Refactored the tool UI into focused components (a thin orchestrator plus result and section modules), with the API types shared from one schema as a single source of truth, and a mobile-responsive layout." },
+      { k: "rationale-budget", n: "Raised the Check output budget so the FTC rationale renders in full on dense, multi-violation ads." },
       { k: "visual-polish", n: "Visual polish: an editorial redesign (serif typography, the citation moat surfaced as a feature), a favicon, and a multi-page site (About and Changelog)." },
       { k: "readme", n: "Tightened the README copy and positioning." },
     ],
