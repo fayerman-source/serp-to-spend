@@ -107,9 +107,9 @@ export function SiteFooter() {
           SERP·to·Spend
         </Link>
         <div style={{ fontFamily: sans, fontSize: 13.5, color: C.muted }}>
-          Free to use.{" "}
+          Check an ad and generate ads, free.{" "}
           <span style={{ color: C.green, fontWeight: 600 }}>
-            Pro is coming: saved reviews, bulk checks, and the generator.
+            Pro is coming: saved reviews and bulk checks.
           </span>
         </div>
       </div>
