@@ -8,7 +8,7 @@
 import type { Grounding } from "../serp";
 import { FTC, FDA, PLATFORM_MODULES } from "../knowledge";
 
-export const GENERATE_PROMPT_VERSION = "2026-06-25.6";
+export const GENERATE_PROMPT_VERSION = "2026-06-26.1";
 
 // Built from the shared registry: add a platform module there and this flow
 // includes it automatically.

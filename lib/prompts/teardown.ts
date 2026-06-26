@@ -10,7 +10,7 @@ import { FTC, FDA, PLATFORM_KNOWLEDGE, type Platform } from "../knowledge";
 
 export type { Platform } from "../knowledge";
 
-export const TEARDOWN_PROMPT_VERSION = "2026-06-26.1";
+export const TEARDOWN_PROMPT_VERSION = "2026-06-26.2";
 
 export function buildTeardownSystem(platform: Platform): string {
   const platformModule = PLATFORM_KNOWLEDGE[platform];
