@@ -91,15 +91,17 @@ export default function Changelog() {
             <section
               key={g.date}
               style={{
-                display: "grid",
-                gridTemplateColumns: "170px 1fr",
+                display: "flex",
+                flexWrap: "wrap",
                 gap: 28,
                 padding: "30px 0",
                 borderTop: `1px solid ${C.rule}`,
               }}
             >
-              <div style={{ fontFamily: serif, fontSize: 18, fontWeight: 600, color: C.green }}>{g.date}</div>
-              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 12 }}>
+              <div style={{ flex: "0 0 150px", fontFamily: serif, fontSize: 18, fontWeight: 600, color: C.green }}>
+                {g.date}
+              </div>
+              <ul style={{ flex: "1 1 320px", margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 12 }}>
                 {g.items.map((it) => (
                   <li
                     key={it.k}
