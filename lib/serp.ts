@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { getGeminiClient } from "./vertex";
 
 // SERP / page grounding. Modes, in priority order (when search is enabled):
 //   1. Input is a URL              -> fetch the page, strip to text (competitor/offer grounding)
@@ -68,11 +68,7 @@ async function fetchSerp(query: string, key: string): Promise<string> {
 // reports back what's ranking. Kept as a SEPARATE call from the structured ad-pack
 // generation, because combining the search tool with strict JSON output can conflict.
 async function fetchGeminiSearch(query: string): Promise<string> {
-  const ai = new GoogleGenAI({
-    vertexai: true,
-    project: process.env.GOOGLE_CLOUD_PROJECT,
-    location: process.env.GOOGLE_CLOUD_LOCATION ?? "us-central1",
-  });
+  const ai = getGeminiClient();
   const res = await ai.models.generateContent({
     // Flash is plenty for retrieval/summarization; keeps grounding cheap.
     model: process.env.GEMINI_GROUNDING_MODEL ?? "gemini-2.5-flash",
