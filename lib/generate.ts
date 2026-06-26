@@ -6,7 +6,12 @@ import { runStructured, stripMarkdown } from "./llm";
 
 export type { AdPack } from "./schemas";
 
+// The generate prompt asks for this many angles; enforce it defensively so an
+// over-long response cannot blow the serverless function-duration budget.
+const MAX_ANGLES = 3;
+
 export function sanitizeAdPack(pack: AdPack): AdPack {
+  pack.angles = pack.angles.slice(0, MAX_ANGLES);
   for (const angle of pack.angles) {
     for (const ad of angle.ads) {
       ad.headline = stripMarkdown(ad.headline);

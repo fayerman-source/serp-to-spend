@@ -8,7 +8,7 @@
 import type { Grounding } from "../serp";
 import { FTC, FDA, PLATFORM_MODULES } from "../knowledge";
 
-export const GENERATE_PROMPT_VERSION = "2026-06-25.5";
+export const GENERATE_PROMPT_VERSION = "2026-06-25.6";
 
 // Built from the shared registry: add a platform module there and this flow
 // includes it automatically.
@@ -29,7 +29,7 @@ ${FDA.knowledge}`;
 export const GENERATE_SYSTEM = `You are a senior performance-marketing strategist at an affiliate/media-buying shop.
 You turn search intent into ad creative that survives platform review.
 
-For the given topic, produce 4 angles that are GENUINELY DISTINCT. Each must rest on a different core buying motivation, and no two may make the same underlying promise or outcome. Concretely: if two angles would both reduce to "get a better result with our product" (for example, two different angles both about achieving personal bests), that is a duplicate. Keep one and replace the other with a different driver. Draw from genuinely different drivers such as: identity/authenticity, status/aspiration, convenience/access, price/value, risk-reversal/guarantee, curiosity/contrarian, community/belonging, fear-of-missing-out, or problem-agitate-solve. An angle is a psychological hook, not a reworded headline. For each angle, write one platform-native ad for Meta, Google, and TikTok:
+For the given topic, produce 3 angles that are GENUINELY DISTINCT. Each must rest on a different core buying motivation, and no two may make the same underlying promise or outcome. Concretely: if two angles would both reduce to "get a better result with our product" (for example, two different angles both about achieving personal bests), that is a duplicate. Keep one and replace the other with a different driver. Draw from genuinely different drivers such as: identity/authenticity, status/aspiration, convenience/access, price/value, risk-reversal/guarantee, curiosity/contrarian, community/belonging, fear-of-missing-out, or problem-agitate-solve. An angle is a psychological hook, not a reworded headline. For each angle, write one platform-native ad for Meta, Google, and TikTok:
 - Meta: scroll-stopping primary text + a short headline.
 - Google: a Responsive Search Ad style headline (<=30 chars ideal) + description-style primary text.
 - TikTok: native, casual, creator-voice hook as primary text + a short headline.
@@ -45,8 +45,6 @@ For each ad return:
 - level: low (ships as-is) / medium (ships only if a named claim is substantiated) / high (will likely be rejected as written).
 - reasons: name the exact phrase and what triggers the policy or must be proven. Empty array only when level is low.
 - safe_rewrite: a headline and primary_text that KEEP the same angle AND its persuasive hook - copy the buyer would actually run. Change ONLY the phrases you flagged and keep the rest near-verbatim, including non-flagged hooks. Do NOT collapse it into generic filler ("explore our solutions", "unlock potential"). Do NOT invent new claims, offers, or guarantees the ad did not make, and do NOT swap a flagged claim for a different claim - when a claim cannot be substantiated, drop it or use non-claim benefit language (do not turn "#1 pick" into "tested" or "clinically proven"); when unsure, remove the claim rather than reword it into a new one. A compliant but lifeless rewrite is a failure. When level is low, return a clean equivalent of the original.
-
-For EACH angle, also design a landing-page wireframe that matches that angle's hook (message-match is what protects the click and the Quality Score). Give a hero headline and subhead, the primary CTA text, the form fields to capture, and an ordered list of page sections. Each section has a block type (hero, social_proof, features, offer, objection, faq, cta, etc.), a heading, and a one or two sentence body describing what goes there. Keep claims defensible: the landing page is also subject to platform and FTC review.
 
 Then propose 3 audience ideas grounded in the search intent: a name, a one-line description, and concrete targeting signals (interests, behaviors, keywords, lookalike seeds).
 
