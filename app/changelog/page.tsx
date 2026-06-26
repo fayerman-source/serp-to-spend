@@ -7,46 +7,49 @@ export const metadata: Metadata = {
   description: "Built in the open, one pull request at a time.",
 };
 
-const LOG: Array<{ date: string; items: ReactNode[] }> = [
+const LOG: Array<{ date: string; items: Array<{ k: string; n: ReactNode }> }> = [
   {
     date: "June 24, 2026",
     items: [
-      (
-        <>
-          Selected the problem with{" "}
-          <a
-            href="https://1mil.app/github"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: C.green, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 2 }}
-          >
-            1mil.app
-          </a>, my own opportunity-scanner, which surfaced the unserved gap between ad creation and ad
-          compliance.
-        </>
-      ),
-      "First build: ad compliance and creative for paid search and social.",
-      "Check-an-ad compliance teardown, with versioned prompts and validated output schemas.",
-      "Continuous integration (typecheck and build) on every pull request; unit tests wired in.",
-      "Grounded the compliance check in FTC standards to stop over-flagging puffery on clean ads.",
+      {
+        k: "scan",
+        n: (
+          <>
+            Selected the problem with{" "}
+            <a
+              href="https://1mil.app/github"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: C.green, fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 2 }}
+            >
+              1mil.app
+            </a>, my own opportunity-scanner, which surfaced the unserved gap between ad creation and ad
+            compliance.
+          </>
+        ),
+      },
+      { k: "first-build", n: "First build: ad compliance and creative for paid search and social." },
+      { k: "teardown", n: "Check-an-ad compliance teardown, with versioned prompts and validated output schemas." },
+      { k: "ci", n: "Continuous integration (typecheck and build) on every pull request; unit tests wired in." },
+      { k: "ftc-grounding", n: "Grounded the compliance check in FTC standards to stop over-flagging puffery on clean ads." },
     ],
   },
   {
     date: "June 25, 2026",
     items: [
-      "Rebuilt the compliance knowledge as sourced, cited modules (FTC, Meta, Google, TikTok), each rule tied to a real authority.",
-      "Added FDA drug-claim and FTC Business Opportunity Rule coverage.",
-      "Grounded the Generate flow in the same modules, so both flows cite the same policies.",
-      "Hook-preserving rewrites: keep the persuasion, soften only the flagged claim, never substitute one claim for another.",
-      "Copy affordances on every payload, input validation, and a softer background.",
-      "Provider-agnostic credentials for serverless deploy; trimmed Generate to fit the 60-second function limit.",
+      { k: "modules", n: "Rebuilt the compliance knowledge as sourced, cited modules (FTC, Meta, Google, TikTok), each rule tied to a real authority." },
+      { k: "fda-bizopp", n: "Added FDA drug-claim and FTC Business Opportunity Rule coverage." },
+      { k: "generate-grounding", n: "Grounded the Generate flow in the same modules, so both flows cite the same policies." },
+      { k: "rewrites", n: "Hook-preserving rewrites: keep the persuasion, soften only the flagged claim, never substitute one claim for another." },
+      { k: "copy-validation", n: "Copy affordances on every payload, input validation, and a softer background." },
+      { k: "deploy-trim", n: "Provider-agnostic credentials for serverless deploy; trimmed Generate to fit the 60-second function limit." },
     ],
   },
   {
     date: "June 26, 2026",
     items: [
-      "Visual polish: an editorial redesign (serif typography, the citation moat surfaced as a feature), a favicon, and a multi-page site (About and Changelog).",
-      "Tightened the README copy and positioning.",
+      { k: "visual-polish", n: "Visual polish: an editorial redesign (serif typography, the citation moat surfaced as a feature), a favicon, and a multi-page site (About and Changelog)." },
+      { k: "readme", n: "Tightened the README copy and positioning." },
     ],
   },
 ];

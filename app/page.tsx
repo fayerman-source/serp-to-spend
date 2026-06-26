@@ -522,6 +522,7 @@ export default function Home() {
           <div style={{ marginTop: 18 }}>
             <div style={{ display: "flex", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
               <select
+                aria-label="Ad platform"
                 value={platform}
                 onChange={(e) => setPlatform(e.target.value as Platform)}
                 style={{ ...inputStyle, fontWeight: 600 }}
@@ -539,6 +540,7 @@ export default function Home() {
               </button>
             </div>
             <textarea
+              aria-label="Ad to check"
               value={adText}
               onChange={(e) => {
                 setAdText(e.target.value);
@@ -567,6 +569,7 @@ export default function Home() {
           <div style={{ marginTop: 18 }}>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <input
+                aria-label="Keyword or competitor URL"
                 value={input}
                 onChange={(e) => {
                   setInput(e.target.value);
