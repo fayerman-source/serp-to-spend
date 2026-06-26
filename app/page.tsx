@@ -14,15 +14,7 @@ type Ad = {
   primary_text: string;
   policy_risk: PolicyRisk;
 };
-type Section = { block: string; heading: string; body: string };
-type LandingPage = {
-  hero_headline: string;
-  hero_subhead: string;
-  primary_cta: string;
-  form_fields: string[];
-  sections: Section[];
-};
-type Angle = { name: string; rationale: string; ads: Ad[]; landing_page: LandingPage };
+type Angle = { name: string; rationale: string; ads: Ad[] };
 type Audience = { name: string; description: string; targeting_signals: string[] };
 type AdPack = { angles: Angle[]; audiences: Audience[] };
 type ApiResult = { source: string; query: string; pack: AdPack };
@@ -311,110 +303,6 @@ function TeardownView({ t }: { t: Teardown }) {
   );
 }
 
-function Wireframe({ lp }: { lp: LandingPage }) {
-  return (
-    <div
-      style={{
-        marginTop: 16,
-        border: `1px dashed ${C.line}`,
-        borderRadius: 10,
-        padding: 16,
-        background: C.soft,
-      }}
-    >
-      <div style={{ fontSize: 12, color: C.muted, marginBottom: 10, fontWeight: 600 }}>
-        Landing-page wireframe (message-matched to this angle)
-      </div>
-
-      <div
-        style={{
-          border: `1px solid ${C.line}`,
-          borderRadius: 8,
-          padding: "18px 14px",
-          textAlign: "center",
-          background: C.bg,
-        }}
-      >
-        <div style={{ fontSize: 18, fontWeight: 800, color: C.ink }}>{lp.hero_headline}</div>
-        <div style={{ fontSize: 14, color: C.muted, marginTop: 4 }}>{lp.hero_subhead}</div>
-        {lp.form_fields.length > 0 && (
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 6,
-              justifyContent: "center",
-              marginTop: 12,
-            }}
-          >
-            {lp.form_fields.map((f, i) => (
-              <span
-                key={i}
-                style={{
-                  fontSize: 12,
-                  color: C.muted,
-                  border: `1px solid ${C.line}`,
-                  borderRadius: 6,
-                  padding: "6px 10px",
-                  background: C.soft,
-                }}
-              >
-                {f}
-              </span>
-            ))}
-          </div>
-        )}
-        <div
-          style={{
-            display: "inline-block",
-            marginTop: 12,
-            background: C.teal,
-            color: "#fff",
-            fontWeight: 700,
-            fontSize: 13,
-            borderRadius: 999,
-            padding: "8px 18px",
-          }}
-        >
-          {lp.primary_cta}
-        </div>
-      </div>
-
-      <div style={{ display: "grid", gap: 8, marginTop: 8 }}>
-        {lp.sections.map((s, i) => (
-          <div
-            key={i}
-            style={{
-              border: `1px solid ${C.line}`,
-              borderRadius: 8,
-              padding: "10px 12px",
-              background: C.bg,
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-              <span
-                style={{
-                  fontSize: 10,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  color: C.teal,
-                  border: `1px solid ${C.line}`,
-                  borderRadius: 4,
-                  padding: "1px 6px",
-                  fontWeight: 700,
-                }}
-              >
-                {s.block}
-              </span>
-              <strong style={{ fontSize: 14, color: C.ink }}>{s.heading}</strong>
-            </div>
-            <div style={{ fontSize: 13, color: C.muted, marginTop: 4 }}>{s.body}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export default function Home() {
   const [mode, setMode] = useState<Mode>("check");
@@ -787,7 +675,6 @@ export default function Home() {
                   ))}
                 </div>
 
-                <Wireframe lp={angle.landing_page} />
               </section>
             ))}
 

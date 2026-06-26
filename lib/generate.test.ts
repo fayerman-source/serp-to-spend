@@ -22,13 +22,6 @@ describe("sanitizeAdPack", () => {
               },
             },
           ],
-          landing_page: {
-            hero_headline: "h",
-            hero_subhead: "s",
-            primary_cta: "c",
-            form_fields: [],
-            sections: [],
-          },
         },
       ],
       audiences: [],

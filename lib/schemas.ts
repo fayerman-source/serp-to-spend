@@ -24,13 +24,6 @@ export type AdPack = {
         safe_rewrite: { headline: string; primary_text: string };
       };
     }>;
-    landing_page: {
-      hero_headline: string;
-      hero_subhead: string;
-      primary_cta: string;
-      form_fields: string[];
-      sections: Array<{ block: string; heading: string; body: string }>;
-    };
   }>;
   audiences: Array<{
     name: string;
@@ -83,32 +76,8 @@ export const AD_PACK_SCHEMA = {
               required: ["platform", "headline", "primary_text", "policy_risk"],
             },
           },
-          landing_page: {
-            type: "object",
-            additionalProperties: false,
-            properties: {
-              hero_headline: { type: "string" },
-              hero_subhead: { type: "string" },
-              primary_cta: { type: "string" },
-              form_fields: { type: "array", items: { type: "string" } },
-              sections: {
-                type: "array",
-                items: {
-                  type: "object",
-                  additionalProperties: false,
-                  properties: {
-                    block: { type: "string" },
-                    heading: { type: "string" },
-                    body: { type: "string" },
-                  },
-                  required: ["block", "heading", "body"],
-                },
-              },
-            },
-            required: ["hero_headline", "hero_subhead", "primary_cta", "form_fields", "sections"],
-          },
         },
-        required: ["name", "rationale", "ads", "landing_page"],
+        required: ["name", "rationale", "ads"],
       },
     },
     audiences: {

@@ -74,17 +74,16 @@ async function fetchGeminiSearch(query: string): Promise<string> {
     model: process.env.GEMINI_GROUNDING_MODEL ?? "gemini-2.5-flash",
     contents:
       `Use Google Search to research this query: "${query}".\n` +
-      `Report concisely, as plain text, to ground ad creative:\n` +
-      `1) The dominant search intent behind this query.\n` +
-      `2) The top organic results (title + what each one offers), up to 10.\n` +
-      `3) The angles and messaging competitors already use.\n` +
-      `4) Recurring language, claims, or offers that show up across results.\n` +
-      `Keep it factual and tight.`,
-    config: { tools: [{ googleSearch: {} }] },
+      `Report briefly as plain text, to ground ad creative:\n` +
+      `1) The dominant search intent.\n` +
+      `2) The top 5 results (title + what each offers).\n` +
+      `3) The angles and recurring claims/language competitors use.\n` +
+      `Be brief and factual.`,
+    config: { tools: [{ googleSearch: {} }], maxOutputTokens: 1200 },
   });
   const text = res.text?.trim();
   if (!text) throw new Error("Google Search grounding returned no text.");
-  return text.slice(0, 6_000);
+  return text.slice(0, 3_500);
 }
 
 export async function ground(
