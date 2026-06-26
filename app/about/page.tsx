@@ -103,8 +103,10 @@ export default function About() {
             Close the loop into a data moat: ground the compliance check in real submit-to-verdict
             outcomes through the Meta and Google ad APIs, so the risk model learns from actual
             disapprovals instead of policy text. Then per-advertiser calibration, a formal counsel review
-            of the legal modules with case-law citations, and one-click export into the campaign. No
-            generic generator can build that outcome dataset.
+            of the legal modules with case-law citations, one-click export into the campaign, and
+            an extension of the compliance pass beyond the copy to the creative and the landing page the ad
+            points to (both are judged by the platform and the FTC). No generic generator can build that
+            outcome dataset.
           </P>
         </Section>
 
