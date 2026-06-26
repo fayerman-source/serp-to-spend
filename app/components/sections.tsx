@@ -58,17 +58,18 @@ export function Credibility() {
   );
 }
 
+const STEPS: Array<[string, string, string]> = [
+  ["01", "Paste your ad", "Drop in the headline and body, pick the platform you are running on."],
+  ["02", "Get the verdict", "The exact policy it would trip, the regulatory risk, and the phrases that cause it."],
+  ["03", "Ship the rewrite", "A version that keeps the hook and passes review, ready to paste into Ads Manager."],
+];
+
 export function HowItWorks() {
-  const steps: Array<[string, string, string]> = [
-    ["01", "Paste your ad", "Drop in the headline and body, pick the platform you are running on."],
-    ["02", "Get the verdict", "The exact policy it would trip, the regulatory risk, and the phrases that cause it."],
-    ["03", "Ship the rewrite", "A version that keeps the hook and passes review, ready to paste into Ads Manager."],
-  ];
   return (
     <div style={{ maxWidth: MAXW, margin: "0 auto", padding: "56px 28px 0" }}>
       <hr style={{ border: 0, borderTop: `1px solid ${C.rule}`, margin: 0 }} />
       <div style={{ display: "flex", flexWrap: "wrap", gap: 36, marginTop: 44 }}>
-        {steps.map(([n, h, b]) => (
+        {STEPS.map(([n, h, b]) => (
           <div key={n} style={{ flex: "1 1 200px" }}>
             <div style={{ fontFamily: serif, fontSize: 28, fontWeight: 500, color: C.green }}>{n}</div>
             <div style={{ fontFamily: serif, fontSize: 19, fontWeight: 600, color: C.ink, marginTop: 8 }}>{h}</div>

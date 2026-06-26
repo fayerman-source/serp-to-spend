@@ -15,16 +15,20 @@ const VERDICT: Record<string, string> = {
   high: "Likely rejected as written",
 };
 
-function cardStyle(): React.CSSProperties {
-  return {
-    border: `1px solid ${C.rule}`,
-    borderRadius: 14,
-    padding: 24,
-    marginTop: 18,
-    background: C.card,
-    boxShadow: "0 1px 0 rgba(0,0,0,.02), 0 24px 48px -38px rgba(27,23,20,.22)",
-  };
-}
+const cardStyle: React.CSSProperties = {
+  border: `1px solid ${C.rule}`,
+  borderRadius: 14,
+  padding: 24,
+  marginTop: 18,
+  background: C.card,
+  boxShadow: "0 1px 0 rgba(0,0,0,.02), 0 24px 48px -38px rgba(27,23,20,.22)",
+};
+
+const GROUNDING_LABEL: Record<string, string> = {
+  url: "competitor/offer page",
+  "gemini-search": "live Google Search (Gemini grounding)",
+  serpapi: "live Google SERP (SerpApi)",
+};
 
 // One-click copy. The buyer's next action is paste-into-ad-platform, so copy
 // affordances sit on every discrete payload (a rewrite, an ad, an audience).
@@ -106,7 +110,7 @@ Verdict: ${t.level}
 Policy at risk: ${t.policy_area}
 What trips it:
 ${findings || "- (nothing flagged)"}
-FTC: ${t.ftc.standard}${t.ftc.why ? `: ${t.ftc.why}` : ""}
+FTC: ${t.ftc?.standard ?? "none"}${t.ftc?.why ? `: ${t.ftc?.why}` : ""}
 
 A passing rewrite to build on:
 ${t.safe_rewrite.headline}
@@ -157,7 +161,7 @@ function RewriteBox({ headline, primary_text }: Readonly<{ headline: string; pri
 export function TeardownView({ t }: Readonly<{ t: Teardown }>) {
   const color = RISK_COLOR[t.level] ?? C.muted;
   return (
-    <section style={cardStyle()}>
+    <section style={cardStyle}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
         <Eyebrow>{t.platform} review</Eyebrow>
         <span style={{ fontFamily: serif, fontSize: 17, fontWeight: 600, color }}>
@@ -175,9 +179,9 @@ export function TeardownView({ t }: Readonly<{ t: Teardown }>) {
         <>
           <hr style={{ border: 0, borderTop: `1px solid ${C.rule}`, margin: "18px 0" }} />
           <div style={{ display: "grid", gap: 12 }}>
-            {t.findings.map((f, i) => (
+            {t.findings.map((f) => (
               <div
-                key={i}
+                key={f.phrase}
                 style={{
                   display: "grid",
                   gridTemplateColumns: "auto 1fr",
@@ -202,7 +206,7 @@ export function TeardownView({ t }: Readonly<{ t: Teardown }>) {
         </>
       )}
 
-      {t.ftc && t.ftc.standard && t.ftc.standard.toLowerCase() !== "none" && (
+      {t.ftc?.standard && t.ftc.standard.toLowerCase() !== "none" && (
         <div
           style={{
             marginTop: 18,
@@ -270,19 +274,13 @@ export function AdPackView({ result }: Readonly<{ result: ApiResult }>) {
       <p style={{ color: C.muted, fontSize: 13 }}>
         Grounding:{" "}
         <strong style={{ color: C.ink }}>
-          {result.source === "url"
-            ? "competitor/offer page"
-            : result.source === "gemini-search"
-              ? "live Google Search (Gemini grounding)"
-              : result.source === "serpapi"
-                ? "live Google SERP (SerpApi)"
-                : "keyword only (no live search this run)"}
+          {GROUNDING_LABEL[result.source] ?? "keyword only (no live search this run)"}
         </strong>{" "}
         · query: <em>{result.query}</em>
       </p>
 
       {result.pack.angles.map((angle, i) => (
-        <section key={i} style={cardStyle()}>
+        <section key={angle.name} style={cardStyle}>
           <Eyebrow>Angle {i + 1}</Eyebrow>
           <h2 style={{ fontFamily: serif, margin: "10px 0 4px", fontSize: 23, color: C.ink, fontWeight: 600 }}>
             {angle.name}
@@ -290,9 +288,9 @@ export function AdPackView({ result }: Readonly<{ result: ApiResult }>) {
           <p style={{ color: C.muted, marginTop: 0, fontSize: 14, lineHeight: 1.5 }}>{angle.rationale}</p>
 
           <div style={{ display: "grid", gap: 12, marginTop: 14 }}>
-            {angle.ads.map((ad, j) => (
+            {angle.ads.map((ad) => (
               <div
-                key={j}
+                key={ad.platform}
                 style={{
                   border: `1px solid ${C.rule}`,
                   borderRadius: 10,
@@ -333,7 +331,7 @@ export function AdPackView({ result }: Readonly<{ result: ApiResult }>) {
                         padding: "2px 10px",
                         background: C.card,
                       }}
-                      title={ad.policy_risk.reasons.join(" · ")}
+                      title={ad.policy_risk.reasons?.join(" · ")}
                     >
                       {ad.policy_risk.level} risk
                     </span>
@@ -354,10 +352,10 @@ export function AdPackView({ result }: Readonly<{ result: ApiResult }>) {
                     </div>
                   )}
 
-                {ad.policy_risk.reasons.length > 0 && (
+                {(ad.policy_risk.reasons?.length ?? 0) > 0 && (
                   <ul style={{ margin: "6px 0 0", paddingLeft: 18, fontSize: 12.5, color: C.muted, lineHeight: 1.5 }}>
-                    {ad.policy_risk.reasons.map((r, k) => (
-                      <li key={k}>{r}</li>
+                    {(ad.policy_risk.reasons ?? []).map((r) => (
+                      <li key={r}>{r}</li>
                     ))}
                   </ul>
                 )}
@@ -374,13 +372,13 @@ export function AdPackView({ result }: Readonly<{ result: ApiResult }>) {
         </section>
       ))}
 
-      <section style={cardStyle()}>
+      <section style={cardStyle}>
         <Eyebrow>Targeting</Eyebrow>
         <h2 style={{ fontFamily: serif, margin: "10px 0 12px", fontSize: 23, color: C.ink, fontWeight: 600 }}>
           Audience ideas
         </h2>
         <div style={{ display: "grid", gap: 14 }}>
-          {result.pack.audiences.map((aud) => (
+          {result.pack.audiences?.map((aud) => (
             <div
               key={aud.name}
               style={{
@@ -394,11 +392,11 @@ export function AdPackView({ result }: Readonly<{ result: ApiResult }>) {
                 <strong style={{ fontFamily: serif, color: C.ink, fontSize: 16 }}>{aud.name}</strong>
                 <div style={{ fontSize: 14, color: C.body, marginTop: 2 }}>{aud.description}</div>
                 <div style={{ fontSize: 12.5, color: C.muted, marginTop: 4 }}>
-                  {aud.targeting_signals.join(" · ")}
+                  {aud.targeting_signals?.join(" · ")}
                 </div>
               </div>
               <CopyButton
-                text={`${aud.name}\n${aud.description}\n${aud.targeting_signals.join(" · ")}`}
+                text={`${aud.name}\n${aud.description}\n${aud.targeting_signals?.join(" · ") ?? ""}`}
                 label="Copy targeting"
               />
             </div>

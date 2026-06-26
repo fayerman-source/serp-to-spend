@@ -22,7 +22,7 @@ export type Teardown = {
   level: "low" | "medium" | "high";
   policy_area: string;
   findings: Array<{ phrase: string; problem: string }>;
-  ftc: { risk: "low" | "medium" | "high"; standard: string; why: string };
+  ftc?: { risk: "low" | "medium" | "high"; standard: string; why: string };
   safe_rewrite: { headline: string; primary_text: string };
 };
 
