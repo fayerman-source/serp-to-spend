@@ -104,7 +104,7 @@ export default function About() {
             outcomes through the Meta and Google ad APIs, so the risk model learns from actual
             disapprovals instead of policy text. Then per-advertiser calibration, a formal counsel review
             of the legal modules with case-law citations, one-click export into the campaign, and
-            extending the compliance pass beyond the copy to the creative and the landing page the ad
+            an extension of the compliance pass beyond the copy to the creative and the landing page the ad
             points to (both are judged by the platform and the FTC). No generic generator can build that
             outcome dataset.
           </P>

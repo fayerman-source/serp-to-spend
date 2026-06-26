@@ -76,6 +76,7 @@ lib/knowledge/              sourced policy modules (ftc, fda, meta, google, tikt
 - **Close the loop into a data moat.** Ground the compliance check in real submit-to-verdict outcomes through the Meta and Google ad APIs, so the risk model learns from actual disapprovals instead of policy text. No generic generator can build that dataset.
 - **Per-advertiser calibration.** Learn which flagged patterns a specific account actually got rejected for, and tune the risk model to it.
 - **See the whole ad, not just the copy.** Extend the compliance pass to the creative (images and video) and the destination (the landing page the ad points to), since both are judged by the platform and the FTC, and both are where real claim risk hides.
+- **Read the targeting, not just the copy.** Take the audience as input (age, location, and Meta's Special Ad Categories like Housing, Employment, and Credit) and tighten the policy thresholds to match, since the same claim can be fine for one audience and a violation for another.
 - **Counsel-reviewed knowledge layer.** Conduct a formal attorney review pass and add the case-law citations to the already sourced and versioned legal modules, turning the moat into something defensible enough to stand behind in writing.
 - **Drop straight into the campaign.** Export winning variants to CSV / Meta bulk-import.
 
