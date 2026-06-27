@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 // Self-hosted via next/font (no render-blocking <link>, no layout shift).
@@ -53,6 +54,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         }}
       >
         {children}
+        {/* Microsoft Clarity (heatmaps + session replay). Loaded after hydration. */}
+        <Script id="clarity-analytics" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "xdrfh84ktr");`}
+        </Script>
       </body>
     </html>
   );
