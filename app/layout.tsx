@@ -26,17 +26,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: SITE,
   description: DESCRIPTION,
+  // Title/description and og:url are intentionally NOT pinned here: Next falls
+  // back to the nearest title/description and the resolved page URL, so /about
+  // and /changelog emit their OWN share tags instead of the homepage's.
   openGraph: {
     type: "website",
-    url: SITE_URL,
     siteName: SITE,
-    title: SITE,
-    description: DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE,
-    description: DESCRIPTION,
   },
 };
 
