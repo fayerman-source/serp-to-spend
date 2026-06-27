@@ -23,6 +23,9 @@ const DESCRIPTION =
   "Paste an ad you are about to run. Get the platform policy it would trip, the regulatory risk, and a version that passes. Every verdict cites the real authority behind it.";
 
 export const metadata: Metadata = {
+  // Pinned to the canonical production domain on purpose (not an env var): share
+  // images and canonical URLs should always resolve to serptospend.com, even from
+  // preview deploys, so a preview can never leak as the canonical.
   metadataBase: new URL(SITE_URL),
   title: SITE,
   description: DESCRIPTION,
