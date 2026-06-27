@@ -17,10 +17,27 @@ const inter = Inter({
   display: "swap",
 });
 
+const SITE = "SERP-to-Spend";
+const SITE_URL = "https://serptospend.com";
+const DESCRIPTION =
+  "Paste an ad you are about to run. Get the platform policy it would trip, the regulatory risk, and a version that passes. Every verdict cites the real authority behind it.";
+
 export const metadata: Metadata = {
-  title: "SERP-to-Spend",
-  description:
-    "Paste an ad you are about to run. Get the platform policy it would trip, the regulatory risk, and a version that passes. Every verdict cites the real authority behind it.",
+  metadataBase: new URL(SITE_URL),
+  title: SITE,
+  description: DESCRIPTION,
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: SITE,
+    title: SITE,
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE,
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
