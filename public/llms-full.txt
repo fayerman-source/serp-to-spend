@@ -1,0 +1,33 @@
+# SERP-to-Spend
+
+> Ad compliance and creative for media buyers, grounded in cited law.
+
+SERP-to-Spend checks an ad before you run it. Paste the copy, pick Meta, Google, or TikTok, and it names the specific policy the ad would trip, the FTC and FDA risk on the claims, and a rewrite that passes without losing the hook. It can also generate ad angles from a keyword, grounded in live Google results, and run the same compliance check on what it writes. Every verdict cites the real authority behind it.
+
+## Pages
+- The tool: https://serptospend.com/
+- About: https://serptospend.com/about
+- Changelog: https://serptospend.com/changelog
+
+## What it does
+- Check an ad: per-platform policy (Meta, Google, TikTok), FTC substantiation rules, and FDA exposure on health and disease claims. Names the exact policy and returns a passing rewrite.
+- Generate ads: three genuinely distinct angles with platform-native copy for each, grounded in live Google search, every ad pre-checked for compliance.
+
+## The moat
+The compliance engine is grounded in real, cited legal authority, not a prompt wrapper on a cold model. Platform policies and the FTC and FDA rules live in sourced, versioned modules where every rule traces to a statute, a CFR section, or a published policy. The tool names the exact authority behind each flag and knows the puffery line, so it does not cry wolf on a clean, already-running ad. Built by a licensed attorney who codes.
+
+## FAQ
+Q: What does SERP-to-Spend do?
+A: It checks an ad you are about to run and names the specific policy it would trip, the FTC and FDA risk, and a rewrite that passes. It can also generate compliant ad angles from a keyword.
+
+Q: Is this legal advice?
+A: No. It is decision support for advertisers, not legal advice, and does not create an attorney-client relationship.
+
+Q: Which platforms and rules does it cover?
+A: Meta, Google, and TikTok ad policies, plus federal FTC substantiation rules and FDA exposure on health and disease claims.
+
+Q: What is the ad generation grounded in?
+A: Live Google results for your keyword, so the angles match how the market actually talks. Every generated ad is pre-checked for compliance.
+
+Q: Do you store the ads I check?
+A: No. Checks run on demand and are not saved. There is no account.

@@ -1,0 +1,12 @@
+# SERP-to-Spend
+
+> Ad compliance and creative for media buyers. Paste an ad you are about to run on Meta, Google, or TikTok and get the specific policy it would trip, the FTC and FDA regulatory risk, and a rewrite that passes. Every verdict cites the real authority behind it. Built by a licensed attorney who codes.
+
+## Pages
+- [The tool](https://serptospend.com/): Check an ad for per-platform policy and regulatory risk, or generate compliant ad angles grounded in live Google results.
+- [About](https://serptospend.com/about): Why the tool exists, the cited-law moat behind it, and the builder.
+- [Changelog](https://serptospend.com/changelog): The build history, shipped one pull request at a time.
+
+## What it does
+- Check an ad: per-platform policy (Meta, Google, TikTok) plus FTC substantiation rules and FDA disease-claim exposure, with a passing rewrite. Every verdict names the real rule.
+- Generate ads: three genuinely distinct angles with platform-native copy, grounded in live Google search, each pre-checked for compliance.

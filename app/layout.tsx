@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Inter } from "next/font/google";
 import Script from "next/script";
+import { jsonLdScript } from "../lib/json-ld";
 import "./globals.css";
 
 // Self-hosted via next/font (no render-blocking <link>, no layout shift).
@@ -23,13 +24,36 @@ const SITE_URL = "https://serptospend.com";
 const DESCRIPTION =
   "Paste an ad you are about to run. Get the platform policy it would trip, the regulatory risk, and a version that passes. Every verdict cites the real authority behind it.";
 
+// Machine-readable identity for search and AI models (AEO). Organization = who
+// this is; SoftwareApplication = what it is. Rendered as JSON-LD below.
+const ORG_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE,
+  url: SITE_URL,
+  description: DESCRIPTION,
+  sameAs: ["https://github.com/fayerman-source/serp-to-spend"],
+};
+
+const APP_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: SITE,
+  url: SITE_URL,
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description: DESCRIPTION,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
 export const metadata: Metadata = {
   // Pinned to the canonical production domain on purpose (not an env var): share
   // images and canonical URLs should always resolve to serptospend.com, even from
   // preview deploys, so a preview can never leak as the canonical.
   metadataBase: new URL(SITE_URL),
-  title: SITE,
+  title: "SERP-to-Spend: ad compliance and creative for media buyers",
   description: DESCRIPTION,
+  alternates: { canonical: "/" },
   // Title/description and og:url are intentionally NOT pinned here: Next falls
   // back to the nearest title/description and the resolved page URL, so /about
   // and /changelog emit their OWN share tags instead of the homepage's.
@@ -54,6 +78,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         }}
       >
         {children}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ORG_SCHEMA) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(APP_SCHEMA) }} />
         {/* Microsoft Clarity (heatmaps + session replay). Loaded after hydration. */}
         <Script id="clarity-analytics" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){
