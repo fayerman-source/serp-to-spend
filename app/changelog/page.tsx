@@ -5,6 +5,7 @@ import { C, serif, sans, MAXW, Eyebrow, SiteHeader, SiteFooter } from "../ui";
 export const metadata: Metadata = {
   title: "Changelog · SERP-to-Spend",
   description: "Built in the open, one pull request at a time.",
+  alternates: { canonical: "/changelog" },
 };
 
 const LOG: Array<{ date: string; items: Array<{ k: string; n: ReactNode }> }> = [

@@ -5,6 +5,40 @@ import { C, serif, sans, MAXW, Eyebrow, SiteHeader, SiteFooter } from "../ui";
 export const metadata: Metadata = {
   title: "About · SERP-to-Spend",
   description: "Why this tool exists, the legal moat behind it, and the builder.",
+  alternates: { canonical: "/about" },
+};
+
+const FAQ = [
+  {
+    q: "What does SERP-to-Spend do?",
+    a: "It checks an ad you are about to run. Paste the copy, pick Meta, Google, or TikTok, and it names the specific policy the ad would trip, the FTC and FDA risk on the claims, and a rewrite that passes without losing the hook. It can also generate ad angles from a keyword and run the same check on what it writes. Every verdict cites the real rule behind it.",
+  },
+  {
+    q: "Is this legal advice?",
+    a: "No. It is decision support for advertisers, not legal advice, and using it does not create an attorney-client relationship. It flags the risk and names the authority so you can make an informed call or take a hard case to your own counsel.",
+  },
+  {
+    q: "Which platforms and rules does it cover?",
+    a: "Meta, Google, and TikTok ad policies, named in each platform's own terms, plus federal FTC substantiation rules and FDA exposure on health and disease claims.",
+  },
+  {
+    q: "What is the ad generation grounded in?",
+    a: "When you give it a keyword, it pulls live Google results to see how the market actually talks, then writes platform-native angles and runs the same compliance check on everything it produces, so it will not hand you an ad that is going to get rejected.",
+  },
+  {
+    q: "Do you store the ads I check?",
+    a: "No. Checks run on demand and are not saved. There is no account and nothing to log in to.",
+  },
+];
+
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
 };
 
 function H2({ children }: Readonly<{ children: ReactNode }>) {
@@ -33,6 +67,14 @@ function P({ children }: Readonly<{ children: ReactNode }>) {
 
 function Section({ children }: Readonly<{ children: ReactNode }>) {
   return <section style={{ padding: "44px 0", borderTop: `1px solid ${C.rule}` }}>{children}</section>;
+}
+
+function H3({ children }: Readonly<{ children: ReactNode }>) {
+  return (
+    <h3 style={{ fontFamily: serif, fontWeight: 600, fontSize: 19, lineHeight: 1.3, color: C.ink, margin: "0 0 8px" }}>
+      {children}
+    </h3>
+  );
 }
 
 export default function About() {
@@ -128,6 +170,16 @@ export default function About() {
           </P>
         </Section>
 
+        <Section>
+          <H2>Common questions</H2>
+          {FAQ.map(({ q, a }) => (
+            <div key={q} style={{ margin: "0 0 22px" }}>
+              <H3>{q}</H3>
+              <P>{a}</P>
+            </div>
+          ))}
+        </Section>
+
         <p
           style={{
             fontSize: 14,
@@ -149,6 +201,7 @@ export default function About() {
           </a>{" "}
           build challenge: the push that turned a scan result into a shipped product.
         </p>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }} />
       </main>
       <SiteFooter />
     </>
