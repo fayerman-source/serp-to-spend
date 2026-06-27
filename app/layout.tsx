@@ -17,10 +17,28 @@ const inter = Inter({
   display: "swap",
 });
 
+const SITE = "SERP-to-Spend";
+const SITE_URL = "https://serptospend.com";
+const DESCRIPTION =
+  "Paste an ad you are about to run. Get the platform policy it would trip, the regulatory risk, and a version that passes. Every verdict cites the real authority behind it.";
+
 export const metadata: Metadata = {
-  title: "SERP-to-Spend",
-  description:
-    "Paste an ad you are about to run. Get the platform policy it would trip, the regulatory risk, and a version that passes. Every verdict cites the real authority behind it.",
+  // Pinned to the canonical production domain on purpose (not an env var): share
+  // images and canonical URLs should always resolve to serptospend.com, even from
+  // preview deploys, so a preview can never leak as the canonical.
+  metadataBase: new URL(SITE_URL),
+  title: SITE,
+  description: DESCRIPTION,
+  // Title/description and og:url are intentionally NOT pinned here: Next falls
+  // back to the nearest title/description and the resolved page URL, so /about
+  // and /changelog emit their OWN share tags instead of the homepage's.
+  openGraph: {
+    type: "website",
+    siteName: SITE,
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
