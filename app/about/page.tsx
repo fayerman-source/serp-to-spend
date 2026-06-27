@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { C, serif, sans, MAXW, Eyebrow, SiteHeader, SiteFooter } from "../ui";
+import { jsonLdScript } from "../../lib/json-ld";
 
 export const metadata: Metadata = {
   title: "About · SERP-to-Spend",
@@ -201,7 +202,7 @@ export default function About() {
           </a>{" "}
           build challenge: the push that turned a scan result into a shipped product.
         </p>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(FAQ_SCHEMA) }} />
       </main>
       <SiteFooter />
     </>

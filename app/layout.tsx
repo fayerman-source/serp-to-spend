@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Inter } from "next/font/google";
 import Script from "next/script";
+import { jsonLdScript } from "../lib/json-ld";
 import "./globals.css";
 
 // Self-hosted via next/font (no render-blocking <link>, no layout shift).
@@ -77,8 +78,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         }}
       >
         {children}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_SCHEMA) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(APP_SCHEMA) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ORG_SCHEMA) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(APP_SCHEMA) }} />
         {/* Microsoft Clarity (heatmaps + session replay). Loaded after hydration. */}
         <Script id="clarity-analytics" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){
