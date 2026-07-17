@@ -8,9 +8,13 @@ import { clerkMiddleware } from "@clerk/nextjs/server";
 export default clerkMiddleware();
 
 export const config = {
+  // NOTE: these MUST be plain string literals. Next.js statically extracts
+  // config.matcher at build time and rejects anything else (a String.raw tagged
+  // template fails with "Unsupported node type TaggedTemplateExpression"), so
+  // ignore linters (e.g. Sonar S7780) that suggest String.raw here.
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params.
-    String.raw`/((?!_next|[^?]*\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)`,
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
     // Always run for API routes.
     "/(api|trpc)(.*)",
   ],
