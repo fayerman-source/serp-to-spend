@@ -28,7 +28,7 @@ const FAQ = [
   },
   {
     q: "Do you store the ads I check?",
-    a: "No. Checks run on demand and are not saved. There is no account and nothing to log in to.",
+    a: "No. Checks run on demand and are not saved. A free sign-in is required so each run is tied to an account, but the ad text you paste is not stored.",
   },
 ];
 

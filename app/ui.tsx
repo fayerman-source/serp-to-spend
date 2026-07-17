@@ -2,6 +2,7 @@
 // tool page and the About / Changelog pages so every route stays consistent.
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { AuthControl } from "./components/auth-control";
 
 export const C = {
   paper: "#f6f3ec",
@@ -84,6 +85,7 @@ export function SiteHeader({ active }: Readonly<{ active?: string }>) {
               {n.label}
             </Link>
           ))}
+          <AuthControl />
         </nav>
       </div>
     </header>
@@ -109,7 +111,7 @@ export function SiteFooter() {
           SERP·to·Spend
         </Link>
         <div style={{ fontFamily: sans, fontSize: 13.5, color: C.muted }}>
-          Check an ad and generate ads, free, no account required.{" "}
+          Check an ad and generate ads, free with a quick sign-in.{" "}
           <span style={{ color: C.green, fontWeight: 600 }}>
             Pro is coming: saved reviews and bulk checks.
           </span>

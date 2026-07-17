@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { checkAd } from "@/lib/check";
 
 export const runtime = "nodejs";
@@ -8,6 +9,13 @@ const PLATFORMS = ["Meta", "Google", "TikTok"] as const;
 type Platform = (typeof PLATFORMS)[number];
 
 export async function POST(req: Request) {
+  // Login required: the compliance check costs an LLM call, so reject anonymous
+  // requests before doing any billable work.
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Please sign in to check an ad." }, { status: 401 });
+  }
+
   let platform: Platform;
   let ad: string;
   try {

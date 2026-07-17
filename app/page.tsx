@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth, SignInButton } from "@clerk/nextjs";
 import { C, serif, sans, MAXW, Eyebrow, SiteHeader, SiteFooter } from "./ui";
 import type { Mode, Platform, Teardown, ApiResult } from "./types";
 import { TeardownView, AdPackView, Spinner, RISK_COLOR } from "./components/results";
@@ -36,6 +37,11 @@ const primaryBtn = (disabled: boolean): React.CSSProperties => ({
 });
 
 export default function Home() {
+  // `isSignedIn` is undefined until Clerk loads; treat only an explicit true as
+  // signed in, so the button shows "Sign in" (not a broken run) during load.
+  const { isSignedIn } = useAuth();
+  const signedIn = isSignedIn === true;
+
   const [mode, setMode] = useState<Mode>("check");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -159,13 +165,19 @@ export default function Home() {
                 <option>Google</option>
                 <option>TikTok</option>
               </select>
-              <button
-                onClick={runCheck}
-                disabled={loading || adText.trim().length < MIN_AD_CHARS}
-                style={primaryBtn(loading || adText.trim().length < MIN_AD_CHARS)}
-              >
-                {loading ? "Checking…" : "Check ad"}
-              </button>
+              {signedIn ? (
+                <button
+                  onClick={runCheck}
+                  disabled={loading || adText.trim().length < MIN_AD_CHARS}
+                  style={primaryBtn(loading || adText.trim().length < MIN_AD_CHARS)}
+                >
+                  {loading ? "Checking…" : "Check ad"}
+                </button>
+              ) : (
+                <SignInButton mode="modal">
+                  <button style={primaryBtn(false)}>Sign in to check</button>
+                </SignInButton>
+              )}
             </div>
             <textarea
               aria-label="Ad to check"
@@ -210,13 +222,19 @@ export default function Home() {
                 placeholder="best CRM for real estate   or   https://competitor.com/offer"
                 style={{ ...inputStyle, flex: "1 1 320px" }}
               />
-              <button
-                onClick={runGenerate}
-                disabled={loading || !input.trim()}
-                style={primaryBtn(loading || !input.trim())}
-              >
-                {loading ? "Generating…" : "Generate"}
-              </button>
+              {signedIn ? (
+                <button
+                  onClick={runGenerate}
+                  disabled={loading || !input.trim()}
+                  style={primaryBtn(loading || !input.trim())}
+                >
+                  {loading ? "Generating…" : "Generate"}
+                </button>
+              ) : (
+                <SignInButton mode="modal">
+                  <button style={primaryBtn(false)}>Sign in to generate</button>
+                </SignInButton>
+              )}
             </div>
             <label
               style={{
