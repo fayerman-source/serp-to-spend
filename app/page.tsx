@@ -36,6 +36,52 @@ const primaryBtn = (disabled: boolean): React.CSSProperties => ({
   cursor: disabled ? "default" : "pointer",
 });
 
+// The tool's primary action button has three states: Clerk still loading, a
+// signed-out visitor (prompt sign-in), and a signed-in user (run the action).
+// Extracted so the two call sites (Check / Generate) stay declarative and the
+// Home component's branching stays flat.
+function ActionButton({
+  isLoaded,
+  isSignedIn,
+  busy,
+  disabled,
+  onClick,
+  idleLabel,
+  busyLabel,
+  signedOutLabel,
+}: Readonly<{
+  isLoaded: boolean;
+  isSignedIn: boolean;
+  busy: boolean;
+  disabled: boolean;
+  onClick: () => void;
+  idleLabel: string;
+  busyLabel: string;
+  signedOutLabel: string;
+}>) {
+  if (!isLoaded) {
+    return (
+      <button type="button" disabled style={primaryBtn(true)}>
+        Loading…
+      </button>
+    );
+  }
+  if (!isSignedIn) {
+    return (
+      <SignInButton mode="modal">
+        <button type="button" style={primaryBtn(false)}>
+          {signedOutLabel}
+        </button>
+      </SignInButton>
+    );
+  }
+  return (
+    <button type="button" onClick={onClick} disabled={disabled} style={primaryBtn(disabled)}>
+      {busy ? busyLabel : idleLabel}
+    </button>
+  );
+}
+
 export default function Home() {
   // `isSignedIn` is undefined until Clerk loads. Gate the action buttons on
   // `isLoaded` so a signed-in user sees a neutral "Loading…" state rather than
@@ -165,24 +211,16 @@ export default function Home() {
                 <option>Google</option>
                 <option>TikTok</option>
               </select>
-              {!isLoaded ? (
-                <button type="button" disabled style={primaryBtn(true)}>
-                  Loading…
-                </button>
-              ) : isSignedIn ? (
-                <button
-                  type="button"
-                  onClick={runCheck}
-                  disabled={loading || adText.trim().length < MIN_AD_CHARS}
-                  style={primaryBtn(loading || adText.trim().length < MIN_AD_CHARS)}
-                >
-                  {loading ? "Checking…" : "Check ad"}
-                </button>
-              ) : (
-                <SignInButton mode="modal">
-                  <button type="button" style={primaryBtn(false)}>Sign in to check</button>
-                </SignInButton>
-              )}
+              <ActionButton
+                isLoaded={isLoaded}
+                isSignedIn={isSignedIn === true}
+                busy={loading}
+                disabled={loading || adText.trim().length < MIN_AD_CHARS}
+                onClick={runCheck}
+                idleLabel="Check ad"
+                busyLabel="Checking…"
+                signedOutLabel="Sign in to check"
+              />
             </div>
             <textarea
               aria-label="Ad to check"
@@ -227,24 +265,16 @@ export default function Home() {
                 placeholder="best CRM for real estate   or   https://competitor.com/offer"
                 style={{ ...inputStyle, flex: "1 1 320px" }}
               />
-              {!isLoaded ? (
-                <button type="button" disabled style={primaryBtn(true)}>
-                  Loading…
-                </button>
-              ) : isSignedIn ? (
-                <button
-                  type="button"
-                  onClick={runGenerate}
-                  disabled={loading || !input.trim()}
-                  style={primaryBtn(loading || !input.trim())}
-                >
-                  {loading ? "Generating…" : "Generate"}
-                </button>
-              ) : (
-                <SignInButton mode="modal">
-                  <button type="button" style={primaryBtn(false)}>Sign in to generate</button>
-                </SignInButton>
-              )}
+              <ActionButton
+                isLoaded={isLoaded}
+                isSignedIn={isSignedIn === true}
+                busy={loading}
+                disabled={loading || !input.trim()}
+                onClick={runGenerate}
+                idleLabel="Generate"
+                busyLabel="Generating…"
+                signedOutLabel="Sign in to generate"
+              />
             </div>
             <label
               style={{
