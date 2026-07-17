@@ -3,22 +3,11 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { AuthControl } from "./components/auth-control";
+import { C, serif, sans, MAXW } from "./theme";
 
-export const C = {
-  paper: "#f6f3ec",
-  card: "#fbf9f4",
-  soft: "#f1ece3",
-  ink: "#1b1714",
-  body: "#3a342c",
-  muted: "#736a5c",
-  faint: "#a79d8c",
-  rule: "#e4ddcf",
-  green: "#16463a",
-  greenSoft: "#e9f1ea",
-};
-export const serif = "var(--font-fraunces), Georgia, 'Times New Roman', serif";
-export const sans = "var(--font-inter), ui-sans-serif, system-ui, sans-serif";
-export const MAXW = 940;
+// Re-exported so existing `import { C, serif, sans, MAXW } from "./ui"` call
+// sites keep working; the definitions now live in ./theme (single source).
+export { C, serif, sans, MAXW };
 
 export function Eyebrow({ children }: Readonly<{ children: ReactNode }>) {
   return (
