@@ -37,10 +37,10 @@ const primaryBtn = (disabled: boolean): React.CSSProperties => ({
 });
 
 export default function Home() {
-  // `isSignedIn` is undefined until Clerk loads; treat only an explicit true as
-  // signed in, so the button shows "Sign in" (not a broken run) during load.
-  const { isSignedIn } = useAuth();
-  const signedIn = isSignedIn === true;
+  // `isSignedIn` is undefined until Clerk loads. Gate the action buttons on
+  // `isLoaded` so a signed-in user sees a neutral "Loading…" state rather than
+  // a "Sign in" button that flashes to "Check ad" once Clerk resolves.
+  const { isLoaded, isSignedIn } = useAuth();
 
   const [mode, setMode] = useState<Mode>("check");
   const [loading, setLoading] = useState(false);
@@ -144,10 +144,10 @@ export default function Home() {
         </p>
 
         <div style={{ display: "flex", gap: 8, marginTop: 24 }}>
-          <button onClick={() => switchMode("check")} style={tab("check")}>
+          <button type="button" onClick={() => switchMode("check")} style={tab("check")}>
             Check an ad
           </button>
-          <button onClick={() => switchMode("generate")} style={tab("generate")}>
+          <button type="button" onClick={() => switchMode("generate")} style={tab("generate")}>
             Generate ads
           </button>
         </div>
@@ -165,8 +165,13 @@ export default function Home() {
                 <option>Google</option>
                 <option>TikTok</option>
               </select>
-              {signedIn ? (
+              {!isLoaded ? (
+                <button type="button" disabled style={primaryBtn(true)}>
+                  Loading…
+                </button>
+              ) : isSignedIn ? (
                 <button
+                  type="button"
                   onClick={runCheck}
                   disabled={loading || adText.trim().length < MIN_AD_CHARS}
                   style={primaryBtn(loading || adText.trim().length < MIN_AD_CHARS)}
@@ -175,7 +180,7 @@ export default function Home() {
                 </button>
               ) : (
                 <SignInButton mode="modal">
-                  <button style={primaryBtn(false)}>Sign in to check</button>
+                  <button type="button" style={primaryBtn(false)}>Sign in to check</button>
                 </SignInButton>
               )}
             </div>
@@ -222,8 +227,13 @@ export default function Home() {
                 placeholder="best CRM for real estate   or   https://competitor.com/offer"
                 style={{ ...inputStyle, flex: "1 1 320px" }}
               />
-              {signedIn ? (
+              {!isLoaded ? (
+                <button type="button" disabled style={primaryBtn(true)}>
+                  Loading…
+                </button>
+              ) : isSignedIn ? (
                 <button
+                  type="button"
                   onClick={runGenerate}
                   disabled={loading || !input.trim()}
                   style={primaryBtn(loading || !input.trim())}
@@ -232,7 +242,7 @@ export default function Home() {
                 </button>
               ) : (
                 <SignInButton mode="modal">
-                  <button style={primaryBtn(false)}>Sign in to generate</button>
+                  <button type="button" style={primaryBtn(false)}>Sign in to generate</button>
                 </SignInButton>
               )}
             </div>

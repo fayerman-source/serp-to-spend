@@ -14,6 +14,7 @@ export function AuthControl() {
   return (
     <SignInButton mode="modal">
       <button
+        type="button"
         style={{
           fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
           fontSize: 14,
