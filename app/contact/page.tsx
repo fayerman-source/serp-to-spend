@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { C, serif, sans, MAXW, Eyebrow, SiteHeader, SiteFooter } from "../ui";
 import { ContactForm } from "./contact-form";
+import { openGraphFor } from "../site";
 
 export const metadata: Metadata = {
   title: "Contact · SERP-to-Spend",
-  description: "Questions, feedback, or feature requests for SERP-to-Spend — get in touch.",
+  description:
+    "Questions, feedback, or a feature request for SERP-to-Spend? Send a note and it reaches the person who built it, not a support queue. Replies usually same day.",
   alternates: { canonical: "/contact" },
+  openGraph: openGraphFor("/contact"),
 };
 
 export default function Contact() {
