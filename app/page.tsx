@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth, SignInButton } from "@clerk/nextjs";
 import { C, serif, sans, MAXW, Eyebrow, SiteHeader, SiteFooter } from "./ui";
 import type { Mode, Platform, Teardown, ApiResult } from "./types";
 import { TeardownView, AdPackView, Spinner, RISK_COLOR } from "./components/results";
@@ -35,7 +36,58 @@ const primaryBtn = (disabled: boolean): React.CSSProperties => ({
   cursor: disabled ? "default" : "pointer",
 });
 
+// The tool's primary action button has three states: Clerk still loading, a
+// signed-out visitor (prompt sign-in), and a signed-in user (run the action).
+// Extracted so the two call sites (Check / Generate) stay declarative and the
+// Home component's branching stays flat.
+function ActionButton({
+  isLoaded,
+  isSignedIn,
+  busy,
+  disabled,
+  onClick,
+  idleLabel,
+  busyLabel,
+  signedOutLabel,
+}: Readonly<{
+  isLoaded: boolean;
+  isSignedIn: boolean;
+  busy: boolean;
+  disabled: boolean;
+  onClick: () => void;
+  idleLabel: string;
+  busyLabel: string;
+  signedOutLabel: string;
+}>) {
+  if (!isLoaded) {
+    return (
+      <button type="button" disabled style={primaryBtn(true)}>
+        Loading…
+      </button>
+    );
+  }
+  if (!isSignedIn) {
+    return (
+      <SignInButton mode="modal">
+        <button type="button" style={primaryBtn(false)}>
+          {signedOutLabel}
+        </button>
+      </SignInButton>
+    );
+  }
+  return (
+    <button type="button" onClick={onClick} disabled={disabled} style={primaryBtn(disabled)}>
+      {busy ? busyLabel : idleLabel}
+    </button>
+  );
+}
+
 export default function Home() {
+  // `isSignedIn` is undefined until Clerk loads. Gate the action buttons on
+  // `isLoaded` so a signed-in user sees a neutral "Loading…" state rather than
+  // a "Sign in" button that flashes to "Check ad" once Clerk resolves.
+  const { isLoaded, isSignedIn } = useAuth();
+
   const [mode, setMode] = useState<Mode>("check");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -138,10 +190,10 @@ export default function Home() {
         </p>
 
         <div style={{ display: "flex", gap: 8, marginTop: 24 }}>
-          <button onClick={() => switchMode("check")} style={tab("check")}>
+          <button type="button" onClick={() => switchMode("check")} style={tab("check")}>
             Check an ad
           </button>
-          <button onClick={() => switchMode("generate")} style={tab("generate")}>
+          <button type="button" onClick={() => switchMode("generate")} style={tab("generate")}>
             Generate ads
           </button>
         </div>
@@ -159,13 +211,16 @@ export default function Home() {
                 <option>Google</option>
                 <option>TikTok</option>
               </select>
-              <button
-                onClick={runCheck}
+              <ActionButton
+                isLoaded={isLoaded}
+                isSignedIn={isSignedIn === true}
+                busy={loading}
                 disabled={loading || adText.trim().length < MIN_AD_CHARS}
-                style={primaryBtn(loading || adText.trim().length < MIN_AD_CHARS)}
-              >
-                {loading ? "Checking…" : "Check ad"}
-              </button>
+                onClick={runCheck}
+                idleLabel="Check ad"
+                busyLabel="Checking…"
+                signedOutLabel="Sign in to check"
+              />
             </div>
             <textarea
               aria-label="Ad to check"
@@ -210,13 +265,16 @@ export default function Home() {
                 placeholder="best CRM for real estate   or   https://competitor.com/offer"
                 style={{ ...inputStyle, flex: "1 1 320px" }}
               />
-              <button
-                onClick={runGenerate}
+              <ActionButton
+                isLoaded={isLoaded}
+                isSignedIn={isSignedIn === true}
+                busy={loading}
                 disabled={loading || !input.trim()}
-                style={primaryBtn(loading || !input.trim())}
-              >
-                {loading ? "Generating…" : "Generate"}
-              </button>
+                onClick={runGenerate}
+                idleLabel="Generate"
+                busyLabel="Generating…"
+                signedOutLabel="Sign in to generate"
+              />
             </div>
             <label
               style={{

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Inter } from "next/font/google";
 import Script from "next/script";
+import { ClerkProvider } from "@clerk/nextjs";
 import { jsonLdScript } from "../lib/json-ld";
 import "./globals.css";
 
@@ -68,7 +69,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
+    <ClerkProvider>
+      <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
       <body
         style={{
           margin: 0,
@@ -89,6 +91,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           })(window, document, "clarity", "script", "xdrfh84ktr");`}
         </Script>
       </body>
-    </html>
+      </html>
+    </ClerkProvider>
   );
 }

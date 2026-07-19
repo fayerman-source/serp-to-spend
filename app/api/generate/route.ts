@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { ground } from "@/lib/serp";
 import { generateAdPack } from "@/lib/generate";
 
@@ -6,6 +7,13 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
+  // Login required: every run costs a SerpApi + LLM call, so reject anonymous
+  // requests before doing any billable work.
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Please sign in to generate ads." }, { status: 401 });
+  }
+
   let input: string;
   let useSearch: boolean;
   try {
