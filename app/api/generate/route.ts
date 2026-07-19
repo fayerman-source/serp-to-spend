@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { ground } from "@/lib/serp";
 import { generateAdPack } from "@/lib/generate";
+import { logRun, currentProvider } from "@/lib/log";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -41,12 +42,35 @@ export async function POST(req: Request) {
     );
   }
 
+  const startedAt = Date.now();
   try {
     const grounding = await ground(input, { useSearch });
     const pack = await generateAdPack(grounding);
+    logRun({
+      route: "generate",
+      userId,
+      ok: true,
+      status: 200,
+      latencyMs: Date.now() - startedAt,
+      provider: currentProvider(),
+      inputLength: input.length,
+      grounded: useSearch,
+      source: grounding.source,
+    });
     return NextResponse.json({ source: grounding.source, query: grounding.query, pack });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Generation failed.";
+    logRun({
+      route: "generate",
+      userId,
+      ok: false,
+      status: 502,
+      latencyMs: Date.now() - startedAt,
+      provider: currentProvider(),
+      inputLength: input.length,
+      grounded: useSearch,
+      error: message,
+    });
     return NextResponse.json({ error: message }, { status: 502 });
   }
 }
