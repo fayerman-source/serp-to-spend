@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 // start, no whitespace, and a "." in the domain that is not the last character.
 function looksLikeEmail(s: string): boolean {
   const at = s.indexOf("@");
-  if (at <= 0 || s.indexOf("@", at + 1) !== -1) return false;
+  if (at <= 0 || s.includes("@", at + 1)) return false;
   if (/\s/.test(s)) return false;
   const domain = s.slice(at + 1);
   const dot = domain.lastIndexOf(".");
