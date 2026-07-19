@@ -79,7 +79,3 @@ lib/knowledge/              sourced policy modules (ftc, fda, meta, google, tikt
 - **Read the targeting, not just the copy.** Take the audience as input (age, location, and Meta's Special Ad Categories like Housing, Employment, and Credit) and tighten the policy thresholds to match, since the same claim can be fine for one audience and a violation for another.
 - **Counsel-reviewed knowledge layer.** Conduct a formal attorney review pass and add the case-law citations to the already sourced and versioned legal modules, turning the moat into something defensible enough to stand behind in writing.
 - **Drop straight into the campaign.** Export winning variants to CSV / Meta bulk-import.
-
----
-
-Built for the [It's Today Media](https://www.itstoday.media/) build challenge: the push that turned a scan result into a shipped product.
