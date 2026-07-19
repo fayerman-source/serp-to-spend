@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { C, serif, sans, MAXW, Eyebrow, SiteHeader, SiteFooter } from "../ui";
+import { openGraphFor } from "../site";
 
 export const metadata: Metadata = {
   title: "Privacy · SERP-to-Spend",
-  description: "What SERP-to-Spend collects, how it is used, and who processes it.",
+  description:
+    "What SERP-to-Spend collects, what it does not, and who processes it. The ads you check are not stored, and run logs keep metadata only, never your ad copy.",
   alternates: { canonical: "/privacy" },
+  openGraph: openGraphFor("/privacy"),
 };
 
 const LAST_UPDATED = "July 19, 2026";

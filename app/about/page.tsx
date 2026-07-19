@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { C, serif, sans, MAXW, Eyebrow, SiteHeader, SiteFooter } from "../ui";
 import { jsonLdScript } from "../../lib/json-ld";
+import { openGraphFor } from "../site";
 
 export const metadata: Metadata = {
   title: "About · SERP-to-Spend",
-  description: "Why this tool exists, the legal moat behind it, and the builder.",
+  description:
+    "Ad disapprovals cost media buyers money every week. Why this tool exists, the cited FTC, FDA, and platform rules behind it, and the lawyer who built it.",
   alternates: { canonical: "/about" },
+  openGraph: openGraphFor("/about"),
 };
 
 const FAQ = [
