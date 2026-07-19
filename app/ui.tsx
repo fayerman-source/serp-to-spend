@@ -99,12 +99,27 @@ export function SiteFooter() {
         <Link href="/" style={{ textDecoration: "none", fontFamily: serif, fontSize: 16, fontWeight: 600, color: C.ink }}>
           SERP·to·Spend
         </Link>
-        <div style={{ fontFamily: sans, fontSize: 13.5, color: C.muted }}>
-          Check an ad and generate ads, free with a quick sign-in.{" "}
-          <span style={{ color: C.green, fontWeight: 600 }}>
-            Pro is coming: saved reviews and bulk checks.
-          </span>
-        </div>
+        <nav style={{ display: "flex", alignItems: "center", gap: 20, fontFamily: sans, fontSize: 13.5 }}>
+          <Link href="/contact" style={{ color: C.muted, textDecoration: "none", fontWeight: 500 }}>
+            Contact
+          </Link>
+          <Link href="/privacy" style={{ color: C.muted, textDecoration: "none", fontWeight: 500 }}>
+            Privacy
+          </Link>
+        </nav>
+      </div>
+      <div
+        style={{
+          maxWidth: MAXW,
+          margin: "0 auto",
+          padding: "0 28px 30px",
+          fontFamily: sans,
+          fontSize: 13.5,
+          color: C.muted,
+        }}
+      >
+        Check an ad and generate ads, free with a quick sign-in.{" "}
+        <span style={{ color: C.green, fontWeight: 600 }}>Pro is coming: saved reviews and bulk checks.</span>
       </div>
     </div>
   );
