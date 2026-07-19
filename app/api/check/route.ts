@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { checkAd } from "@/lib/check";
+import { logRun, currentProvider } from "@/lib/log";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -52,11 +53,33 @@ export async function POST(req: Request) {
     );
   }
 
+  const startedAt = Date.now();
   try {
     const teardown = await checkAd(platform, ad);
+    logRun({
+      route: "check",
+      userId,
+      ok: true,
+      status: 200,
+      latencyMs: Date.now() - startedAt,
+      provider: currentProvider(),
+      inputLength: ad.length,
+      platform,
+    });
     return NextResponse.json({ teardown });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Check failed.";
+    logRun({
+      route: "check",
+      userId,
+      ok: false,
+      status: 502,
+      latencyMs: Date.now() - startedAt,
+      provider: currentProvider(),
+      inputLength: ad.length,
+      platform,
+      error: message,
+    });
     return NextResponse.json({ error: message }, { status: 502 });
   }
 }
