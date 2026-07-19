@@ -181,27 +181,6 @@ export default function About() {
           ))}
         </Section>
 
-        <p
-          style={{
-            fontSize: 14,
-            color: C.muted,
-            margin: "44px 0 0",
-            paddingTop: 24,
-            borderTop: `1px solid ${C.rule}`,
-            fontStyle: "italic",
-          }}
-        >
-          Built for the{" "}
-          <a
-            href="https://www.itstoday.media/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: C.green, fontWeight: 600, fontStyle: "normal" }}
-          >
-            It&rsquo;s Today Media
-          </a>{" "}
-          build challenge: the push that turned a scan result into a shipped product.
-        </p>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(FAQ_SCHEMA) }} />
       </main>
       <SiteFooter />
