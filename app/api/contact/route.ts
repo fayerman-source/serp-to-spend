@@ -2,6 +2,17 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
+// Linear email sanity check (no regex backtracking): exactly one "@" not at the
+// start, no whitespace, and a "." in the domain that is not the last character.
+function looksLikeEmail(s: string): boolean {
+  const at = s.indexOf("@");
+  if (at <= 0 || s.indexOf("@", at + 1) !== -1) return false;
+  if (/\s/.test(s)) return false;
+  const domain = s.slice(at + 1);
+  const dot = domain.lastIndexOf(".");
+  return dot > 0 && dot < domain.length - 1;
+}
+
 // Public contact endpoint (no auth — prospects aren't signed in). Delivers via
 // Web3Forms when WEB3FORMS_ACCESS_KEY is set (free tier, no card, arrives in the
 // inbox tied to the key). Until a key is added, submissions are captured in the
@@ -30,7 +41,7 @@ export async function POST(req: Request) {
   if (name.length > 200 || email.length > 200 || message.length > 5000) {
     return NextResponse.json({ error: "That message is too long." }, { status: 400 });
   }
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+  if (!looksLikeEmail(email)) {
     return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
   }
 

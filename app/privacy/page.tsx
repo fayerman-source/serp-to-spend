@@ -45,7 +45,6 @@ export default function Privacy() {
         <p style={{ fontSize: 14, color: C.muted, margin: "10px 0 0" }}>Last updated: {LAST_UPDATED}</p>
 
         <P>
-          <span style={{ display: "inline-block", height: 12 }} />
           SERP-to-Spend (&ldquo;we&rdquo;) helps advertisers check and generate ad copy against platform and FTC
           rules. This policy explains what we collect and how it is handled. It is a general privacy notice, not
           legal advice.
