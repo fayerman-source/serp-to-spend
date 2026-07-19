@@ -4,6 +4,7 @@ import { Fraunces, Inter } from "next/font/google";
 import Script from "next/script";
 import { ClerkProvider } from "@clerk/nextjs";
 import { jsonLdScript } from "../lib/json-ld";
+import { SITE, SITE_URL, DESCRIPTION, openGraphFor } from "./site";
 import "./globals.css";
 
 // Self-hosted via next/font (no render-blocking <link>, no layout shift).
@@ -19,11 +20,6 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
 });
-
-const SITE = "SERP-to-Spend";
-const SITE_URL = "https://serptospend.com";
-const DESCRIPTION =
-  "Paste an ad you are about to run. Get the platform policy it would trip, the regulatory risk, and a version that passes. Every verdict cites the real authority behind it.";
 
 // Machine-readable identity for search and AI models (AEO). Organization = who
 // this is; SoftwareApplication = what it is. Rendered as JSON-LD below.
@@ -55,13 +51,10 @@ export const metadata: Metadata = {
   title: "SERP-to-Spend: ad compliance and creative for media buyers",
   description: DESCRIPTION,
   alternates: { canonical: "/" },
-  // Title/description and og:url are intentionally NOT pinned here: Next falls
-  // back to the nearest title/description and the resolved page URL, so /about
-  // and /changelog emit their OWN share tags instead of the homepage's.
-  openGraph: {
-    type: "website",
-    siteName: SITE,
-  },
+  // og:title/og:description stay unset so /about and /changelog fall back to
+  // their OWN title/description instead of inheriting the homepage's. See
+  // ./site for why og:url must be restated per page.
+  openGraph: openGraphFor("/"),
   twitter: {
     card: "summary_large_image",
   },

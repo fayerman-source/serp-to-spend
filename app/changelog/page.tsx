@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { C, serif, sans, MAXW, Eyebrow, SiteHeader, SiteFooter } from "../ui";
+import { openGraphFor } from "../site";
 
 export const metadata: Metadata = {
   title: "Changelog · SERP-to-Spend",
-  description: "Built in the open, one pull request at a time.",
+  description:
+    "Built in the open, one pull request at a time. The full build log for SERP-to-Spend: every feature, fix, and legal module, dated and shipped through review.",
   alternates: { canonical: "/changelog" },
+  openGraph: openGraphFor("/changelog"),
 };
 
 const LOG: Array<{ date: string; items: Array<{ k: string; n: ReactNode }> }> = [
