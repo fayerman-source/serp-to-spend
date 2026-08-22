@@ -1,4 +1,5 @@
 import { getGeminiClient } from "./vertex";
+import { assertPublicHttpUrl } from "./ssrf";
 
 // SERP / page grounding. Modes, in priority order (when search is enabled):
 //   1. Input is a URL              -> fetch the page, strip to text (competitor/offer grounding)
@@ -32,15 +33,30 @@ function htmlToText(html: string): string {
     .trim();
 }
 
-async function fetchPage(url: string): Promise<string> {
-  const res = await fetch(url, {
-    headers: { "user-agent": "Mozilla/5.0 (compatible; serp-to-spend/0.1)" },
-    // Don't let a slow competitor page hang the whole request.
-    signal: AbortSignal.timeout(12_000),
-  });
-  if (!res.ok) throw new Error(`Fetch failed (${res.status}) for ${url}`);
-  const html = await res.text();
-  return htmlToText(html).slice(0, 6_000);
+const MAX_REDIRECTS = 5;
+
+// Fetches a user-submitted URL server-side (competitor/offer grounding). Validates
+// the target isn't loopback/private/link-local (SSRF guard) before every request,
+// and follows redirects manually so a hop can't sidestep that check.
+async function fetchPage(rawUrl: string): Promise<string> {
+  let current = rawUrl;
+  for (let hop = 0; ; hop++) {
+    const url = await assertPublicHttpUrl(current);
+    const res = await fetch(url, {
+      headers: { "user-agent": "Mozilla/5.0 (compatible; serp-to-spend/0.1)" },
+      // Don't let a slow competitor page hang the whole request.
+      signal: AbortSignal.timeout(12_000),
+      redirect: "manual",
+    });
+    if (res.status >= 300 && res.status < 400 && res.headers.get("location")) {
+      if (hop >= MAX_REDIRECTS) throw new Error("Too many redirects.");
+      current = new URL(res.headers.get("location")!, url).toString();
+      continue;
+    }
+    if (!res.ok) throw new Error(`Fetch failed (${res.status}) for ${current}`);
+    const html = await res.text();
+    return htmlToText(html).slice(0, 6_000);
+  }
 }
 
 async function fetchSerp(query: string, key: string): Promise<string> {
