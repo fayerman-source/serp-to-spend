@@ -96,6 +96,7 @@ function isPrivateIPv6(ip: string): boolean {
   if ((h[0] & 0xfe00) === 0xfc00) return true; // fc00::/7 unique local
 
   if (h[0] === 0x2001 && h[1] === 0x0db8) return true; // 2001:db8::/32 documentation
+  if (h[0] === 0x2001 && h[1] === 0x0002 && h[2] === 0x0000) return true; // 2001:2::/48 benchmarking (RFC 5180)
   if (h[0] === 0x3fff && (h[1] & 0xf000) === 0) return true; // 3fff::/20 documentation (RFC 9637)
   if (h[0] === 0x2002) return true; // 2002::/16 6to4
   if (h[0] === 0x0064 && h[1] === 0xff9b && h.slice(2, 6).every((n) => n === 0)) return true; // 64:ff9b::/96 NAT64 well-known prefix (RFC 6052)

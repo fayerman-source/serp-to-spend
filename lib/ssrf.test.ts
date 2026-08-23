@@ -69,6 +69,10 @@ describe("resolvePublicHttpUrl", () => {
     await expect(resolvePublicHttpUrl("http://[::ffff:0:10.0.0.1]/")).rejects.toThrow();
   });
 
+  it("rejects the IPv6 benchmarking prefix", async () => {
+    await expect(resolvePublicHttpUrl("http://[2001:2::1]/")).rejects.toThrow();
+  });
+
   it("rejects IPv4 documentation, protocol-assignment, and 6to4-relay ranges", async () => {
     await expect(resolvePublicHttpUrl("http://192.0.0.1/")).rejects.toThrow(); // IETF protocol assignments
     await expect(resolvePublicHttpUrl("http://192.0.2.1/")).rejects.toThrow(); // TEST-NET-1
