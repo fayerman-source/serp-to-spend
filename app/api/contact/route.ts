@@ -53,7 +53,7 @@ export async function POST(req: Request) {
         headers: { "content-type": "application/json", accept: "application/json" },
         body: JSON.stringify({
           access_key: key,
-          subject: `serptospend contact — ${name || email}`,
+          subject: `serptospend contact: ${name || email}`,
           from_name: "serptospend contact form",
           name,
           email,

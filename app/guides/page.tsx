@@ -9,7 +9,7 @@ const PATH = "/guides";
 export const metadata: Metadata = {
   title: "Guides · SERP-to-Spend",
   description:
-    "Platform ad policy and FTC compliance, explained with the actual cited standard — not a paraphrase. Guides for media buyers who want to know why an ad gets rejected before it runs.",
+    "Platform ad policy and FTC compliance, explained with the actual cited standard, not a paraphrase. Guides for media buyers who want to know why an ad gets rejected before it runs.",
   alternates: { canonical: PATH },
   openGraph: openGraphFor(PATH),
 };
@@ -23,7 +23,7 @@ const GUIDES = [
   {
     href: "/guides/ftc-advertising-substantiation-standard",
     title: "The FTC Substantiation Standard for Ad Claims, Explained",
-    dek: "Which claims need proof before the ad runs, which are puffery, and what changed in the 2023 Endorsement Guides revision.",
+    dek: "Which claims need proof before the ad runs, which are puffery, and what actually changed in the 2009 and 2023 Endorsement Guides revisions.",
   },
 ];
 
@@ -35,7 +35,7 @@ export default function Guides() {
         <Eyebrow>Guides</Eyebrow>
         <Title>Platform ad policy and FTC compliance, cited</Title>
         <Dek>
-          Not a paraphrase of what a platform&rsquo;s policy probably means &mdash; the actual standard, in its
+          Not a paraphrase of what a platform&rsquo;s policy probably means. The actual standard, in its
           own terms, with the rewrite pattern that clears it.
         </Dek>
 

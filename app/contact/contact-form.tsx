@@ -61,7 +61,7 @@ export function ContactForm() {
   if (status === "sent") {
     return (
       <p style={{ fontFamily: sans, fontSize: 16, color: C.green, fontWeight: 600, margin: "24px 0 0" }}>
-        Thanks — your message is on its way. We&rsquo;ll get back to you at {email}.
+        Thanks. Your message is on its way. We&rsquo;ll get back to you at {email}.
       </p>
     );
   }
