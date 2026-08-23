@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { resolvePublicHttpUrl } from "./ssrf";
 
 describe("resolvePublicHttpUrl", () => {
@@ -45,8 +45,24 @@ describe("resolvePublicHttpUrl", () => {
     await expect(resolvePublicHttpUrl("http://[febf::1]/")).rejects.toThrow();
   });
 
-  it("rejects IPv4-mapped IPv6 private addresses", async () => {
+  it("rejects IPv4-mapped IPv6 private addresses given as a literal (WHATWG-canonicalized to hex)", async () => {
     await expect(resolvePublicHttpUrl("http://[::ffff:127.0.0.1]/")).rejects.toThrow();
+  });
+
+  it("rejects a resolved IPv4-mapped address even when DNS returns the legacy dotted-quad tail form", async () => {
+    // getaddrinfo/inet_ntop can textually render an IPv4-mapped IPv6 address as
+    // "::ffff:a.b.c.d" (RFC 5952 §5) rather than the pure-hex form WHATWG URL
+    // parsing always produces for a literal — dns.lookup() is not guaranteed to
+    // match the literal-hostname path's canonicalization, so this must be
+    // checked independently via a resolved (non-literal) hostname.
+    vi.resetModules();
+    vi.doMock("node:dns/promises", () => ({
+      lookup: vi.fn().mockResolvedValue([{ address: "::ffff:127.0.0.1", family: 6 }]),
+    }));
+    const { resolvePublicHttpUrl: resolveWithMockedDns } = await import("./ssrf");
+    await expect(resolveWithMockedDns("http://attacker-controlled.example/")).rejects.toThrow();
+    vi.doUnmock("node:dns/promises");
+    vi.resetModules();
   });
 
   it("rejects IPv4 documentation, protocol-assignment, and 6to4-relay ranges", async () => {

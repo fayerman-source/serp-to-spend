@@ -42,11 +42,24 @@ function isPrivateIPv4(ip: string): boolean {
   return false;
 }
 
-// Expands a canonical (compressed, lowercase) IPv6 literal into its 8 16-bit
-// groups. Both of our inputs are guaranteed canonical: URL.hostname produces
-// the WHATWG-canonical form, and dns.lookup() returns getaddrinfo's canonical
-// form — neither ever has leading zeros in a group or more than one "::".
+// Expands a compressed, lowercase IPv6 literal into its 8 16-bit groups.
+// URL.hostname always produces the pure-hex WHATWG-canonical form, but
+// dns.lookup() is NOT guaranteed to: getaddrinfo can return the legacy
+// dotted-quad tail form for an IPv4-mapped address (e.g. "::ffff:127.0.0.1"
+// instead of "::ffff:7f00:1"). A dotted tail is one group textually but 32
+// bits — left alone it throws off the group count AND silently parses under
+// radix 16 (parseInt("127.0.0.1", 16) === 0x127, not NaN), so it must be
+// normalized to two hex groups before anything below can be trusted.
 function expandIPv6(addr: string): number[] | null {
+  const dottedTail = addr.match(/(?:^|:)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/);
+  if (dottedTail) {
+    const octets = dottedTail[1].split(".").map(Number);
+    if (octets.length !== 4 || octets.some((o) => Number.isNaN(o) || o < 0 || o > 255)) return null;
+    const hi = ((octets[0] << 8) | octets[1]).toString(16);
+    const lo = ((octets[2] << 8) | octets[3]).toString(16);
+    addr = addr.slice(0, addr.length - dottedTail[1].length) + hi + ":" + lo;
+  }
+
   const doubleColon = addr.indexOf("::");
   let groups: string[];
   if (doubleColon !== -1) {
@@ -61,8 +74,8 @@ function expandIPv6(addr: string): number[] | null {
     groups = addr.split(":");
   }
   if (groups.length !== 8) return null;
-  const nums = groups.map((g) => Number.parseInt(g, 16));
-  return nums.some((n) => Number.isNaN(n) || n < 0 || n > 0xffff) ? null : nums;
+  const nums = groups.map((g) => (/^[0-9a-f]{1,4}$/.test(g) ? Number.parseInt(g, 16) : NaN));
+  return nums.some((n) => Number.isNaN(n)) ? null : nums;
 }
 
 function ipv4FromMappedHextets(h: number[]): string {
