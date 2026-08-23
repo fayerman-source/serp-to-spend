@@ -10,11 +10,16 @@ those often carry real, valid bugs even when every check shows a green checkmark
 
 Before merging any PR in this repo:
 
-1. **Read every PR comment and inline review comment**, not just the checks list:
+1. **Read every PR comment, submitted review, and inline review comment**, not just the checks
+   list. All three are separate GitHub objects and a finding can live in any of them — a
+   submitted review's own body (not just its inline comments) is easy to miss:
    ```
    gh pr view <n> --json comments -q '.comments[] | {author: .author.login, body: .body}'
-   gh api repos/<owner>/<repo>/pulls/<n>/comments --jq '.[] | {user: .user.login, path, line, body}'
+   gh api repos/<owner>/<repo>/pulls/<n>/reviews --paginate --jq '.[] | select(.body != "") | {user: .user.login, state, body}'
+   gh api repos/<owner>/<repo>/pulls/<n>/comments --paginate --jq '.[] | {user: .user.login, path, line, body}'
    ```
+   Use `--paginate` on the `gh api` calls — a PR with enough comments to span more than one API
+   page will otherwise silently drop the later ones.
 2. **Triage each finding on its merits.** Don't dismiss a bot comment because it's from a bot —
    verify it against the actual code (and, for legal/compliance content in `lib/knowledge/` or
    `app/guides/`, against the primary source) before deciding whether it's real.
