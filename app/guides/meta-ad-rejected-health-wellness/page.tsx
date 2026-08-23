@@ -69,7 +69,7 @@ export default function Guide() {
           <UL>
             <LI>
               <strong>Privacy Violations and Personal Attributes.</strong> The ad must not assert or imply a
-              person&rsquo;s personal attributes or condition &mdash; health status, weight, or similar &mdash; even
+              person&rsquo;s personal attributes or condition (health status, weight, or similar), even
               indirectly. A headline like &ldquo;Struggling to lose the weight?&rdquo; addresses the viewer&rsquo;s
               body directly, which is exactly what this standard targets.
             </LI>
@@ -77,13 +77,13 @@ export default function Guide() {
               <strong>Health and Wellness (Restricted).</strong> Ads in this category must not imply or generate
               negative self-perception, and must not promote unrealistic outcomes. Weight-loss or weight-gain
               products, cosmetic <em>procedures</em>, and dietary or health supplements must be targeted to
-              audiences 18 and older &mdash; general wellbeing products (fitness equipment, health clubs) and
+              audiences 18 and older. General wellbeing products (fitness equipment, health clubs) and
               non-permanent cosmetic products (makeup, skincare, hair products) are exempt from that age
               restriction.
             </LI>
             <LI>
-              <strong>Fraud, Scams and Deceptive Practices.</strong> A misleading outcome claim &mdash; a specific
-              result presented as the likely, ordinary outcome &mdash; falls under this standard regardless of
+              <strong>Fraud, Scams and Deceptive Practices.</strong> A misleading outcome claim (a specific
+              result presented as the likely, ordinary outcome) falls under this standard regardless of
               category.
             </LI>
           </UL>
@@ -92,7 +92,7 @@ export default function Guide() {
         <Section>
           <H2>Rewrite pattern: keep the hook, drop the trigger</H2>
           <P>
-            The fix is rarely a new offer &mdash; it is almost always the same benefit stated without addressing
+            The fix is rarely a new offer. It is almost always the same benefit stated without addressing
             the viewer&rsquo;s body or condition, and without a specific, fast, or guaranteed number attached to it.
           </P>
           <H3>Instead of implying a condition&hellip;</H3>
@@ -103,7 +103,7 @@ export default function Guide() {
           </P>
           <H3>Instead of a specific fast outcome&hellip;</H3>
           <P>
-            &ldquo;Lose 15 pounds in 2 weeks&rdquo; is a specific, fast, testable claim &mdash; the kind Meta&rsquo;s
+            &ldquo;Lose 15 pounds in 2 weeks&rdquo; is a specific, fast, testable claim: the kind Meta&rsquo;s
             Health and Wellness standard restricts as an unrealistic outcome. &ldquo;Built for people who want a
             routine that actually fits their week&rdquo; keeps the promise of ease without a number or a
             timeline.
@@ -113,7 +113,7 @@ export default function Guide() {
             &ldquo;Guaranteed results or your money back&rdquo; is a guarantee of outcome, which needs
             substantiation the ad copy alone cannot provide and which independently risks the Fraud, Scams and
             Deceptive Practices standard if the outcome is not ordinary. Moving the line to the landing page
-            does not fix it &mdash; Meta reviews the destination too, and the FTC substantiation obligation
+            does not fix it: Meta reviews the destination too, and the FTC substantiation obligation
             follows the claim wherever it runs. Drop or qualify the outcome promise itself; a genuinely
             truthful refund policy can still live on the landing page, but it is not a cure for an
             unsubstantiated results guarantee.
@@ -142,7 +142,7 @@ export default function Guide() {
             >
               transparency.meta.com/policies/ad-standards
             </a>
-            . This is decision support, not legal advice &mdash; see the{" "}
+            . This is decision support, not legal advice: see the{" "}
             <Link href="/about" style={{ color: C.muted }}>
               full disclosure on /about
             </Link>
