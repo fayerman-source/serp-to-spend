@@ -43,7 +43,7 @@ const FAQ = [
   },
   {
     q: "Does a 'results not typical' disclaimer protect a testimonial claim?",
-    a: "No, and this changed with the 2023 revision to the FTC's Endorsement Guides. A bare 'results not typical' disclaimer is no longer sufficient. If the advertised result is not what a typical user experiences, the ad must disclose the result users generally do achieve, and that generally-expected result must itself be substantiated.",
+    a: "No. The FTC eliminated that safe harbor in the 2009 revision to the Endorsement Guides: a bare 'results not typical' disclaimer has not been sufficient on its own since. If the advertised result is not what a typical user experiences, the ad must disclose the result users generally do achieve, and that generally-expected result must itself be substantiated.",
   },
   {
     q: "Who is liable if an affiliate makes the unsubstantiated claim, not the brand?",
@@ -103,24 +103,28 @@ export default function Guide() {
         </Section>
 
         <Section>
-          <H2>Testimonials and income claims: the 2023 update that changes things</H2>
+          <H2>Testimonials and income claims</H2>
           <P>
             Endorsements and testimonials (16 C.F.R. Part 255) must reflect the endorser&rsquo;s honest opinion
             and the <em>typical</em> experience of users. If results are not typical, the ad must disclose the
-            generally-expected result &mdash; and that result must itself be substantiated. The revised
-            Endorsement Guides (88 Fed. Reg. 48102, effective July 26, 2023) made explicit that a bare
-            &ldquo;results not typical&rdquo; disclaimer is not enough on its own. This applies to income and
-            aggregate-statistic testimonials too: &ldquo;our students make $10,000 a month&rdquo; or &ldquo;100%
-            of clients saw returns&rdquo; imply a typical result and need the same substantiation or
-            disclosure.
+            generally-expected result &mdash; and that result must itself be substantiated. The FTC eliminated
+            the old blanket &ldquo;results not typical&rdquo; safe harbor in the 2009 revision to the
+            Endorsement Guides (74 Fed. Reg. 53124, effective December 1, 2009); a bare disclaimer has not been
+            enough on its own since. The 2023 revision (88 Fed. Reg. 48102, effective July 26, 2023)
+            modernized the Guides for social media, influencers, and fake reviews, but left this disclosure
+            requirement in place. This applies to income and aggregate-statistic testimonials too:
+            &ldquo;our students make $10,000 a month&rdquo; or &ldquo;100% of clients saw returns&rdquo; imply a
+            typical result and need the same substantiation or disclosure.
           </P>
           <P>
             Separately, income claims can trigger the Business Opportunity Rule (16 C.F.R. Part 437) &mdash; but
             only when the offer is a true business opportunity: a required payment <em>plus</em> a
-            representation that the seller will provide locations, outlets, accounts, or customers. Pure
-            coaching, courses, or general business-development training do not count. A generic &ldquo;make $X a
-            month&rdquo; course is a Section 5 and § 255.2(b) substantiation matter, not automatically a Part
-            437 violation &mdash; unless it also promises customers or outlets.
+            representation that the seller will (i) provide locations for equipment or displays, (ii) provide
+            outlets, accounts, or customers, or (iii) buy back the goods or services the purchaser produces.
+            Pure coaching, courses, or general business-development training do not count on their own. A
+            generic &ldquo;make $X a month&rdquo; course is a Section 5 and § 255.2(b) substantiation matter,
+            not automatically a Part 437 violation &mdash; unless it also makes one of those three
+            representations.
           </P>
         </Section>
 
@@ -150,8 +154,11 @@ export default function Guide() {
             <SourceLink href="https://www.ftc.gov/public-statements/1983/03/ftc-policy-statement-regarding-advertising-substantiation">
               Policy Statement Regarding Advertising Substantiation (1983)
             </SourceLink>
-            ; Endorsement Guides <SourceLink href="https://www.law.cornell.edu/cfr/text/16/255.2">16 C.F.R. § 255.2(b)</SourceLink> and{" "}
-            <SourceLink href="https://www.federalregister.gov/citation/88-FR-48102">88 Fed. Reg. 48102</SourceLink>; FTC{" "}
+            ; Endorsement Guides <SourceLink href="https://www.law.cornell.edu/cfr/text/16/255.2">16 C.F.R. § 255.2(b)</SourceLink>,{" "}
+            <SourceLink href="https://www.federalregister.gov/documents/2009/10/15/E9-24646/guides-concerning-the-use-of-endorsements-and-testimonials-in-advertising">
+              74 Fed. Reg. 53124 (2009)
+            </SourceLink>{" "}
+            and <SourceLink href="https://www.federalregister.gov/citation/88-FR-48102">88 Fed. Reg. 48102 (2023)</SourceLink>; FTC{" "}
             <SourceLink href="https://www.ftc.gov/business-guidance/resources/health-products-compliance-guidance">
               Health Products Compliance Guidance (Dec. 2022)
             </SourceLink>

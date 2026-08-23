@@ -61,7 +61,17 @@ export function SiteHeader({ active }: Readonly<{ active?: string }>) {
         >
           SERP<span style={{ color: C.green }}>·</span>to<span style={{ color: C.green }}>·</span>Spend
         </Link>
-        <nav style={{ display: "flex", gap: 24, alignItems: "center", fontFamily: sans, fontSize: 14 }}>
+        <nav
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "10px 20px",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            fontFamily: sans,
+            fontSize: 14,
+          }}
+        >
           {NAV.map((n) => (
             <Link
               key={n.href}
