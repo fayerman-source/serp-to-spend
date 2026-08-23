@@ -1,4 +1,7 @@
+import { Agent, fetch as undiciFetch } from "undici";
+import type { LookupFunction } from "node:net";
 import { getGeminiClient } from "./vertex";
+import { resolvePublicHttpUrl, type ResolvedAddress } from "./ssrf";
 
 // SERP / page grounding. Modes, in priority order (when search is enabled):
 //   1. Input is a URL              -> fetch the page, strip to text (competitor/offer grounding)
@@ -32,15 +35,74 @@ function htmlToText(html: string): string {
     .trim();
 }
 
-async function fetchPage(url: string): Promise<string> {
-  const res = await fetch(url, {
-    headers: { "user-agent": "Mozilla/5.0 (compatible; serp-to-spend/0.1)" },
-    // Don't let a slow competitor page hang the whole request.
-    signal: AbortSignal.timeout(12_000),
-  });
-  if (!res.ok) throw new Error(`Fetch failed (${res.status}) for ${url}`);
-  const html = await res.text();
-  return htmlToText(html).slice(0, 6_000);
+const MAX_REDIRECTS = 5;
+
+// A dns.lookup-compatible function that ignores the hostname it's given and
+// always returns the exact addresses we already validated as public. Plain
+// re-validation before each fetch is not enough: the SSRF check and fetch()'s
+// own DNS resolution are two separate lookups, and a malicious DNS server can
+// answer with a public IP for the first and a private one for the second
+// (DNS rebinding). Pinning the connector's lookup closes that gap — the TCP
+// connection can only ever reach an address this module itself validated.
+function pinnedLookup(addresses: ResolvedAddress[]): LookupFunction {
+  return ((_hostname: string, options: unknown, callback: (...args: unknown[]) => void) => {
+    const wantsAll = typeof options === "object" && options !== null && (options as { all?: boolean }).all;
+    if (wantsAll) {
+      callback(null, addresses);
+    } else {
+      const first = addresses[0];
+      callback(null, first.address, first.family);
+    }
+  }) as unknown as LookupFunction;
+}
+
+const FETCH_DEADLINE_MS = 12_000;
+
+// Fetches a user-submitted URL server-side (competitor/offer grounding). Validates
+// the target isn't loopback/private/link-local (SSRF guard) before every request,
+// pins the actual TCP connection to the validated address (see pinnedLookup), and
+// follows redirects manually — re-validating and re-pinning each hop — so neither
+// a redirect nor a second DNS answer can sidestep the check. One AbortSignal is
+// shared across every hop: resetting a fresh 12s timeout per hop would let up to
+// MAX_REDIRECTS+1 slow hops add up to ~72s, past the route's 60s function limit.
+async function fetchPage(rawUrl: string): Promise<string> {
+  const deadline = AbortSignal.timeout(FETCH_DEADLINE_MS);
+  let current = rawUrl;
+  for (let hop = 0; ; hop++) {
+    const { url, addresses } = await resolvePublicHttpUrl(current, { signal: deadline });
+    // Own this hop's connection pool explicitly and close it once we're done
+    // with the response — an Agent left open after fetchPage returns leaks
+    // its idle sockets, and each hop gets a fresh Agent anyway (the pinned
+    // addresses differ per host).
+    const agent = new Agent({ connect: { lookup: pinnedLookup(addresses), timeout: FETCH_DEADLINE_MS } });
+    try {
+      const res = await undiciFetch(url, {
+        headers: { "user-agent": "Mozilla/5.0 (compatible; serp-to-spend/0.1)" },
+        // One deadline for the whole call (DNS + every hop), not reset per hop.
+        signal: deadline,
+        redirect: "manual",
+        dispatcher: agent,
+      });
+      if (res.status >= 300 && res.status < 400 && res.headers.get("location")) {
+        await res.body?.cancel();
+        if (hop >= MAX_REDIRECTS) throw new Error("Too many redirects.");
+        current = new URL(res.headers.get("location")!, url).toString();
+        continue;
+      }
+      if (!res.ok) {
+        // Consume the body before throwing — otherwise the finally block's
+        // agent.close() waits (gracefully) for a response nothing is reading,
+        // which can hold the request open until the overall timeout on a
+        // large or slow-draining error body.
+        await res.body?.cancel();
+        throw new Error(`Fetch failed (${res.status}) for ${current}`);
+      }
+      const html = await res.text();
+      return htmlToText(html).slice(0, 6_000);
+    } finally {
+      await agent.close();
+    }
+  }
 }
 
 async function fetchSerp(query: string, key: string): Promise<string> {
