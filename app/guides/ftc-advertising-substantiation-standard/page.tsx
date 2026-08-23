@@ -98,7 +98,11 @@ export default function Guide() {
           <P>
             Health, safety, weight-loss, and disease claims sit at the top of the evidence bar: the FTC&rsquo;s
             Health Products Compliance Guidance (December 2022) requires &ldquo;competent and reliable
-            scientific evidence&rdquo; &mdash; well-designed human studies, not testimonials or lab data alone.
+            scientific evidence,&rdquo; not testimonials alone. For a health-benefit, efficacy, weight-loss, or
+            disease claim that generally means well-designed human clinical studies. A safety claim ordinarily
+            evaluated through toxicology or analytical testing &mdash; where testing on people would be
+            unethical &mdash; is held to the same competent-and-reliable standard, not literally a human-study
+            requirement; the right evidence is field- and claim-specific.
           </P>
         </Section>
 
