@@ -43,7 +43,7 @@ const FAQ = [
   },
   {
     q: "Does a 'results not typical' disclaimer protect a testimonial claim?",
-    a: "No. The FTC eliminated that safe harbor in the 2009 revision to the Endorsement Guides: a bare 'results not typical' disclaimer has not been sufficient on its own since. If the advertised result is not what a typical user experiences, the ad must disclose the result users generally do achieve, and that generally-expected result must itself be substantiated.",
+    a: "A bare disclaimer alone, no — the FTC eliminated that safe harbor in the 2009 revision to the Endorsement Guides. An atypical result is still fine to advertise; the ad just has to clearly disclose the result users generally do achieve, and that generally-expected result must itself be substantiated.",
   },
   {
     q: "Who is liable if an affiliate makes the unsubstantiated claim, not the brand?",
@@ -105,9 +105,10 @@ export default function Guide() {
         <Section>
           <H2>Testimonials and income claims</H2>
           <P>
-            Endorsements and testimonials (16 C.F.R. Part 255) must reflect the endorser&rsquo;s honest opinion
-            and the <em>typical</em> experience of users. If results are not typical, the ad must disclose the
-            generally-expected result &mdash; and that result must itself be substantiated. The FTC eliminated
+            Endorsements and testimonials (16 C.F.R. Part 255) must reflect the endorser&rsquo;s honest opinion.
+            A genuine but atypical experience is not itself off-limits &mdash; but unless it also reflects the
+            <em>typical</em> experience of users, the ad must clearly and conspicuously disclose the
+            generally-expected result, and that result must itself be substantiated. The FTC eliminated
             the old blanket &ldquo;results not typical&rdquo; safe harbor in the 2009 revision to the
             Endorsement Guides (74 Fed. Reg. 53124, effective December 1, 2009); a bare disclaimer has not been
             enough on its own since. The 2023 revision (88 Fed. Reg. 48102, effective July 26, 2023)

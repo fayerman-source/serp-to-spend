@@ -75,8 +75,11 @@ export default function Guide() {
             </LI>
             <LI>
               <strong>Health and Wellness (Restricted).</strong> Ads in this category must not imply or generate
-              negative self-perception, and must not promote unrealistic outcomes. Weight-loss and cosmetic
-              claims are restricted and must be targeted to audiences 18 and older.
+              negative self-perception, and must not promote unrealistic outcomes. Weight-loss or weight-gain
+              products, cosmetic <em>procedures</em>, and dietary or health supplements must be targeted to
+              audiences 18 and older &mdash; general wellbeing products (fitness equipment, health clubs) and
+              non-permanent cosmetic products (makeup, skincare, hair products) are exempt from that age
+              restriction.
             </LI>
             <LI>
               <strong>Fraud, Scams and Deceptive Practices.</strong> A misleading outcome claim &mdash; a specific
@@ -109,8 +112,11 @@ export default function Guide() {
           <P>
             &ldquo;Guaranteed results or your money back&rdquo; is a guarantee of outcome, which needs
             substantiation the ad copy alone cannot provide and which independently risks the Fraud, Scams and
-            Deceptive Practices standard if the outcome is not ordinary. Move the guarantee to a return policy
-            on the landing page, not the ad hook.
+            Deceptive Practices standard if the outcome is not ordinary. Moving the line to the landing page
+            does not fix it &mdash; Meta reviews the destination too, and the FTC substantiation obligation
+            follows the claim wherever it runs. Drop or qualify the outcome promise itself; a genuinely
+            truthful refund policy can still live on the landing page, but it is not a cure for an
+            unsubstantiated results guarantee.
           </P>
         </Section>
 
