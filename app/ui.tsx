@@ -28,6 +28,7 @@ export function Eyebrow({ children }: Readonly<{ children: ReactNode }>) {
 
 const NAV = [
   { href: "/", label: "The Tool" },
+  { href: "/guides", label: "Guides" },
   { href: "/about", label: "About" },
   { href: "/changelog", label: "Changelog" },
 ];
