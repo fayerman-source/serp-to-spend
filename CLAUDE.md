@@ -28,7 +28,22 @@ Before merging any PR in this repo:
    merge past it silently.
 4. **Only merge once the PR is reasonably clean**: CI green AND no unaddressed substantive
    review comments. Sonar's "Quality Gate passed" can coexist with a list of "New issues" that
-   still needs a look — check that list, not just the gate badge.
+   still needs a look — check that list, not just the gate badge. A PR merged this way once with
+   10 unread issues; don't repeat that. Pull the actual list before merging:
+   ```
+   export SONAR_TOKEN=$(grep '^SONAR_TOKEN=' .env.local | cut -d= -f2)
+   curl -s -u "${SONAR_TOKEN}:" "https://sonarcloud.io/api/issues/search?componentKeys=fayerman-source_serp-to-spend&pullRequest=<n>&issueStatuses=OPEN,CONFIRMED&ps=50" \
+     | python3 -c "
+   import json,sys
+   d = json.load(sys.stdin)
+   print('total:', d.get('total'))
+   for i in d.get('issues', []):
+       print('-', i.get('rule'), i.get('severity'), i.get('component','').split(':')[-1]+':'+str(i.get('line')), '-', i.get('message'))
+   "
+   ```
+   The SonarCloud dashboard is a client-rendered SPA (WebFetch only sees the marketing shell) and
+   the unauthenticated API returns empty results for this org — the token above is required. If a
+   PR's `sinceLeakPeriod` count on the badge is nonzero, this is not optional.
 
 This applies even under time pressure or an autonomous directive (a `/goal`, a scheduled task,
 "just get this done"). Speed is never a reason to skip review — it's the reason review exists.
