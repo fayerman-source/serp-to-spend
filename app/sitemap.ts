@@ -8,6 +8,19 @@ const BASE = "https://serptospend.com";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${BASE}/`, lastModified: "2026-06-26", changeFrequency: "weekly", priority: 1 },
+    { url: `${BASE}/guides`, lastModified: "2026-08-23", changeFrequency: "weekly", priority: 0.8 },
+    {
+      url: `${BASE}/guides/meta-ad-rejected-health-wellness`,
+      lastModified: "2026-08-23",
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE}/guides/ftc-advertising-substantiation-standard`,
+      lastModified: "2026-08-23",
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     { url: `${BASE}/about`, lastModified: "2026-06-27", changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/changelog`, lastModified: "2026-06-27", changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/contact`, lastModified: "2026-07-19", changeFrequency: "yearly", priority: 0.5 },
