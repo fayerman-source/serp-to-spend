@@ -32,7 +32,7 @@ export default function Contact() {
         </h1>
         <p style={{ fontSize: 17, lineHeight: 1.55, color: C.body, margin: "14px 0 0", maxWidth: 620 }}>
           Found a policy call that looks wrong, want a platform or claim type covered, or thinking about
-          using this with a team? Send a note — it goes straight to the builder.
+          using this with a team? Send a note: it goes straight to the builder.
         </p>
         <ContactForm />
       </main>

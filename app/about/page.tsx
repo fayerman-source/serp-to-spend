@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     q: "What does SERP-to-Spend do?",
-    a: "It checks an ad you are about to run. Paste the copy, pick Meta, Google, or TikTok, and it names the specific policy the ad would trip, the FTC and FDA risk on the claims, and a rewrite that passes without losing the hook. It can also generate ad angles from a keyword and run the same check on what it writes. Every verdict cites the real rule behind it.",
+    a: "It checks an ad you are about to run. Paste the copy and pick Meta, Google, or TikTok. It names the specific policy the ad would trip, the FTC and FDA risk on the claims, and a rewrite that passes without losing the hook. It can also generate ad angles from a keyword and run the same check on what it writes. Every verdict cites the real rule behind it.",
   },
   {
     q: "Is this legal advice?",
@@ -27,7 +27,7 @@ const FAQ = [
   },
   {
     q: "What is the ad generation grounded in?",
-    a: "When you give it a keyword, it pulls live Google results to see how the market actually talks, then writes platform-native angles and runs the same compliance check on everything it produces, so it will not hand you an ad that is going to get rejected.",
+    a: "When you give it a keyword, it pulls live Google results to see how the market actually talks. Then it writes platform-native angles and runs the same compliance check on everything it produces, so it will not hand you an ad that is going to get rejected.",
   },
   {
     q: "Do you store the ads I check?",
@@ -71,6 +71,14 @@ function P({ children }: Readonly<{ children: ReactNode }>) {
 
 function Section({ children }: Readonly<{ children: ReactNode }>) {
   return <section style={{ padding: "44px 0", borderTop: `1px solid ${C.rule}` }}>{children}</section>;
+}
+
+function UL({ children }: Readonly<{ children: ReactNode }>) {
+  return <ul style={{ margin: "0 0 16px", padding: "0 0 0 20px", maxWidth: 680 }}>{children}</ul>;
+}
+
+function LI({ children }: Readonly<{ children: ReactNode }>) {
+  return <li style={{ fontSize: 16.5, lineHeight: 1.62, color: C.body, margin: "0 0 8px" }}>{children}</li>;
 }
 
 function H3({ children }: Readonly<{ children: ReactNode }>) {
@@ -145,22 +153,29 @@ export default function About() {
 
         <Section>
           <H2>What comes next</H2>
-          <P>
-            Close the loop into a data moat: ground the compliance check in real submit-to-verdict
-            outcomes through the Meta and Google ad APIs, so the risk model learns from actual
-            disapprovals instead of policy text. Then per-advertiser calibration, a formal counsel review
-            of the legal modules with case-law citations, one-click export into the campaign, and
-            an extension of the compliance pass beyond the copy to the creative and the landing page the ad
-            points to (both are judged by the platform and the FTC). No generic generator can build that
-            outcome dataset.
-          </P>
+          <P>In rough order:</P>
+          <UL>
+            <LI>
+              Close the loop into a data moat. Ground the compliance check in real submit-to-verdict
+              outcomes through the Meta and Google ad APIs, so the risk model learns from actual
+              disapprovals instead of policy text.
+            </LI>
+            <LI>Per-advertiser calibration.</LI>
+            <LI>A formal counsel review of the legal modules, with case-law citations.</LI>
+            <LI>One-click export into the campaign.</LI>
+            <LI>
+              An extension of the compliance pass beyond the copy to the creative and the landing page the
+              ad points to (both are judged by the platform and the FTC).
+            </LI>
+          </UL>
+          <P>No generic generator can build that outcome dataset.</P>
         </Section>
 
         <Section>
           <H2>The builder</H2>
           <P>
             Built by someone with a law license, and that combination is the point. A tool that turns
-            statutes and platform policy into a verdict sits where those two skills meet: reading
+            statutes and platform policy into a verdict sits where those two skills meet. It means reading
             regulations natively, knowing what a claim has to prove, then building the system that
             applies it. When the tool flags a claim for tripping FTC substantiation or making a product
             an unapproved drug, that is a lawyer&rsquo;s read, not a model guessing.
@@ -169,8 +184,8 @@ export default function About() {
             No demos. The approach: pick a real problem, build the unglamorous part nobody wants to own,
             and ship it properly. Every change here went through a branch, continuous integration, tests,
             and review before it merged. For anyone weighing the person and not just the tool, that is the
-            bet: a builder who ships and reads the law, aimed at a marketing problem that costs real
-            money. This project is the proof, not a pitch deck.
+            bet. This is a builder who ships and reads the law, aimed at a marketing problem that costs
+            real money. This project is the proof, not a pitch deck.
           </P>
         </Section>
 

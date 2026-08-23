@@ -66,9 +66,9 @@ export default function Privacy() {
           below).
         </P>
         <P>
-          <strong>Usage metadata.</strong> For each run we log operational data — which feature was used, the
-          platform, timing, success or failure, and your account identifier — to monitor reliability, control
-          cost, and improve the service. This does not include the content you paste.
+          <strong>Usage metadata.</strong> For each run we log operational data (which feature was used, the
+          platform, timing, success or failure, and your account identifier). This is to monitor reliability,
+          control cost, and improve the service. It does not include the content you paste.
         </P>
         <P>
           <strong>Analytics.</strong> We use Microsoft Clarity to understand how the site is used (aggregate
