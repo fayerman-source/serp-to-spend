@@ -9,8 +9,8 @@ import {
   H2,
   H3,
   P,
-  UL,
-  LI,
+  Ul,
+  Li,
   Section,
   SourceNote,
   CTA,
@@ -66,27 +66,27 @@ export default function Guide() {
             goods and services (allowed with conditions), and Objectionable content. Health and Wellness ads
             usually fall foul of one of these:
           </P>
-          <UL>
-            <LI>
+          <Ul>
+            <Li>
               <strong>Privacy Violations and Personal Attributes.</strong> The ad must not assert or imply a
               person&rsquo;s personal attributes or condition (health status, weight, or similar), even
               indirectly. A headline like &ldquo;Struggling to lose the weight?&rdquo; addresses the viewer&rsquo;s
               body directly, which is exactly what this standard targets.
-            </LI>
-            <LI>
+            </Li>
+            <Li>
               <strong>Health and Wellness (Restricted).</strong> Ads in this category must not imply or generate
               negative self-perception, and must not promote unrealistic outcomes. Weight-loss or weight-gain
               products, cosmetic <em>procedures</em>, and dietary or health supplements must be targeted to
               audiences 18 and older. General wellbeing products (fitness equipment, health clubs) and
               non-permanent cosmetic products (makeup, skincare, hair products) are exempt from that age
               restriction.
-            </LI>
-            <LI>
+            </Li>
+            <Li>
               <strong>Fraud, Scams and Deceptive Practices.</strong> A misleading outcome claim (a specific
               result presented as the likely, ordinary outcome) falls under this standard regardless of
               category.
-            </LI>
-          </UL>
+            </Li>
+          </Ul>
         </Section>
 
         <Section>
