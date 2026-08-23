@@ -28,7 +28,38 @@ Before merging any PR in this repo:
    merge past it silently.
 4. **Only merge once the PR is reasonably clean**: CI green AND no unaddressed substantive
    review comments. Sonar's "Quality Gate passed" can coexist with a list of "New issues" that
-   still needs a look — check that list, not just the gate badge.
+   still needs a look — check that list, not just the gate badge. A PR merged this way once with
+   10 unread issues; don't repeat that. Pull the actual list before merging:
+   ```
+   export SONAR_TOKEN=$(grep '^SONAR_TOKEN=' .env.local | cut -d= -f2)
+   test -n "$SONAR_TOKEN" || { echo "SONAR_TOKEN missing from .env.local — cannot verify"; false; }
+   python3 -c "
+   import json, sys, urllib.request, os
+   token = os.environ['SONAR_TOKEN']
+   pr = '<n>'  # replace with the PR number
+   page, seen, all_issues = 1, 0, []
+   while True:
+       req = urllib.request.Request(
+           f'https://sonarcloud.io/api/issues/search?componentKeys=fayerman-source_serp-to-spend'
+           f'&pullRequest={pr}&issueStatuses=OPEN,CONFIRMED&ps=100&p={page}')
+       req.add_header('Authorization', 'Basic ' + __import__('base64').b64encode(f'{token}:'.encode()).decode())
+       with urllib.request.urlopen(req) as r:
+           d = json.load(r)
+       if 'total' not in d or 'issues' not in d:
+           print('Sonar API call failed or unauthorized:', d); sys.exit(1)
+       all_issues += d['issues']; seen += len(d['issues'])
+       if seen >= d['total']: break
+       page += 1
+   print('total:', len(all_issues))
+   for i in all_issues:
+       print('-', i.get('rule'), i.get('severity'), i.get('component','').split(':')[-1]+':'+str(i.get('line')), '-', i.get('message'))
+   "
+   ```
+   The SonarCloud dashboard is a client-rendered SPA (WebFetch only sees the marketing shell) and
+   the unauthenticated API returns empty results for this org — the token above is required. If a
+   PR's `sinceLeakPeriod` count on the badge is nonzero, this is not optional. The script fails loudly
+   (rather than silently reporting zero issues) if the token is missing or the API call errors, and
+   pages through all results instead of capping at one page.
 
 This applies even under time pressure or an autonomous directive (a `/goal`, a scheduled task,
 "just get this done"). Speed is never a reason to skip review — it's the reason review exists.
