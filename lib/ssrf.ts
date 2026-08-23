@@ -108,6 +108,11 @@ function isPrivateIPv6(ip: string): boolean {
   if (h.slice(0, 5).every((n) => n === 0) && h[5] === 0xffff) {
     return isPrivateIPv4(ipv4FromMappedHextets(h));
   }
+  // IPv4-translated (::ffff:0:0:0/96, RFC 2765/6145 SIIT) — a distinct, older
+  // transition prefix from the mapped one above: ffff sits in group 4, not 5.
+  // Not globally routable per IANA's registry regardless of the embedded v4
+  // address, so block the whole prefix rather than inspecting it.
+  if (h.slice(0, 4).every((n) => n === 0) && h[4] === 0xffff && h[5] === 0) return true;
   return false;
 }
 

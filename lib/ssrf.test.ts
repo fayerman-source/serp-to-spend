@@ -65,6 +65,10 @@ describe("resolvePublicHttpUrl", () => {
     vi.resetModules();
   });
 
+  it("rejects the IPv4-translated ::ffff:0:0:0/96 prefix (distinct from IPv4-mapped ::ffff:0:0/96)", async () => {
+    await expect(resolvePublicHttpUrl("http://[::ffff:0:10.0.0.1]/")).rejects.toThrow();
+  });
+
   it("rejects IPv4 documentation, protocol-assignment, and 6to4-relay ranges", async () => {
     await expect(resolvePublicHttpUrl("http://192.0.0.1/")).rejects.toThrow(); // IETF protocol assignments
     await expect(resolvePublicHttpUrl("http://192.0.2.1/")).rejects.toThrow(); // TEST-NET-1

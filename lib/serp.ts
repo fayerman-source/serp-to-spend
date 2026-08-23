@@ -89,7 +89,14 @@ async function fetchPage(rawUrl: string): Promise<string> {
         current = new URL(res.headers.get("location")!, url).toString();
         continue;
       }
-      if (!res.ok) throw new Error(`Fetch failed (${res.status}) for ${current}`);
+      if (!res.ok) {
+        // Consume the body before throwing — otherwise the finally block's
+        // agent.close() waits (gracefully) for a response nothing is reading,
+        // which can hold the request open until the overall timeout on a
+        // large or slow-draining error body.
+        await res.body?.cancel();
+        throw new Error(`Fetch failed (${res.status}) for ${current}`);
+      }
       const html = await res.text();
       return htmlToText(html).slice(0, 6_000);
     } finally {
