@@ -56,25 +56,34 @@ function pinnedLookup(addresses: ResolvedAddress[]): LookupFunction {
   }) as unknown as LookupFunction;
 }
 
+const FETCH_DEADLINE_MS = 12_000;
+
 // Fetches a user-submitted URL server-side (competitor/offer grounding). Validates
 // the target isn't loopback/private/link-local (SSRF guard) before every request,
 // pins the actual TCP connection to the validated address (see pinnedLookup), and
 // follows redirects manually — re-validating and re-pinning each hop — so neither
-// a redirect nor a second DNS answer can sidestep the check.
+// a redirect nor a second DNS answer can sidestep the check. One AbortSignal is
+// shared across every hop: resetting a fresh 12s timeout per hop would let up to
+// MAX_REDIRECTS+1 slow hops add up to ~72s, past the route's 60s function limit.
 async function fetchPage(rawUrl: string): Promise<string> {
+  const deadline = AbortSignal.timeout(FETCH_DEADLINE_MS);
   let current = rawUrl;
   for (let hop = 0; ; hop++) {
+    // DNS resolution itself isn't cancellable via the fetch signal, so check the
+    // deadline explicitly before starting another hop's lookup — otherwise a
+    // chain of hops with slow-but-not-hung DNS could still creep past 12s.
+    if (deadline.aborted) throw new Error("Request timed out.");
     const { url, addresses } = await resolvePublicHttpUrl(current);
     // Own this hop's connection pool explicitly and close it once we're done
     // with the response — an Agent left open after fetchPage returns leaks
     // its idle sockets, and each hop gets a fresh Agent anyway (the pinned
     // addresses differ per host).
-    const agent = new Agent({ connect: { lookup: pinnedLookup(addresses), timeout: 12_000 } });
+    const agent = new Agent({ connect: { lookup: pinnedLookup(addresses), timeout: FETCH_DEADLINE_MS } });
     try {
       const res = await undiciFetch(url, {
         headers: { "user-agent": "Mozilla/5.0 (compatible; serp-to-spend/0.1)" },
-        // Don't let a slow competitor page hang the whole request.
-        signal: AbortSignal.timeout(12_000),
+        // One deadline for the whole call (DNS + every hop), not reset per hop.
+        signal: deadline,
         redirect: "manual",
         dispatcher: agent,
       });
