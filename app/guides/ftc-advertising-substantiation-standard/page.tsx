@@ -47,7 +47,7 @@ const FAQ = [
   },
   {
     q: "Who is liable if an affiliate makes the unsubstantiated claim, not the brand?",
-    a: "The advertiser is. Under 16 C.F.R. § 255.1(d), the advertiser is liable for a claim an affiliate or endorser makes on its behalf, even if the brand's own ad copy never states it.",
+    a: "The advertiser is. Under 16 C.F.R. § 255.1(d), an advertiser is liable for a misleading or unsubstantiated statement an affiliate or endorser makes on its behalf (or for failing to disclose an unexpected material connection) — even if the brand's own ad copy never states it. A truthful, substantiated, properly disclosed affiliate claim doesn't trigger this on its own; the exposure is for the noncompliant ones.",
   },
 ];
 
@@ -126,8 +126,9 @@ export default function Guide() {
             contract with an already-operating business &mdash; a vendor selling lead-generation services to an
             existing company, say &mdash; fails the &ldquo;new business&rdquo; element even if it happens to
             also promise customers. Pure coaching, courses, or general business-development training do not
-            count on their own either. A
-            generic, seller-authored &ldquo;make $X a month&rdquo; claim with no consumer endorsement attached is
+            count on their own &mdash; but specific advice or training on how to obtain accounts or customers
+            does; the rule treats that as &ldquo;providing&rdquo; customers even without directly furnishing
+            them. A generic, seller-authored &ldquo;make $X a month&rdquo; claim with no consumer endorsement attached is
             a Section 5 substantiation matter, not automatically a Part 437 violation &mdash; unless it also
             makes one of those three representations. Section 255.2(b) specifically applies once the claim is
             framed as a consumer&rsquo;s endorsement or testimonial (&ldquo;our students make $10,000 a
@@ -138,9 +139,10 @@ export default function Guide() {
         <Section>
           <H2>Who is liable</H2>
           <P>
-            The advertiser is liable for every claim made in its name, including a claim an affiliate makes on
-            its behalf (16 C.F.R. § 255.1(d)). Running an offer through affiliates does not move the
-            substantiation burden off the brand.
+            The advertiser is liable for a misleading or unsubstantiated claim made in its name, including one
+            an affiliate makes on its behalf, or for failing to disclose an unexpected material connection
+            (16 C.F.R. § 255.1(d)) &mdash; running an offer through affiliates does not move the substantiation
+            burden off the brand.
           </P>
         </Section>
 
