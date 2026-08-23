@@ -39,7 +39,7 @@ const FAQ = [
   },
   {
     q: "Is 'best' or 'expert' a claim that needs substantiation?",
-    a: "No. Subjective superiority language and vague expertise claims — best, great, premium, expert, trusted, leading — are puffery: opinion a reasonable consumer judges for themselves, not a testable fact. An ad built only on puffery is low FTC risk. Substantiation is for specific, measurable, or health/safety/efficacy claims.",
+    a: "As a vague, self-descriptive word — \"our expert team,\" \"expert-grade formula\" — no: that's puffery, opinion a reasonable consumer judges for themselves. It's different when the ad presents an actual person or persona AS an expert endorser (\"our expert recommends...\"): the Endorsement Guides (16 C.F.R. § 255.3) then require that endorser to genuinely hold the claimed qualifications and to have actually evaluated the product to the depth that expertise implies. Subjective superiority language like best, great, premium, trusted, and leading stays puffery either way.",
   },
   {
     q: "Does a 'results not typical' disclaimer protect a testimonial claim?",
@@ -122,9 +122,11 @@ export default function Guide() {
             representation that the seller will (i) provide locations for equipment or displays, (ii) provide
             outlets, accounts, or customers, or (iii) buy back the goods or services the purchaser produces.
             Pure coaching, courses, or general business-development training do not count on their own. A
-            generic &ldquo;make $X a month&rdquo; course is a Section 5 and § 255.2(b) substantiation matter,
-            not automatically a Part 437 violation &mdash; unless it also makes one of those three
-            representations.
+            generic, seller-authored &ldquo;make $X a month&rdquo; claim with no consumer endorsement attached is
+            a Section 5 substantiation matter, not automatically a Part 437 violation &mdash; unless it also
+            makes one of those three representations. Section 255.2(b) specifically applies once the claim is
+            framed as a consumer&rsquo;s endorsement or testimonial (&ldquo;our students make $10,000 a
+            month&rdquo;), not to every generic earnings statement the seller makes on its own behalf.
           </P>
         </Section>
 
@@ -155,6 +157,7 @@ export default function Guide() {
               Policy Statement Regarding Advertising Substantiation (1983)
             </SourceLink>
             ; Endorsement Guides <SourceLink href="https://www.law.cornell.edu/cfr/text/16/255.2">16 C.F.R. § 255.2(b)</SourceLink>,{" "}
+            <SourceLink href="https://www.law.cornell.edu/cfr/text/16/255.3">§ 255.3 (expert endorsements)</SourceLink>,{" "}
             <SourceLink href="https://www.federalregister.gov/documents/2009/10/15/E9-24646/guides-concerning-the-use-of-endorsements-and-testimonials-in-advertising">
               74 Fed. Reg. 53124 (2009)
             </SourceLink>{" "}
