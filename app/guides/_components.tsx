@@ -4,6 +4,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { C, serif, sans } from "../ui";
+import { jsonLdScript } from "../../lib/json-ld";
 
 export function Eyebrow({ children }: Readonly<{ children: ReactNode }>) {
   return (
@@ -93,6 +94,63 @@ export function LI({ children }: Readonly<{ children: ReactNode }>) {
 
 export function Section({ children }: Readonly<{ children: ReactNode }>) {
   return <section style={{ padding: "40px 0", borderTop: `1px solid ${C.rule}` }}>{children}</section>;
+}
+
+export type FaqItem = { q: string; a: string };
+
+export function buildFaqSchema(faq: FaqItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  };
+}
+
+export function buildArticleSchema(opts: { headline: string; datePublished: string; dateModified: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: opts.headline,
+    author: { "@type": "Organization", name: "SERP-to-Spend" },
+    publisher: { "@type": "Organization", name: "SERP-to-Spend" },
+    datePublished: opts.datePublished,
+    dateModified: opts.dateModified,
+  };
+}
+
+export function FaqSection({ faq }: Readonly<{ faq: FaqItem[] }>) {
+  return (
+    <Section>
+      <H2>Common questions</H2>
+      {faq.map(({ q, a }) => (
+        <div key={q} style={{ margin: "0 0 22px" }}>
+          <H3>{q}</H3>
+          <P>{a}</P>
+        </div>
+      ))}
+    </Section>
+  );
+}
+
+export function GuideJsonLd({ article, faq }: Readonly<{ article: unknown; faq: unknown }>) {
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(article) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(faq) }} />
+    </>
+  );
+}
+
+export function SourceLink({ href, children }: Readonly<{ href: string; children: ReactNode }>) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: C.muted }}>
+      {children}
+    </a>
+  );
 }
 
 export function SourceNote({ children }: Readonly<{ children: ReactNode }>) {

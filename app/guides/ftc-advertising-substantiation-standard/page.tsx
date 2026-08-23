@@ -1,14 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { C, sans, MAXW, SiteHeader, SiteFooter } from "../../ui";
-import { jsonLdScript } from "../../../lib/json-ld";
 import { openGraphFor } from "../../site";
-import { Eyebrow, Title, Dek, H2, H3, P, UL, LI, Section, SourceNote, CTA } from "../_components";
+import {
+  Eyebrow,
+  Title,
+  Dek,
+  H2,
+  H3,
+  P,
+  UL,
+  LI,
+  Section,
+  SourceNote,
+  SourceLink,
+  CTA,
+  FaqSection,
+  GuideJsonLd,
+  buildArticleSchema,
+  buildFaqSchema,
+} from "../_components";
 
 const PATH = "/guides/ftc-advertising-substantiation-standard";
+const HEADLINE = "The FTC Substantiation Standard for Ad Claims, Explained";
 
 export const metadata: Metadata = {
-  title: "The FTC Substantiation Standard for Ad Claims, Explained · SERP-to-Spend",
+  title: `${HEADLINE} · SERP-to-Spend`,
   description:
     "Which ad claims need proof before they run, which ones are puffery, and what \"competent and reliable\" evidence means under FTC guidance — with the actual citations, not a paraphrase.",
   alternates: { canonical: PATH },
@@ -33,26 +50,6 @@ const FAQ = [
     a: "The advertiser is. Under 16 C.F.R. § 255.1(d), the advertiser is liable for a claim an affiliate or endorser makes on its behalf, even if the brand's own ad copy never states it.",
   },
 ];
-
-const FAQ_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ.map(({ q, a }) => ({
-    "@type": "Question",
-    name: q,
-    acceptedAnswer: { "@type": "Answer", text: a },
-  })),
-};
-
-const ARTICLE_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: "The FTC Substantiation Standard for Ad Claims, Explained",
-  author: { "@type": "Organization", name: "SERP-to-Spend" },
-  publisher: { "@type": "Organization", name: "SERP-to-Spend" },
-  datePublished: "2026-08-23",
-  dateModified: "2026-08-23",
-};
 
 export default function Guide() {
   return (
@@ -145,58 +142,21 @@ export default function Guide() {
           <CTA>Paste your ad and see which claims need proof before you spend on it.</CTA>
         </Section>
 
-        <Section>
-          <H2>Common questions</H2>
-          {FAQ.map(({ q, a }) => (
-            <div key={q} style={{ margin: "0 0 22px" }}>
-              <H3>{q}</H3>
-              <P>{a}</P>
-            </div>
-          ))}
-        </Section>
+        <FaqSection faq={FAQ} />
 
         <Section>
           <SourceNote>
-            Sources: FTC Act{" "}
-            <a href="https://www.law.cornell.edu/uscode/text/15/45" target="_blank" rel="noopener noreferrer" style={{ color: C.muted }}>
-              15 U.S.C. § 45(a)
-            </a>
-            ; FTC{" "}
-            <a
-              href="https://www.ftc.gov/public-statements/1983/03/ftc-policy-statement-regarding-advertising-substantiation"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: C.muted }}
-            >
+            Sources: FTC Act <SourceLink href="https://www.law.cornell.edu/uscode/text/15/45">15 U.S.C. § 45(a)</SourceLink>; FTC{" "}
+            <SourceLink href="https://www.ftc.gov/public-statements/1983/03/ftc-policy-statement-regarding-advertising-substantiation">
               Policy Statement Regarding Advertising Substantiation (1983)
-            </a>
-            ; Endorsement Guides{" "}
-            <a href="https://www.law.cornell.edu/cfr/text/16/255.2" target="_blank" rel="noopener noreferrer" style={{ color: C.muted }}>
-              16 C.F.R. § 255.2(b)
-            </a>{" "}
-            and{" "}
-            <a
-              href="https://www.federalregister.gov/citation/88-FR-48102"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: C.muted }}
-            >
-              88 Fed. Reg. 48102
-            </a>
-            ; FTC{" "}
-            <a
-              href="https://www.ftc.gov/business-guidance/resources/health-products-compliance-guidance"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: C.muted }}
-            >
+            </SourceLink>
+            ; Endorsement Guides <SourceLink href="https://www.law.cornell.edu/cfr/text/16/255.2">16 C.F.R. § 255.2(b)</SourceLink> and{" "}
+            <SourceLink href="https://www.federalregister.gov/citation/88-FR-48102">88 Fed. Reg. 48102</SourceLink>; FTC{" "}
+            <SourceLink href="https://www.ftc.gov/business-guidance/resources/health-products-compliance-guidance">
               Health Products Compliance Guidance (Dec. 2022)
-            </a>
-            ; Business Opportunity Rule{" "}
-            <a href="https://www.law.cornell.edu/cfr/text/16/437.1" target="_blank" rel="noopener noreferrer" style={{ color: C.muted }}>
-              16 C.F.R. § 437.1
-            </a>
-            . This is decision support, not legal advice &mdash; see the{" "}
+            </SourceLink>
+            ; Business Opportunity Rule <SourceLink href="https://www.law.cornell.edu/cfr/text/16/437.1">16 C.F.R. § 437.1</SourceLink>.
+            This is decision support, not legal advice &mdash; see the{" "}
             <Link href="/about" style={{ color: C.muted }}>
               full disclosure on /about
             </Link>
@@ -204,8 +164,10 @@ export default function Guide() {
           </SourceNote>
         </Section>
 
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ARTICLE_SCHEMA) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(FAQ_SCHEMA) }} />
+        <GuideJsonLd
+          article={buildArticleSchema({ headline: HEADLINE, datePublished: "2026-08-23", dateModified: "2026-08-23" })}
+          faq={buildFaqSchema(FAQ)}
+        />
       </main>
       <SiteFooter />
     </>

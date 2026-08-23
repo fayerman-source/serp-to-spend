@@ -1,14 +1,30 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { C, sans, MAXW, SiteHeader, SiteFooter } from "../../ui";
-import { jsonLdScript } from "../../../lib/json-ld";
 import { openGraphFor } from "../../site";
-import { Eyebrow, Title, Dek, H2, H3, P, UL, LI, Section, SourceNote, CTA } from "../_components";
+import {
+  Eyebrow,
+  Title,
+  Dek,
+  H2,
+  H3,
+  P,
+  UL,
+  LI,
+  Section,
+  SourceNote,
+  CTA,
+  FaqSection,
+  GuideJsonLd,
+  buildArticleSchema,
+  buildFaqSchema,
+} from "../_components";
 
 const PATH = "/guides/meta-ad-rejected-health-wellness";
+const HEADLINE = "Why Meta Rejects Health and Wellness Ads (and How to Fix the Copy)";
 
 export const metadata: Metadata = {
-  title: "Why Meta Rejects Health and Wellness Ads (and How to Fix the Copy) · SERP-to-Spend",
+  title: `${HEADLINE} · SERP-to-Spend`,
   description:
     "Meta disapproves health and wellness ads for implied personal attributes, unrealistic outcomes, and negative self-perception. Here's the exact standard, in Meta's own terms, and how to rewrite the copy so it passes.",
   alternates: { canonical: PATH },
@@ -29,26 +45,6 @@ const FAQ = [
     a: "No. Meta judges the net impression of the ad, not whether a small-print disclaimer is attached. A bold headline promising a specific fast result reads as that promise regardless of a caveat underneath it.",
   },
 ];
-
-const FAQ_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ.map(({ q, a }) => ({
-    "@type": "Question",
-    name: q,
-    acceptedAnswer: { "@type": "Answer", text: a },
-  })),
-};
-
-const ARTICLE_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: "Why Meta Rejects Health and Wellness Ads (and How to Fix the Copy)",
-  author: { "@type": "Organization", name: "SERP-to-Spend" },
-  publisher: { "@type": "Organization", name: "SERP-to-Spend" },
-  datePublished: "2026-08-23",
-  dateModified: "2026-08-23",
-};
 
 export default function Guide() {
   return (
@@ -127,15 +123,7 @@ export default function Guide() {
           <CTA>Paste your Meta ad and see the exact standard it would trip, before you spend on it.</CTA>
         </Section>
 
-        <Section>
-          <H2>Common questions</H2>
-          {FAQ.map(({ q, a }) => (
-            <div key={q} style={{ margin: "0 0 22px" }}>
-              <H3>{q}</H3>
-              <P>{a}</P>
-            </div>
-          ))}
-        </Section>
+        <FaqSection faq={FAQ} />
 
         <Section>
           <SourceNote>
@@ -156,8 +144,10 @@ export default function Guide() {
           </SourceNote>
         </Section>
 
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ARTICLE_SCHEMA) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(FAQ_SCHEMA) }} />
+        <GuideJsonLd
+          article={buildArticleSchema({ headline: HEADLINE, datePublished: "2026-08-23", dateModified: "2026-08-23" })}
+          faq={buildFaqSchema(FAQ)}
+        />
       </main>
       <SiteFooter />
     </>
