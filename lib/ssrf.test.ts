@@ -49,6 +49,24 @@ describe("resolvePublicHttpUrl", () => {
     await expect(resolvePublicHttpUrl("http://[::ffff:127.0.0.1]/")).rejects.toThrow();
   });
 
+  it("rejects IPv4 documentation, protocol-assignment, and 6to4-relay ranges", async () => {
+    await expect(resolvePublicHttpUrl("http://192.0.0.1/")).rejects.toThrow(); // IETF protocol assignments
+    await expect(resolvePublicHttpUrl("http://192.0.2.1/")).rejects.toThrow(); // TEST-NET-1
+    await expect(resolvePublicHttpUrl("http://192.88.99.1/")).rejects.toThrow(); // 6to4 relay anycast
+    await expect(resolvePublicHttpUrl("http://198.51.100.1/")).rejects.toThrow(); // TEST-NET-2
+    await expect(resolvePublicHttpUrl("http://203.0.113.1/")).rejects.toThrow(); // TEST-NET-3
+  });
+
+  it("rejects IPv6 unique-local, documentation, and transition ranges", async () => {
+    await expect(resolvePublicHttpUrl("http://[fd00::1]/")).rejects.toThrow(); // unique local
+    await expect(resolvePublicHttpUrl("http://[2001:db8::1]/")).rejects.toThrow(); // documentation
+    await expect(resolvePublicHttpUrl("http://[3fff::1]/")).rejects.toThrow(); // documentation (RFC 9637)
+    await expect(resolvePublicHttpUrl("http://[2002::1]/")).rejects.toThrow(); // 6to4
+    await expect(resolvePublicHttpUrl("http://[64:ff9b::1]/")).rejects.toThrow(); // NAT64 well-known
+    await expect(resolvePublicHttpUrl("http://[100::1]/")).rejects.toThrow(); // discard-only
+    await expect(resolvePublicHttpUrl("http://[ff02::1]/")).rejects.toThrow(); // multicast
+  });
+
   it("allows a public literal IPv4 address and returns it as the resolved address", async () => {
     const result = await resolvePublicHttpUrl("http://8.8.8.8/");
     expect(result.url).toBeInstanceOf(URL);
@@ -58,5 +76,10 @@ describe("resolvePublicHttpUrl", () => {
   it("allows a public bracketed IPv6 literal address, stripping the brackets in the result", async () => {
     const result = await resolvePublicHttpUrl("http://[2606:4700:4700::1111]/");
     expect(result.addresses).toEqual([{ address: "2606:4700:4700::1111", family: 6 }]);
+  });
+
+  it("allows an IPv4-mapped IPv6 literal whose embedded address is public", async () => {
+    const result = await resolvePublicHttpUrl("http://[::ffff:8.8.8.8]/");
+    expect(result.addresses).toEqual([{ address: "::ffff:808:808", family: 6 }]);
   });
 });
