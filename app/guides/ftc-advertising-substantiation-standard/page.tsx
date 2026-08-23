@@ -119,10 +119,14 @@ export default function Guide() {
           </P>
           <P>
             Separately, income claims can trigger the Business Opportunity Rule (16 C.F.R. Part 437) &mdash; but
-            only when the offer is a true business opportunity: a required payment <em>plus</em> a
-            representation that the seller will (i) provide locations for equipment or displays, (ii) provide
-            outlets, accounts, or customers, or (iii) buy back the goods or services the purchaser produces.
-            Pure coaching, courses, or general business-development training do not count on their own. A
+            only when the offer is a true business opportunity: the seller solicits the purchaser to enter a{" "}
+            <em>new</em> business, a required payment is involved, <em>plus</em> a representation that the
+            seller will (i) provide locations for equipment or displays, (ii) provide outlets, accounts, or
+            customers, or (iii) buy back the goods or services the purchaser produces. An ordinary B2B service
+            contract with an already-operating business &mdash; a vendor selling lead-generation services to an
+            existing company, say &mdash; fails the &ldquo;new business&rdquo; element even if it happens to
+            also promise customers. Pure coaching, courses, or general business-development training do not
+            count on their own either. A
             generic, seller-authored &ldquo;make $X a month&rdquo; claim with no consumer endorsement attached is
             a Section 5 substantiation matter, not automatically a Part 437 violation &mdash; unless it also
             makes one of those three representations. Section 255.2(b) specifically applies once the claim is
