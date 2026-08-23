@@ -69,11 +69,7 @@ async function fetchPage(rawUrl: string): Promise<string> {
   const deadline = AbortSignal.timeout(FETCH_DEADLINE_MS);
   let current = rawUrl;
   for (let hop = 0; ; hop++) {
-    // DNS resolution itself isn't cancellable via the fetch signal, so check the
-    // deadline explicitly before starting another hop's lookup — otherwise a
-    // chain of hops with slow-but-not-hung DNS could still creep past 12s.
-    if (deadline.aborted) throw new Error("Request timed out.");
-    const { url, addresses } = await resolvePublicHttpUrl(current);
+    const { url, addresses } = await resolvePublicHttpUrl(current, { signal: deadline });
     // Own this hop's connection pool explicitly and close it once we're done
     // with the response — an Agent left open after fetchPage returns leaks
     // its idle sockets, and each hop gets a fresh Agent anyway (the pinned

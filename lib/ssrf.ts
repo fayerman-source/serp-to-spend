@@ -85,7 +85,8 @@ function isPrivateIPv6(ip: string): boolean {
   if (h[0] === 0x2001 && h[1] === 0x0db8) return true; // 2001:db8::/32 documentation
   if (h[0] === 0x3fff && (h[1] & 0xf000) === 0) return true; // 3fff::/20 documentation (RFC 9637)
   if (h[0] === 0x2002) return true; // 2002::/16 6to4
-  if (h[0] === 0x0064 && h[1] === 0xff9b && h.slice(2, 6).every((n) => n === 0)) return true; // 64:ff9b::/96 NAT64
+  if (h[0] === 0x0064 && h[1] === 0xff9b && h.slice(2, 6).every((n) => n === 0)) return true; // 64:ff9b::/96 NAT64 well-known prefix (RFC 6052)
+  if (h[0] === 0x0064 && h[1] === 0xff9b && h[2] === 0x0001) return true; // 64:ff9b:1::/48 NAT64 local-use prefix (RFC 8215)
   if (h[0] === 0x0100 && h.slice(1, 4).every((n) => n === 0)) return true; // 100::/64 discard-only
 
   // IPv4-mapped (::ffff:a.b.c.d, canonically "::ffff:HHHH:HHHH") — the fixed
@@ -101,6 +102,30 @@ function isPrivateIP(ip: string): boolean {
   return isIP(ip) === 6 ? isPrivateIPv6(ip) : isPrivateIPv4(ip);
 }
 
+// node:dns/promises' lookup() takes no AbortSignal, so an attacker-controlled
+// hostname whose resolver just never answers can hang past any deadline the
+// caller thinks it set. Race it against the signal instead — this can't cancel
+// the in-flight lookup (Node has no hook for that), but it does let the caller
+// give up and respond on time rather than hang for however long DNS takes.
+function raceAgainstSignal<T>(promise: Promise<T>, signal?: AbortSignal): Promise<T> {
+  if (!signal) return promise;
+  if (signal.aborted) return Promise.reject(new Error("Request timed out."));
+  return new Promise((resolve, reject) => {
+    const onAbort = () => reject(new Error("Request timed out."));
+    signal.addEventListener("abort", onAbort, { once: true });
+    promise.then(
+      (v) => {
+        signal.removeEventListener("abort", onAbort);
+        resolve(v);
+      },
+      (err) => {
+        signal.removeEventListener("abort", onAbort);
+        reject(err);
+      },
+    );
+  });
+}
+
 export type ResolvedAddress = { address: string; family: 4 | 6 };
 export type ResolvedPublicUrl = { url: URL; addresses: ResolvedAddress[] };
 
@@ -109,7 +134,10 @@ export type ResolvedPublicUrl = { url: URL; addresses: ResolvedAddress[] };
 // exactly these — resolving again inside fetch() would reopen a DNS-rebinding
 // gap (attacker's DNS answers public here, private at connect time). Call this
 // before every request AND before following any redirect.
-export async function resolvePublicHttpUrl(rawUrl: string): Promise<ResolvedPublicUrl> {
+export async function resolvePublicHttpUrl(
+  rawUrl: string,
+  opts?: { signal?: AbortSignal },
+): Promise<ResolvedPublicUrl> {
   let url: URL;
   try {
     url = new URL(rawUrl);
@@ -133,8 +161,9 @@ export async function resolvePublicHttpUrl(rawUrl: string): Promise<ResolvedPubl
 
   let addresses: ResolvedAddress[];
   try {
-    addresses = (await lookup(hostname, { all: true })) as ResolvedAddress[];
-  } catch {
+    addresses = (await raceAgainstSignal(lookup(hostname, { all: true }), opts?.signal)) as ResolvedAddress[];
+  } catch (err) {
+    if (err instanceof Error && err.message === "Request timed out.") throw err;
     throw new Error("Could not resolve URL.");
   }
   if (addresses.length === 0 || addresses.some((a) => isPrivateIP(a.address))) {

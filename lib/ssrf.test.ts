@@ -62,9 +62,18 @@ describe("resolvePublicHttpUrl", () => {
     await expect(resolvePublicHttpUrl("http://[2001:db8::1]/")).rejects.toThrow(); // documentation
     await expect(resolvePublicHttpUrl("http://[3fff::1]/")).rejects.toThrow(); // documentation (RFC 9637)
     await expect(resolvePublicHttpUrl("http://[2002::1]/")).rejects.toThrow(); // 6to4
-    await expect(resolvePublicHttpUrl("http://[64:ff9b::1]/")).rejects.toThrow(); // NAT64 well-known
+    await expect(resolvePublicHttpUrl("http://[64:ff9b::1]/")).rejects.toThrow(); // NAT64 well-known (RFC 6052)
+    await expect(resolvePublicHttpUrl("http://[64:ff9b:1::a00:1]/")).rejects.toThrow(); // NAT64 local-use (RFC 8215)
     await expect(resolvePublicHttpUrl("http://[100::1]/")).rejects.toThrow(); // discard-only
     await expect(resolvePublicHttpUrl("http://[ff02::1]/")).rejects.toThrow(); // multicast
+  });
+
+  it("gives up on a hostname resolution that outlives an already-aborted deadline", async () => {
+    const controller = new AbortController();
+    controller.abort();
+    await expect(
+      resolvePublicHttpUrl("http://example.com/", { signal: controller.signal }),
+    ).rejects.toThrow("Request timed out.");
   });
 
   it("allows a public literal IPv4 address and returns it as the resolved address", async () => {
