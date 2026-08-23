@@ -33,6 +33,11 @@ describe("resolvePublicHttpUrl", () => {
     await expect(resolvePublicHttpUrl("http://255.255.255.255/")).rejects.toThrow();
   });
 
+  it("rejects the RFC 2544 benchmarking range", async () => {
+    await expect(resolvePublicHttpUrl("http://198.18.0.1/")).rejects.toThrow();
+    await expect(resolvePublicHttpUrl("http://198.19.255.254/")).rejects.toThrow();
+  });
+
   it("rejects IPv6 loopback and link-local, including brackets and the full fe80::/10 range", async () => {
     await expect(resolvePublicHttpUrl("http://[::1]/")).rejects.toThrow();
     await expect(resolvePublicHttpUrl("http://[fe80::1]/")).rejects.toThrow();

@@ -65,23 +65,31 @@ async function fetchPage(rawUrl: string): Promise<string> {
   let current = rawUrl;
   for (let hop = 0; ; hop++) {
     const { url, addresses } = await resolvePublicHttpUrl(current);
+    // Own this hop's connection pool explicitly and close it once we're done
+    // with the response — an Agent left open after fetchPage returns leaks
+    // its idle sockets, and each hop gets a fresh Agent anyway (the pinned
+    // addresses differ per host).
     const agent = new Agent({ connect: { lookup: pinnedLookup(addresses), timeout: 12_000 } });
-    const res = await undiciFetch(url, {
-      headers: { "user-agent": "Mozilla/5.0 (compatible; serp-to-spend/0.1)" },
-      // Don't let a slow competitor page hang the whole request.
-      signal: AbortSignal.timeout(12_000),
-      redirect: "manual",
-      dispatcher: agent,
-    });
-    if (res.status >= 300 && res.status < 400 && res.headers.get("location")) {
-      await res.body?.cancel();
-      if (hop >= MAX_REDIRECTS) throw new Error("Too many redirects.");
-      current = new URL(res.headers.get("location")!, url).toString();
-      continue;
+    try {
+      const res = await undiciFetch(url, {
+        headers: { "user-agent": "Mozilla/5.0 (compatible; serp-to-spend/0.1)" },
+        // Don't let a slow competitor page hang the whole request.
+        signal: AbortSignal.timeout(12_000),
+        redirect: "manual",
+        dispatcher: agent,
+      });
+      if (res.status >= 300 && res.status < 400 && res.headers.get("location")) {
+        await res.body?.cancel();
+        if (hop >= MAX_REDIRECTS) throw new Error("Too many redirects.");
+        current = new URL(res.headers.get("location")!, url).toString();
+        continue;
+      }
+      if (!res.ok) throw new Error(`Fetch failed (${res.status}) for ${current}`);
+      const html = await res.text();
+      return htmlToText(html).slice(0, 6_000);
+    } finally {
+      await agent.close();
     }
-    if (!res.ok) throw new Error(`Fetch failed (${res.status}) for ${current}`);
-    const html = await res.text();
-    return htmlToText(html).slice(0, 6_000);
   }
 }
 
