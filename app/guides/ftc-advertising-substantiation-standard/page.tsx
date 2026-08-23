@@ -9,8 +9,8 @@ import {
   H2,
   H3,
   P,
-  UL,
-  LI,
+  Ul,
+  Li,
   Section,
   SourceNote,
   SourceLink,
@@ -82,19 +82,19 @@ export default function Guide() {
             themselves. Draw the line here:
           </P>
           <H3>Puffery: no substantiation required</H3>
-          <UL>
-            <LI>Subjective superiority: &ldquo;best,&rdquo; &ldquo;great,&rdquo; &ldquo;amazing,&rdquo; &ldquo;premium,&rdquo; &ldquo;world-class.&rdquo;</LI>
-            <LI>Vague expertise or quality: &ldquo;expert,&rdquo; &ldquo;elite,&rdquo; &ldquo;professional,&rdquo; &ldquo;trusted,&rdquo; &ldquo;leading,&rdquo; &ldquo;top.&rdquo;</LI>
-            <LI>Self-judgable opinion: &ldquo;tastes great,&rdquo; &ldquo;looks beautiful.&rdquo;</LI>
-          </UL>
+          <Ul>
+            <Li>Subjective superiority: &ldquo;best,&rdquo; &ldquo;great,&rdquo; &ldquo;amazing,&rdquo; &ldquo;premium,&rdquo; &ldquo;world-class.&rdquo;</Li>
+            <Li>Vague expertise or quality: &ldquo;expert,&rdquo; &ldquo;elite,&rdquo; &ldquo;professional,&rdquo; &ldquo;trusted,&rdquo; &ldquo;leading,&rdquo; &ldquo;top.&rdquo;</Li>
+            <Li>Self-judgable opinion: &ldquo;tastes great,&rdquo; &ldquo;looks beautiful.&rdquo;</Li>
+          </Ul>
           <H3>Needs substantiation before the ad runs</H3>
-          <UL>
-            <LI>Specific or measurable: &ldquo;25% faster,&rdquo; &ldquo;lose 20 pounds in 30 days,&rdquo; &ldquo;saves $500.&rdquo;</LI>
-            <LI>Performance, safety, health, or efficacy claims: &ldquo;reduces wrinkles,&rdquo; &ldquo;prevents colds.&rdquo;</LI>
-            <LI>Establishment claims invoking proof: &ldquo;clinically proven,&rdquo; &ldquo;doctor recommended,&rdquo; &ldquo;lab tested&rdquo;: each requires the exact level of proof it asserts.</LI>
-            <LI>A guarantee of outcome, or an income/earnings claim.</LI>
-            <LI>The implied net impression of the whole ad: words, images, and omissions together, not just the literal text.</LI>
-          </UL>
+          <Ul>
+            <Li>Specific or measurable: &ldquo;25% faster,&rdquo; &ldquo;lose 20 pounds in 30 days,&rdquo; &ldquo;saves $500.&rdquo;</Li>
+            <Li>Performance, safety, health, or efficacy claims: &ldquo;reduces wrinkles,&rdquo; &ldquo;prevents colds.&rdquo;</Li>
+            <Li>Establishment claims invoking proof: &ldquo;clinically proven,&rdquo; &ldquo;doctor recommended,&rdquo; &ldquo;lab tested&rdquo;: each requires the exact level of proof it asserts.</Li>
+            <Li>A guarantee of outcome, or an income/earnings claim.</Li>
+            <Li>The implied net impression of the whole ad: words, images, and omissions together, not just the literal text.</Li>
+          </Ul>
           <P>
             Health, safety, weight-loss, and disease claims sit at the top of the evidence bar. The FTC&rsquo;s
             Health Products Compliance Guidance (December 2022) requires &ldquo;competent and reliable
@@ -126,11 +126,11 @@ export default function Guide() {
             requires a true business opportunity: the seller solicits the purchaser to enter a{" "}
             <em>new</em> business, a required payment is involved, <em>plus</em> one of three representations.
           </P>
-          <UL>
-            <LI>The seller will provide locations for equipment or displays.</LI>
-            <LI>The seller will provide outlets, accounts, or customers.</LI>
-            <LI>The seller will buy back the goods or services the purchaser produces.</LI>
-          </UL>
+          <Ul>
+            <Li>The seller will provide locations for equipment or displays.</Li>
+            <Li>The seller will provide outlets, accounts, or customers.</Li>
+            <Li>The seller will buy back the goods or services the purchaser produces.</Li>
+          </Ul>
           <P>
             An ordinary B2B service contract with an already-operating business fails the &ldquo;new
             business&rdquo; element. A vendor selling lead-generation services to an existing company, say,

@@ -80,13 +80,13 @@ export function P({ children }: Readonly<{ children: ReactNode }>) {
   );
 }
 
-export function UL({ children }: Readonly<{ children: ReactNode }>) {
+export function Ul({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <ul style={{ margin: "0 0 16px", padding: "0 0 0 20px", maxWidth: 680 }}>{children}</ul>
   );
 }
 
-export function LI({ children }: Readonly<{ children: ReactNode }>) {
+export function Li({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <li style={{ fontSize: 16.5, lineHeight: 1.62, color: C.body, margin: "0 0 8px" }}>{children}</li>
   );

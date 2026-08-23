@@ -73,11 +73,11 @@ function Section({ children }: Readonly<{ children: ReactNode }>) {
   return <section style={{ padding: "44px 0", borderTop: `1px solid ${C.rule}` }}>{children}</section>;
 }
 
-function UL({ children }: Readonly<{ children: ReactNode }>) {
+function Ul({ children }: Readonly<{ children: ReactNode }>) {
   return <ul style={{ margin: "0 0 16px", padding: "0 0 0 20px", maxWidth: 680 }}>{children}</ul>;
 }
 
-function LI({ children }: Readonly<{ children: ReactNode }>) {
+function Li({ children }: Readonly<{ children: ReactNode }>) {
   return <li style={{ fontSize: 16.5, lineHeight: 1.62, color: C.body, margin: "0 0 8px" }}>{children}</li>;
 }
 
@@ -154,20 +154,20 @@ export default function About() {
         <Section>
           <H2>What comes next</H2>
           <P>In rough order:</P>
-          <UL>
-            <LI>
+          <Ul>
+            <Li>
               Close the loop into a data moat. Ground the compliance check in real submit-to-verdict
               outcomes through the Meta and Google ad APIs, so the risk model learns from actual
               disapprovals instead of policy text.
-            </LI>
-            <LI>Per-advertiser calibration.</LI>
-            <LI>A formal counsel review of the legal modules, with case-law citations.</LI>
-            <LI>One-click export into the campaign.</LI>
-            <LI>
+            </Li>
+            <Li>Per-advertiser calibration.</Li>
+            <Li>A formal counsel review of the legal modules, with case-law citations.</Li>
+            <Li>One-click export into the campaign.</Li>
+            <Li>
               An extension of the compliance pass beyond the copy to the creative and the landing page the
               ad points to (both are judged by the platform and the FTC).
-            </LI>
-          </UL>
+            </Li>
+          </Ul>
           <P>No generic generator can build that outcome dataset.</P>
         </Section>
 
