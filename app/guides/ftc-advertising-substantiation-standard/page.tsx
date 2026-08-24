@@ -35,19 +35,19 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     q: "What is the FTC substantiation standard?",
-    a: "Under the FTC's 1983 Policy Statement Regarding Advertising Substantiation, an advertiser must have a reasonable basis (objective evidence) for a claim BEFORE the ad runs, not after a challenge. The required level of proof scales with the claim: a specific, measurable, or health-related claim needs stronger evidence than a general one.",
+    a: "Under the FTC's 1983 Policy Statement Regarding Advertising Substantiation, an advertiser must have a reasonable basis (objective evidence) for a claim before the ad runs, not after a challenge. The required level of proof scales with the claim: a specific, measurable, or health-related claim needs stronger evidence than a general one.",
   },
   {
     q: "Is 'best' or 'expert' a claim that needs substantiation?",
-    a: "As a vague, self-descriptive word (\"our expert team,\" \"expert-grade formula\"), no: that's puffery, opinion a reasonable consumer judges for themselves. It's different when the ad presents an actual person or persona AS an expert endorser (\"our expert recommends...\"): the Endorsement Guides (16 C.F.R. § 255.3) then require that endorser to genuinely hold the claimed qualifications and to have actually evaluated the product to the depth that expertise implies. Subjective superiority language like best, great, premium, trusted, and leading stays puffery either way.",
+    a: "As a vague, self-descriptive word (\"our expert team,\" \"expert-grade formula\"), no: that's puffery, opinion a reasonable consumer judges for themselves. It's different when the ad presents a person or persona as an expert endorser (\"our expert recommends...\"). The Endorsement Guides (16 C.F.R. § 255.3) then require that endorser to in fact hold the claimed qualifications and to have exercised that expertise in evaluating the product. Subjective superiority language like best, great, premium, trusted, and leading stays puffery either way.",
   },
   {
     q: "Does a 'results not typical' disclaimer protect a testimonial claim?",
-    a: "A bare disclaimer alone, no. The FTC eliminated that safe harbor in the 2009 revision to the Endorsement Guides. An atypical result is still fine to advertise; the ad just has to clearly disclose the result users generally do achieve, and that generally-expected result must itself be substantiated.",
+    a: "A bare disclaimer alone, no. The FTC eliminated that safe harbor in the 2009 revision to the Endorsement Guides. An atypical result is still fine to advertise; the ad just has to clearly disclose the result users generally do achieve, and that generally expected result must itself be substantiated.",
   },
   {
     q: "Who is liable if an affiliate makes the unsubstantiated claim, not the brand?",
-    a: "The advertiser is. Under 16 C.F.R. § 255.1(d), an advertiser is liable for a misleading or unsubstantiated statement an affiliate or endorser makes on its behalf, or for failing to disclose an unexpected material connection. That holds even if the brand's own ad copy never states it. A truthful, substantiated, properly disclosed affiliate claim doesn't trigger this on its own; the exposure is for the noncompliant ones.",
+    a: "The advertiser is. Under 16 C.F.R. § 255.1(d), an advertiser is liable for a misleading or unsubstantiated statement an affiliate or endorser makes on its behalf. It is also liable for failing to disclose an unexpected material connection. That holds even if the brand's own ad copy never states it. A truthful, substantiated, properly disclosed affiliate claim doesn't trigger this on its own; the exposure is for the noncompliant ones.",
   },
 ];
 
@@ -99,10 +99,10 @@ export default function Guide() {
             Health, safety, weight-loss, and disease claims sit at the top of the evidence bar. The FTC&rsquo;s
             Health Products Compliance Guidance (December 2022) requires &ldquo;competent and reliable
             scientific evidence,&rdquo; not testimonials alone. For a health-benefit, efficacy, weight-loss, or
-            disease claim that generally means well-designed human clinical studies. A safety claim ordinarily
-            evaluated through toxicology or analytical testing (where testing on people would be
-            unethical) is held to the same competent-and-reliable standard, not literally a human-study
-            requirement. The right evidence is field- and claim-specific.
+            disease claim that generally means well-designed human clinical studies. Some safety claims cannot
+            ethically be tested on people. Those are ordinarily evaluated through toxicology or analytical
+            testing, and they are held to the same competent-and-reliable standard, not to a literal
+            human-study requirement. The right evidence is field- and claim-specific.
           </P>
         </Section>
 
@@ -112,7 +112,7 @@ export default function Guide() {
             Endorsements and testimonials (16 C.F.R. Part 255) must reflect the endorser&rsquo;s honest opinion.
             A genuine but atypical experience is not itself off-limits. But unless it also reflects the
             <em>typical</em> experience of users, the ad must clearly and conspicuously disclose the
-            generally-expected result, and that result must itself be substantiated. The FTC eliminated
+            generally expected result. That result must itself be substantiated. The FTC eliminated
             the old blanket &ldquo;results not typical&rdquo; safe harbor in the 2009 revision to the
             Endorsement Guides (74 Fed. Reg. 53124, effective December 1, 2009). A bare disclaimer has not been
             enough on its own since. The 2023 revision (88 Fed. Reg. 48102, effective July 26, 2023)
@@ -123,8 +123,9 @@ export default function Guide() {
           </P>
           <P>
             Separately, income claims can trigger the Business Opportunity Rule (16 C.F.R. Part 437). That
-            requires a true business opportunity: the seller solicits the purchaser to enter a{" "}
-            <em>new</em> business, a required payment is involved, <em>plus</em> one of three representations.
+            rule applies only to a true business opportunity, which has three elements: the seller solicits
+            the purchaser to enter a <em>new</em> business; the purchaser makes a required payment; and the
+            seller represents that it will do at least one of the following:
           </P>
           <Ul>
             <Li>The seller will provide locations for equipment or displays.</Li>
@@ -143,11 +144,11 @@ export default function Guide() {
           </P>
           <P>
             A generic, seller-authored &ldquo;make $X a month&rdquo; claim with no consumer endorsement
-            attached is a Section 5 substantiation matter. It is not automatically a Part 437 violation,
-            unless it also makes one of those three representations.
+            attached is a Section 5 substantiation matter. It is not a Part 437 matter unless the offer also
+            meets all three elements above.
           </P>
           <P>
-            Section 255.2(b) specifically applies once the claim is framed as a consumer&rsquo;s endorsement
+            Section 255.2(b) applies once the claim is framed as a consumer&rsquo;s endorsement
             or testimonial (&ldquo;our students make $10,000 a month&rdquo;). It does not apply to every
             generic earnings statement the seller makes on its own behalf.
           </P>

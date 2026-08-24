@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     q: "Why does Meta keep rejecting my weight-loss or wellness ad?",
-    a: "Almost always one of three things. The copy implies a personal attribute or condition (\"are you overweight?\"). It promotes an unrealistic outcome (\"lose 20 pounds in 2 weeks\"). Or it could generate negative self-perception in the reader. Meta's Health and Wellness category is Restricted, not banned, so the fix is usually a rewrite, not a new product.",
+    a: "Almost always one of three things. The copy implies a personal attribute or condition (\"are you overweight?\"). It promotes an unrealistic outcome (\"lose 20 pounds in 2 weeks\"). Or it could generate negative self-perception in the viewer. Meta's Health and Wellness category is Restricted, not banned, so the fix is usually a rewrite, not a new product.",
   },
   {
     q: "Is 'lose weight fast' against Meta's ad standards?",
@@ -54,9 +54,9 @@ export default function Guide() {
         <Eyebrow>Guide · Meta ads</Eyebrow>
         <Title>Why Meta Rejects Health and Wellness Ads (and How to Fix the Copy)</Title>
         <Dek>
-          Health and Wellness is one of Meta&rsquo;s Restricted categories, which means it is allowed, with
-          conditions, and most of the rejections come from three predictable places. Here is the standard in
-          Meta&rsquo;s own terms, and the rewrite pattern that keeps the hook.
+          Health and Wellness is one of Meta&rsquo;s Restricted categories: allowed, with conditions. Most
+          rejections come from three predictable places. Here is the standard in Meta&rsquo;s own terms, and
+          the rewrite pattern that keeps the hook.
         </Dek>
 
         <Section>
@@ -64,7 +64,7 @@ export default function Guide() {
           <P>
             Meta organizes its Advertising Standards into Unacceptable content (banned outright), Restricted
             goods and services (allowed with conditions), and Objectionable content. Health and Wellness ads
-            usually fall foul of one of these:
+            usually trip one of these:
           </P>
           <Ul>
             <Li>
@@ -97,7 +97,7 @@ export default function Guide() {
           </P>
           <H3>Instead of implying a condition&hellip;</H3>
           <P>
-            &ldquo;Tired of carrying extra weight?&rdquo; addresses the reader&rsquo;s body directly. Reframe around
+            &ldquo;Tired of carrying extra weight?&rdquo; addresses the viewer&rsquo;s body directly. Reframe around
             the product or the routine instead: &ldquo;A 20-minute routine built around real food, not
             restriction.&rdquo; Same hook, no implied attribute.
           </P>
@@ -114,9 +114,9 @@ export default function Guide() {
             substantiation the ad copy alone cannot provide. It independently risks the Fraud, Scams and
             Deceptive Practices standard if the outcome is not ordinary. Moving the line to the landing page
             does not fix it: Meta reviews the destination too, and the FTC substantiation obligation
-            follows the claim wherever it runs. Drop or qualify the outcome promise itself; a genuinely
-            truthful refund policy can still live on the landing page, but it is not a cure for an
-            unsubstantiated results guarantee.
+            follows the claim wherever it runs. Drop or qualify the outcome promise itself. A truthful refund
+            policy can still live on the landing page, but it does not cure an unsubstantiated results
+            guarantee.
           </P>
         </Section>
 
